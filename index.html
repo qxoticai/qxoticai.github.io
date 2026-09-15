@@ -3,109 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quixotic AI — AI sovereignty for the JVM</title>
-    <meta name="description" content="The missing AI substrate for Java. Run AI at native speed on the JVM without sacrificing portability or reliability.">
+    <title>Quixotic AI: AI sovereignty for the JVM</title>
+
+    <meta property="og:description" content="LLMs, vision, embeddings, and text-to-speech, all inside the JVM. AI in a jar.">
+    <meta property="og:title" content="Quixotic AI: AI inference for the JVM at native speed">
+    <meta name="description" content="Run LLMs, vision, embeddings, and text-to-speech on the JVM at native speed. No Python runtime, ONNX bridges, or Docker sidecars.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qxotic.ai">
+    <meta property="og:image" content="https://qxotic.ai/og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#f4efe4" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1e1e1c" media="(prefers-color-scheme: dark)">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://qxotic.ai/">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <style>
         :root {
-            --bg: #f4efe4;
-            --bg-alt: #faf7f0;
-            --text: #2a2420;
-            --text-secondary: #443a32;
-            --text-muted: #6b5f54;
-            --text-faint: #8a7e72;
-            --border: #dcd2c2;
-            --border-strong: #ccc0ae;
-            --accent: #f29111;
-            --accent-hover: #d98010;
-            --accent-text: #faf7f0;
-            --header-bg: rgba(244, 239, 228, 0.85);
-            --card-hover: #eee8dc;
+            color-scheme: light dark;
+            --mono: 'JetBrains Mono', ui-monospace, monospace;
+            --bg:          light-dark(#f4efe4, #1e1e1c);
+            --bg-alt:      light-dark(#faf7f0, #262422);
+            --text:        light-dark(#2a2420, #ddd0b8);
+            --text-2:      light-dark(#443a32, #c0b49c);
+            --muted:       light-dark(#6b5f54, #928677);
+            --faint:       light-dark(#8a7e72, #6e6357);
+            --border:      light-dark(#dcd2c2, #332e2a);
+            --border-2:    light-dark(#ccc0ae, #443e38);
+            --accent:      #f29111;
+            --accent-hi:   light-dark(#d98010, #ffa733);
+            --on-accent:   light-dark(#faf7f0, #1e1e1c);
+            --header-bg:   light-dark(rgba(244, 239, 228, 0.85), rgba(30, 30, 28, 0.85));
+            --card-hover:  light-dark(#eee8dc, #2c2a26);
+            --code-bg:     light-dark(#efe9db, #232120);
+            --code-text:   light-dark(#3a322a, #ddd0b8);
+            --code-muted:  #8a7e72;
+            --code-str:    light-dark(#a4670a, #d8a24a);
+            --code-kw:     light-dark(#c05f10, #e8853d);
+            --code-typ:    light-dark(#5c7a52, #a8c1a0);
+            --up:          light-dark(#5c7a52, #a8c1a0);
+            --down:        light-dark(#b0512f, #d98a72);
         }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #1e1e1c;
-                --bg-alt: #262422;
-                --text: #ddd0b8;
-                --text-secondary: #c0b49c;
-                --text-muted: #928677;
-                --text-faint: #584f46;
-                --border: #332e2a;
-                --border-strong: #443e38;
-                --accent: #f29111;
-                --accent-hover: #ffa733;
-                --accent-text: #1e1e1c;
-                --header-bg: rgba(30, 30, 28, 0.85);
-                --card-hover: #2c2a26;
-            }
-        }
-
-        [data-theme="light"] {
-            --bg: #f4efe4;
-            --bg-alt: #faf7f0;
-            --text: #2a2420;
-            --text-secondary: #443a32;
-            --text-muted: #6b5f54;
-            --text-faint: #8a7e72;
-            --border: #dcd2c2;
-            --border-strong: #ccc0ae;
-            --accent: #f29111;
-            --accent-hover: #d98010;
-            --accent-text: #faf7f0;
-            --header-bg: rgba(244, 239, 228, 0.85);
-            --card-hover: #eee8dc;
-        }
-
-        [data-theme="dark"] {
-            --bg: #1e1e1c;
-            --bg-alt: #262422;
-            --text: #ddd0b8;
-            --text-secondary: #c0b49c;
-            --text-muted: #928677;
-            --text-faint: #584f46;
-            --border: #332e2a;
-            --border-strong: #443e38;
-            --accent: #f29111;
-            --accent-hover: #ffa733;
-            --accent-text: #1e1e1c;
-            --header-bg: rgba(30, 30, 28, 0.85);
-            --card-hover: #2c2a26;
-        }
+        [data-theme="light"] { color-scheme: light; }
+        [data-theme="dark"]  { color-scheme: dark; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html {
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background: var(--bg);
-            color: var(--text-secondary);
+            background-image: radial-gradient(60rem 24rem at 50% -6rem, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%);
+            background-repeat: no-repeat;
+            color: var(--text-2);
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+        h1, h2, .logo {
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        ::selection { background: var(--accent); color: var(--on-accent); }
+
+        a:focus-visible, button:focus-visible, summary:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .container { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
         }
 
         /* ── Header ── */
         header {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            inset: 0 0 auto 0;
             z-index: 100;
-            padding: 0 1.5rem;
             height: 64px;
+            padding: 0 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -115,17 +102,12 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 2.5rem;
-        }
+        .nav-left { display: flex; align-items: center; gap: 2.5rem; }
 
         .logo {
             font-size: 1rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            color: var(--text);
             text-decoration: none;
         }
 
@@ -134,7 +116,7 @@
         nav { display: flex; gap: 1.5rem; }
 
         nav a {
-            color: var(--text-muted);
+            color: var(--muted);
             font-size: 0.875rem;
             font-weight: 500;
             text-decoration: none;
@@ -143,13 +125,9 @@
 
         nav a:hover { color: var(--text); }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+        .nav-right { display: flex; align-items: center; gap: 0.75rem; }
 
-        .theme-toggle {
+        .icon-btn {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -157,193 +135,107 @@
             height: 36px;
             background: transparent;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 999px;
             cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.15s;
+            color: var(--muted);
+            transition: color 0.15s, border-color 0.15s;
         }
 
-        .theme-toggle:hover {
-            color: var(--text);
-            border-color: var(--border-strong);
-        }
+        .icon-btn:hover { color: var(--text); border-color: var(--border-2); }
 
-        .sun-icon { display: none; }
-        .moon-icon { display: block; }
+        .sun { display: none; }
         @media (prefers-color-scheme: dark) {
-            .sun-icon { display: block; }
-            .moon-icon { display: none; }
+            .sun { display: block; }
+            .moon { display: none; }
         }
-        [data-theme="light"] .sun-icon { display: none; }
-        [data-theme="light"] .moon-icon { display: block; }
-        [data-theme="dark"] .sun-icon { display: block; }
-        [data-theme="dark"] .moon-icon { display: none; }
+        [data-theme="light"] .sun { display: none; }
+        [data-theme="light"] .moon { display: block; }
+        [data-theme="dark"] .sun { display: block; }
+        [data-theme="dark"] .moon { display: none; }
 
-        .gh-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--text);
-            color: var(--bg);
-            font-size: 0.8125rem;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: opacity 0.15s;
-        }
-
-        .gh-btn:hover { opacity: 0.85; }
-
-        .gh-btn svg { width: 16px; height: 16px; fill: currentColor; }
-
-        /* ── Hero ── */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 7rem 1.5rem 5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.375rem 0.875rem;
-            border: 1px solid var(--accent);
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--accent);
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            margin-top: 2.5rem;
-        }
-
-        .hero-badge::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-
-        h1 {
-            font-size: clamp(3rem, 7vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-            color: var(--text);
-            margin-bottom: 1.5rem;
-        }
-
-        h1 .accent { color: var(--accent); }
-
-        .hero-sub {
-            font-size: clamp(1.125rem, 2.5vw, 1.375rem);
-            color: var(--text-muted);
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-sub strong {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
+        /* ── Buttons ── */
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border: none;
+            border-radius: 999px;
             font-weight: 600;
             font-size: 0.9375rem;
             text-decoration: none;
-            transition: all 0.15s;
-            border: none;
             cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, opacity 0.15s;
         }
 
-        .btn-accent {
-            background: var(--accent);
-            color: var(--accent-text);
-        }
-
-        .btn-accent:hover { background: var(--accent-hover); }
+        .btn-accent { background: var(--accent); color: var(--on-accent); }
+        .btn-accent:hover { background: var(--accent-hi); }
 
         .btn-outline {
             background: transparent;
             color: var(--text);
-            border: 1px solid var(--border-strong);
+            border: 1px solid var(--border-2);
+        }
+        .btn-outline:hover { background: var(--bg-alt); border-color: var(--muted); }
+
+        /* ── Hero ── */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 10rem 1.5rem 7rem;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        .btn-outline:hover {
-            background: var(--bg-alt);
-            border-color: var(--text-muted);
+        h1 {
+            font-size: clamp(3rem, 7vw, 5rem);
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
         }
 
-        /* ── Divider ── */
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 0;
+        h1 .accent, h2 .accent { color: var(--accent); }
+
+        .hero-sub {
+            font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+            color: var(--muted);
+            max-width: 620px;
+            margin-bottom: 2.5rem;
         }
+
+        .hero-sub strong { color: var(--text-2); font-weight: 600; }
+
+        .hero-actions { display: flex; gap: 0.75rem; }
 
         /* ── Sections ── */
-        section { padding: 6rem 0; }
+        section { padding: 7rem 0; scroll-margin-top: 48px; }
 
-        .section-label {
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: var(--accent);
-            margin-bottom: 0.75rem;
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
         }
 
-        .section-title {
+        h2 {
             font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-            font-weight: 800;
             letter-spacing: -0.03em;
-            color: var(--text);
             line-height: 1.15;
         }
 
         .section-desc {
             font-size: 1.0625rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
-            max-width: 520px;
+            color: var(--muted);
+            margin: 1rem auto 0;
+            max-width: 560px;
         }
 
-        .section-header-center {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-
-        .section-header-center .section-desc {
-            margin-left: auto;
-            margin-right: auto;
-        }
+        #benchmarks .section-desc { max-width: none; }
 
         /* ── Stack cards ── */
-        .stack-section { background: var(--bg-alt); }
-
         .stack-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 1px;
             background: var(--border);
             border: 1px solid var(--border);
@@ -360,10 +252,8 @@
         .stack-card:hover { background: var(--card-hover); }
 
         .stack-card-name {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            font-family: 'JetBrains Mono', monospace;
+            display: inline-block;
+            font-family: var(--mono);
             font-size: 1rem;
             font-weight: 600;
             color: var(--text);
@@ -372,43 +262,320 @@
             transition: color 0.15s;
         }
 
-        .stack-card-name:hover { color: var(--accent); }
-
-        .stack-card-name svg {
-            width: 14px;
-            height: 14px;
-            color: var(--text-faint);
+        .stack-card-name::after {
+            content: '\2197';
+            margin-left: 0.375rem;
+            font-size: 0.8125rem;
+            color: var(--faint);
             transition: color 0.15s;
         }
 
-        .stack-card-name:hover svg { color: var(--accent); }
+        .stack-card-name:hover, .stack-card-name:hover::after { color: var(--accent); }
 
-        .stack-card p {
+        .stack-card p, .principle p {
             font-size: 0.9375rem;
-            color: var(--text-muted);
+            color: var(--muted);
             line-height: 1.55;
         }
 
-        /* ── Features ── */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .feature {
-            padding: 2rem 2rem 2rem 0;
+        /* ── Code snippets ── */
+        .code-tabs {
+            display: flex;
+            gap: 0.25rem;
             border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
         }
 
-        .feature:nth-child(3n+2),
-        .feature:nth-child(3n+3) {
-            padding-left: 2rem;
-            border-left: 1px solid var(--border);
+        .code-tab { flex: none; }
+
+        .code-tab {
+            font-family: var(--mono);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            padding: 0.5rem 0.875rem;
+            background: transparent;
+            color: var(--muted);
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
         }
 
-        .feature:nth-last-child(-n+3) { border-bottom: none; }
+        .code-tab:hover { color: var(--text); }
 
-        .feature h3 {
+        .code-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        .code-panel { display: none; }
+        .code-panel.active { display: block; }
+
+        .code-window {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--code-bg);
+        }
+
+        .code-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 1rem;
+            border-bottom: 1px solid color-mix(in srgb, var(--code-text) 10%, transparent);
+        }
+
+        .code-filename {
+            font-family: var(--mono);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--code-muted);
+            flex: 1;
+        }
+
+        .code-copy {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--code-muted);
+            background: transparent;
+            border: 1px solid color-mix(in srgb, var(--code-text) 18%, transparent);
+            border-radius: 999px;
+            padding: 0.25rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .code-copy:hover { color: var(--code-text); border-color: color-mix(in srgb, var(--code-text) 40%, transparent); }
+
+        .code-window pre { padding: 1.25rem 1.5rem 1.5rem; overflow-x: auto; }
+
+        .code-window code {
+            font-family: var(--mono);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.65;
+            color: var(--code-text);
+            white-space: pre;
+        }
+
+        /* Folded jbang header + imports */
+        .code-fold summary {
+            display: inline-block;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--code-muted);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 0.2rem 0.625rem;
+            margin: 0.125rem 0 0.125rem calc(-0.625rem - 1px);   /* align the label with the code's left edge */
+            cursor: pointer;
+            user-select: none;
+            list-style: none;
+            transition: color 0.15s, background 0.15s, border-color 0.15s;
+        }
+
+        .code-fold summary::-webkit-details-marker { display: none; }
+
+        .code-fold summary::before {
+            content: '+';
+            display: inline-block;
+            width: 1ch;
+            margin-right: 0.5ch;
+            text-align: center;
+        }
+        .code-fold[open] summary::before { content: '\2212'; }
+
+        .code-fold summary:hover {
+            color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 12%, transparent);
+            border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+        }
+
+        .tk-c { color: var(--code-muted); font-style: italic; }
+        .tk-s { color: var(--code-str); }
+        .tk-k { color: var(--code-kw); }
+        .tk-t { color: var(--code-typ); }
+        .tk-n { color: var(--code-str); }
+
+        .code-run {
+            margin-top: 1rem;
+            font-family: var(--mono);
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .code-run .prompt { color: var(--accent); }
+        .code-run .out { color: var(--faint); }
+
+        .section-desc a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .section-desc a:hover { color: var(--accent-hi); }
+
+        /* ── Benchmarks ── */
+        .bench-filters {
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .bench-filter {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .bench-filter-label {
+            width: 100%;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--faint);
+        }
+
+        .bench-pill {
+            font-family: var(--mono);
+            font-size: 0.8125rem;
+            padding: 0.3125rem 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+        }
+
+        .bench-pill:hover { color: var(--text); border-color: var(--border-2); }
+
+        .bench-pill[data-tip] { position: relative; }
+
+        .bench-pill[data-tip]:hover::after, .bench-pill[data-tip]:focus-visible::after {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 0.5rem);
+            transform: translateX(-50%);
+            background: var(--text);
+            color: var(--bg);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.375rem 0.75rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .bench-pill.active {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+        }
+
+        .bench-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--code-bg);
+        }
+
+        .bench-table { width: 100%; min-width: 680px; border-collapse: collapse; }
+
+        .bench-table th {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--faint);
+            text-align: center;
+            padding: 0.75rem 1rem;
+            white-space: nowrap;
+        }
+
+        .bench-table th.grp { text-align: center; padding-bottom: 0; }
+        .bench-table th.model-th { text-align: left; }
+
+        .bench-table td {
+            padding: 0.7rem 1rem;
+            border-top: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .bench-table .sep { border-left: 1px solid var(--border); }
+
+        .bm-name { font-size: 0.9375rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+
+        .bm-ref a {
+            font-family: var(--mono);
+            font-size: 0.6875rem;
+            color: var(--faint);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .bm-ref a:hover { color: var(--accent); }
+
+        .bench-table .num {
+            font-family: var(--mono);
+            font-size: 0.9375rem;
+            color: var(--muted);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .bench-table .num.j { color: var(--text); font-weight: 600; }
+
+        .delta {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5625rem;
+            border-radius: 999px;
+        }
+
+        .delta.up   { color: var(--up);   background: color-mix(in srgb, var(--up) 12%, transparent); }
+        .delta.down { color: var(--down); background: color-mix(in srgb, var(--down) 12%, transparent); }
+        .delta.flat { color: var(--muted); background: color-mix(in srgb, var(--muted) 10%, transparent); }
+
+        .bench-note {
+            margin: 1.25rem auto 0;
+            font-size: 0.8125rem;
+            color: var(--faint);
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .bench-note a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-2);
+        }
+
+        .bench-note a:hover { color: var(--accent); }
+
+        .section-desc code, .bench-note code { font-family: var(--mono); font-size: 0.875em; }
+
+        /* ── Principles ── */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2.5rem 2rem;
+        }
+
+        .principle {
+            border-top: 1px solid var(--border);
+            padding-top: 1.25rem;
+            text-align: center;
+        }
+
+        .principle h3 {
             font-size: 1rem;
             font-weight: 700;
             color: var(--text);
@@ -416,93 +583,68 @@
             letter-spacing: -0.01em;
         }
 
-        .feature p {
-            font-size: 0.9375rem;
-            color: var(--text-muted);
-            line-height: 1.55;
-        }
-
-        /* ── CTA ── */
-        .cta-section {
-            padding: 8rem 0;
-            text-align: center;
-        }
-
-        .cta-section .section-title {
-            margin-bottom: 1rem;
-        }
-
-        .cta-section .section-desc {
-            margin: 0 auto 2.5rem;
-        }
-
-        .cta-links {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
         /* ── Footer ── */
         footer {
-            padding: 2.5rem 0;
+            padding: 3.5rem 0;
             border-top: 1px solid var(--border);
             text-align: center;
         }
 
-        footer p {
-            font-size: 0.8125rem;
-            color: var(--text-faint);
-            line-height: 1.8;
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.75rem;
         }
 
-        footer a {
-            color: var(--text-muted);
+        .footer-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.125rem;
+            border: 1px solid var(--border-2);
+            border-radius: 999px;
+            color: var(--text);
+            font-size: 0.875rem;
+            font-weight: 500;
             text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
         }
 
-        footer a:hover { color: var(--accent); }
+        .footer-links a:hover { background: var(--bg-alt); border-color: var(--muted); }
+
+        footer p { font-size: 0.8125rem; color: var(--faint); line-height: 1.8; }
 
         /* ── Mobile ── */
         @media (max-width: 768px) {
             header { padding: 0 1rem; }
-
             nav { display: none; }
-
             .hero { padding: 6rem 1.25rem 4rem; }
-
             .hero-actions { flex-direction: column; width: 100%; max-width: 300px; }
-            .btn { width: 100%; justify-content: center; }
-
+            .hero-actions .btn { justify-content: center; }
             section { padding: 4rem 0; }
-
-            .stack-grid { grid-template-columns: 1fr; }
-
-            .features-grid { grid-template-columns: 1fr; }
-            .feature {
-                padding: 1.5rem 0 !important;
-                border-left: none !important;
-            }
-
-            .cta-section { padding: 5rem 0; }
+            .stack-grid, .principles-grid { grid-template-columns: 1fr; }
+            .principles-grid { gap: 2rem; }
+            .code-window pre { padding: 1rem; }
+            .code-window code { font-size: 0.875rem; }
         }
 
         @media (max-width: 480px) {
             h1 { font-size: 2.5rem; }
         }
     </style>
-    <noscript><style>.theme-toggle { display: none; }</style></noscript>
+    <noscript><style>.theme-toggle, .code-copy, .code-tabs, #benchmarks { display: none; } .code-panel { display: block; margin-bottom: 1.5rem; }</style></noscript>
     <script>
       (function() {
         var saved = localStorage.getItem('theme');
-        if (saved) document.documentElement.setAttribute('data-theme', saved);
+        if (saved) document.documentElement.dataset.theme = saved;
       })();
       function toggleTheme() {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-          (!document.documentElement.getAttribute('data-theme') &&
-           window.matchMedia('(prefers-color-scheme: dark)').matches);
-        var next = isDark ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
+        var dark = document.documentElement.dataset.theme === 'dark' ||
+          (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+        var next = dark ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
         localStorage.setItem('theme', next);
       }
     </script>
@@ -511,31 +653,30 @@
 </head>
 
 <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+        <symbol id="i-github" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></symbol>
+        <symbol id="i-x" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></symbol>
+        <symbol id="i-bsky" viewBox="0 0 24 24"><path fill="currentColor" d="M5.202 2.857C7.954 4.922 10.913 9.11 12 11.358c1.087-2.247 4.046-6.436 6.798-8.501C20.783 1.366 24 .213 24 3.883c0 .732-.42 6.156-.667 7.037-.856 3.061-3.978 3.842-6.755 3.37 4.854.826 6.089 3.562 3.422 6.299-5.065 5.196-7.28-1.304-7.847-2.97-.104-.305-.152-.448-.153-.327 0-.121-.05.022-.153.327-.568 1.666-2.782 8.166-7.847 2.97-2.667-2.737-1.432-5.473 3.422-6.3-2.777.473-5.899-.308-6.755-3.369C.42 10.04 0 4.615 0 3.883c0-3.67 3.217-2.517 5.202-1.026"/></symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></g></symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+    </svg>
+
     <header>
         <div class="nav-left">
             <a href="/" class="logo">Quixotic <span>AI</span></a>
             <nav>
                 <a href="#stack">Stack</a>
-                <a href="#features">Features</a>
-                <a href="#connect">Connect</a>
+                <a href="#examples">Examples</a>
+                <a href="#benchmarks">Benchmarks</a>
             </nav>
         </div>
         <div class="nav-right">
-            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                    <circle cx="12" cy="12" r="5"/>
-                    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                </svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
+            <button class="icon-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <svg class="sun" width="16" height="16"><use href="#i-sun"/></svg>
+                <svg class="moon" width="16" height="16"><use href="#i-moon"/></svg>
             </button>
-            <a href="https://github.com/qxoticai/qxotic" class="gh-btn" target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                Star
+            <a href="https://github.com/qxoticai/qxotic" class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg width="16" height="16"><use href="#i-github"/></svg>
             </a>
         </div>
     </header>
@@ -545,155 +686,265 @@
         <h1>AI sovereignty<br>for the <span class="accent">JVM</span></h1>
 
         <p class="hero-sub">
-            The JVM powers global finance, big data, and mission-critical infrastructure.
-            It deserves an AI stack built to the same standard.
+            Some call AI on the JVM quixotic.
+            <br>
+            We call it Quixotic AI.
+            <br>
+            <strong>Finally, AI in a jar.</strong>
         </p>
 
         <div class="hero-actions">
             <a href="https://github.com/qxoticai/qxotic" class="btn btn-accent" target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                <svg width="16" height="16"><use href="#i-github"/></svg>
                 View on GitHub
             </a>
-            <a href="mailto:hello@qxotic.ai" class="btn btn-outline">Get in Touch</a>
+            <a href="#examples" class="btn btn-outline">See it in action</a>
         </div>
-
-        <div class="hero-badge">Experimental &middot; Evolving</div>
     </section>
 
-    <hr class="divider">
-
     <!-- Stack -->
-    <section id="stack" class="stack-section">
+    <section id="stack">
         <div class="container">
-            <div class="section-header-center">
-                <div class="section-label">The Stack</div>
-                <h2 class="section-title">Modular AI building blocks</h2>
-                <p class="section-desc">
-                    Standalone components, low overhead, ready for any use case.
-                </p>
+            <div class="section-header">
+                <h2>Modular AI building blocks</h2>
+                <p class="section-desc">Every component of the AI stack, a la carte.</p>
             </div>
 
             <div class="stack-grid">
+
                 <div class="stack-card">
-                    <a href="https://github.com/qxoticai/qxotic/tree/main/jota" class="stack-card-name" target="_blank" rel="noopener noreferrer">
-                        jota
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </a>
-                    <p>Multi-backend tensor engine. Panama, C, CUDA, HIP, Metal, OpenCL, and Mojo. Write once, accelerate everywhere.</p>
+                    <a href="https://github.com/qxoticai/qxotic/tree/main/jinfer" class="stack-card-name" target="_blank" rel="noopener noreferrer">jinfer</a>
+                    <p>AI inference engine. Chat, vision, embeddings and text-to-speech capabilities for the JVM, with Spring AI and LangChain4j integrations.</p>
                 </div>
 
                 <div class="stack-card">
-                    <a href="https://github.com/qxoticai/qxotic/tree/main/toknroll" class="stack-card-name" target="_blank" rel="noopener noreferrer">
-                        Tok'n'Roll (toknroll)
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </a>
-                    <p>Pure Java, efficient, TikToken-compatible + customizable BPE tokenizers for popular LLM models.</p>
+                    <a href="https://github.com/qxoticai/qxotic/tree/main/jam" class="stack-card-name" target="_blank" rel="noopener noreferrer">jam</a>
+                    <p>Fast quantized matrix-multiplication routines.</p>
                 </div>
 
                 <div class="stack-card">
-                    <a href="https://github.com/qxoticai/qxotic/tree/main/gguf" class="stack-card-name" target="_blank" rel="noopener noreferrer">
-                        gguf
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </a>
-                    <p>Pure Java read/write for llama.cpp's GGUF model format. No native bindings required.</p>
+                    <a href="https://github.com/qxoticai/qxotic/tree/main/toknroll" class="stack-card-name" target="_blank" rel="noopener noreferrer">Tok'n'Roll (toknroll)</a>
+                    <p>TikToken-compatible and customizable tokenizers for popular LLM models.</p>
                 </div>
 
                 <div class="stack-card">
-                    <a href="https://github.com/qxoticai/qxotic/tree/main/safetensors" class="stack-card-name" target="_blank" rel="noopener noreferrer">
-                        safetensors
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </a>
-                    <p>Pure Java read/write for HuggingFace's Safetensors format. Memory-mapped for large models.</p>
-                </div>
-
-
-                <div class="stack-card">
-                    <a href="https://github.com/qxoticai/qxotic/tree/main/jinfer" class="stack-card-name" target="_blank" rel="noopener noreferrer">
-                        jinfer
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </a>
-                    <p>LLM Inference Engine.</p>
+                    <a href="https://github.com/qxoticai/qxotic/tree/main/jota" class="stack-card-name" target="_blank" rel="noopener noreferrer">jota</a>
+                    <p>Multi-backend tensor engine, in the works. Java, C, CUDA, HIP, Metal, OpenCL, and Mojo. <strong>Write once, accelerate everywhere.</strong></p>
                 </div>
 
                 <div class="stack-card">
-                    <a href="https://github.com/qxoticai/qxotic/tree/main/jam" class="stack-card-name" target="_blank" rel="noopener noreferrer">
-                        jam
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-                    </a>
-                    <p>Fast quantized matrix-multiplication routines for CPUs.</p>
+                    <a href="https://github.com/qxoticai/qxotic/tree/main/gguf" class="stack-card-name" target="_blank" rel="noopener noreferrer">gguf</a>
+                    <p>Pure Java, read and write support for llama.cpp's GGUF model format.</p>
                 </div>
-                
+
+                <div class="stack-card">
+                    <a href="https://github.com/qxoticai/qxotic/tree/main/safetensors" class="stack-card-name" target="_blank" rel="noopener noreferrer">safetensors</a>
+                    <p>Pure Java, read and write support for HuggingFace's Safetensors format.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <hr class="divider">
-
-    <!-- Features -->
-    <section id="features">
+    <!-- Examples -->
+    <section id="examples">
         <div class="container">
-            <div class="section-header-center">
-                <div class="section-label">Capabilities</div>
-                <h2 class="section-title">Built for production workloads</h2>
-                <p class="section-desc">Reliable, portable, and built to last.</p>
+            <div class="section-header">
+                <h2>Examples</h2>
+                <p class="section-desc">Runnable snippets using <a href="https://www.jbang.dev">jbang</a>.</p>
             </div>
 
-            <div class="features-grid">
-                <div class="feature">
-                    <h3>Pure Java Core</h3>
-                    <p>Inference runs on any JVM out of the box. Backends for CUDA, Metal, and others give you hardware acceleration when you need it.</p>
+            <div>
+                <div class="code-tabs">
+                    <button class="code-tab active" data-tab="chat">Chat.java</button>
+                    <button class="code-tab" data-tab="tts">TextToSpeech.java</button>
+                    <button class="code-tab" data-tab="vision">Vision.java</button>
+                    <button class="code-tab" data-tab="embed">Embed.java</button>
                 </div>
 
-                <div class="feature">
-                    <h3>On-Device LLM Inference</h3>
-                    <p>Run large language models locally with quantization and efficient memory management.</p>
+                <div class="code-panel active" id="panel-chat">
+                    <div class="code-window">
+                        <div class="code-titlebar">
+                            <span class="code-filename">Chat.java: LLM inference on the JVM</span>
+                            <button class="code-copy" type="button">copy</button>
+                        </div>
+<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
+<span class="tk-c">//JAVA 25+</span>
+<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
+<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
+<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
+
+<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.*;
+</details>
+<span class="tk-k">void</span> <span class="tk-t">main</span>() {
+  <span class="tk-k">try</span> (<span class="tk-k">var</span> model = <span class="tk-t">JinferChatModel</span>.builder()
+      .model(<span class="tk-s">"LiquidAI/LFM2.5-350M-GGUF:Q8_0"</span>)
+      .build()) {
+    <span class="tk-t">System</span>.out.println(model.call(<span class="tk-s">"What is the capital of France?"</span>));
+  }
+}</code></pre>
+                    </div>
+                    <p class="code-run"><span class="prompt">$</span> jbang Chat.java&nbsp;&nbsp;<span class="out"># "The capital of France is Paris."</span></p>
                 </div>
 
-                <div class="feature">
-                    <h3>Write Once, Accelerate Everywhere</h3>
-                    <p>A single Tensor API across Panama, C, CUDA, HIP, Metal, OpenCL, and Mojo. Switch backends with one line.</p>
+                <div class="code-panel" id="panel-tts">
+                    <div class="code-window">
+                        <div class="code-titlebar">
+                            <span class="code-filename">TextToSpeech.java: Kokoro TTS on the JVM</span>
+                            <button class="code-copy" type="button">copy</button>
+                        </div>
+<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
+<span class="tk-c">//JAVA 25+</span>
+<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-kokoro</span>
+<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
+<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
+
+<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.<span class="tk-t">JinferSpeechModel</span>;
+<span class="tk-k">import</span> java.nio.file.*;
+</details>
+<span class="tk-k">void</span> <span class="tk-t">main</span>() <span class="tk-k">throws</span> <span class="tk-t">Exception</span> {
+  <span class="tk-k">try</span> (<span class="tk-k">var</span> tts = <span class="tk-t">JinferSpeechModel</span>.builder()
+      .model(<span class="tk-s">"simonfxr/kokoro.cpp-GGUF:Q8_0"</span>)
+      .companion(<span class="tk-s">"voice"</span>, <span class="tk-s">"simonfxr/kokoro.cpp-GGUF/voices/kokoro-voice-af_heart.gguf"</span>)
+      .build()) {
+    <span class="tk-k">var</span> line = <span class="tk-s">"Turns out, matrix multiplications can talk. "</span>
+             + <span class="tk-s">"The JVM just crunched a few billion numbers to say this."</span>;
+    <span class="tk-t">Files</span>.write(<span class="tk-t">Path</span>.of(<span class="tk-s">"kokoro.wav"</span>), tts.call(line));
+  }
+}</code></pre>
+                    </div>
+                    <p class="code-run"><span class="prompt">$</span> jbang TextToSpeech.java&nbsp;&nbsp;<span class="out"># kokoro.wav · seven seconds, in a warm voice · Kokoro-82M</span></p>
                 </div>
 
-                <div class="feature">
-                    <h3>Vector Embeddings</h3>
-                    <p>Fast vector operations for RAG pipelines and semantic search.</p>
+                <div class="code-panel" id="panel-vision">
+                    <div class="code-window">
+                        <div class="code-titlebar">
+                            <span class="code-filename">Vision.java: images from a URL</span>
+                            <button class="code-copy" type="button">copy</button>
+                        </div>
+<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
+<span class="tk-c">//JAVA 25+</span>
+<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
+<span class="tk-c">//DEPS org.springframework.ai:spring-ai-client-chat:2.0.1</span>
+<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
+<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
+
+<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.*;
+<span class="tk-k">import</span> org.springframework.ai.chat.client.<span class="tk-t">ChatClient</span>;
+<span class="tk-k">import</span> org.springframework.core.io.<span class="tk-t">UrlResource</span>;
+<span class="tk-k">import</span> org.springframework.util.<span class="tk-t">MimeTypeUtils</span>;
+</details>
+<span class="tk-k">void</span> <span class="tk-t">main</span>() <span class="tk-k">throws</span> <span class="tk-t">Exception</span> {
+  <span class="tk-k">try</span> (<span class="tk-k">var</span> vision = <span class="tk-t">JinferChatModel</span>.builder()
+      .model(<span class="tk-s">"LiquidAI/LFM2.5-VL-3B-GGUF:Q8_0"</span>)
+      .companion(<span class="tk-s">"media"</span>, <span class="tk-s">"LiquidAI/LFM2.5-VL-3B-GGUF/mmproj-LFM2.5-VL-3B-Q8_0.gguf"</span>)
+      .build()) {
+
+    <span class="tk-c">// The windmills of Consuegra, La Mancha: Don Quixote's "giants"</span>
+    <span class="tk-k">var</span> windmills = <span class="tk-k">new</span> <span class="tk-t">UrlResource</span>(<span class="tk-s">"https://qxotic.ai/snippets/consuegra.jpg"</span>);
+    <span class="tk-k">var</span> answer = <span class="tk-t">ChatClient</span>.create(vision).prompt()
+        .user(u -&gt; u.text(<span class="tk-s">"Don Quixote saw giants here. What do you see?"</span>)
+                    .media(<span class="tk-t">MimeTypeUtils</span>.IMAGE_JPEG, windmills))
+        .call().content();
+    <span class="tk-t">System</span>.out.println(answer);
+  }
+}</code></pre>
+                    </div>
+                    <p class="code-run"><span class="prompt">$</span> jbang Vision.java&nbsp;&nbsp;<span class="out"># "several traditional windmills standing on a hill under a clear blue sky"</span></p>
                 </div>
 
-                <div class="feature">
+                <div class="code-panel" id="panel-embed">
+                    <div class="code-window">
+                        <div class="code-titlebar">
+                            <span class="code-filename">Embed.java: vector embeddings for RAG</span>
+                            <button class="code-copy" type="button">copy</button>
+                        </div>
+<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
+<span class="tk-c">//JAVA 25+</span>
+<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
+<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
+<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
+
+<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.<span class="tk-t">JinferEmbeddingModel</span>;
+</details>
+<span class="tk-k">void</span> <span class="tk-t">main</span>() {
+  <span class="tk-k">try</span> (<span class="tk-k">var</span> emb = <span class="tk-t">JinferEmbeddingModel</span>.builder()
+      .model(<span class="tk-s">"LiquidAI/LFM2.5-Embedding-350M-GGUF:Q8_0"</span>)
+      .build()) {
+    <span class="tk-k">var</span> a = emb.embed(<span class="tk-s">"AI on the JVM"</span>);
+    <span class="tk-k">var</span> b = emb.embed(<span class="tk-s">"the JVM thinks now"</span>);
+    <span class="tk-k">var</span> c = emb.embed(<span class="tk-s">"the python shed its skin"</span>);
+    <span class="tk-t">System</span>.out.printf(<span class="tk-s">"similar   %.3f%n"</span>, cosineSimilarity(a, b));
+    <span class="tk-t">System</span>.out.printf(<span class="tk-s">"unrelated %.3f%n"</span>, cosineSimilarity(a, c));
+  }
+}
+
+<details class="code-fold"><summary>cosineSimilarity helper</summary><span class="tk-k">float</span> <span class="tk-t">cosineSimilarity</span>(<span class="tk-k">float</span>[] a, <span class="tk-k">float</span>[] b) {
+  <span class="tk-k">float</span> dot = <span class="tk-n">0</span>, na = <span class="tk-n">0</span>, nb = <span class="tk-n">0</span>;
+  <span class="tk-k">for</span> (<span class="tk-k">int</span> i = <span class="tk-n">0</span>; i &lt; a.length; i++) {
+    dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i];
+  }
+  <span class="tk-k">return</span> (<span class="tk-k">float</span>) (dot / <span class="tk-t">Math</span>.sqrt(na * nb));
+}</details></code></pre>
+                    </div>
+                    <p class="code-run"><span class="prompt">$</span> jbang Embed.java&nbsp;&nbsp;<span class="out"># similar 0.609 · unrelated 0.081</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benchmarks -->
+    <section id="benchmarks">
+        <div class="container">
+            <div class="section-header">
+                <h2>Benchmarks</h2>
+                <p class="section-desc">
+                    Benchmarking is hard ... take these numbers as indicative, not definitive, always measure yourself.
+                    <br>
+                    <code>jinfer-bench</code> vs. <code>llama-bench</code> on CPU, &uarr; higher is better.
+                </p>
+            </div>
+
+            <div class="bench-filters" id="bench-filters"></div>
+            <div class="bench-wrap">
+                <table class="bench-table" id="bench-table"></table>
+            </div>
+            <p class="bench-note" id="bench-note"></p>
+        </div>
+    </section>
+
+    <!-- Principles -->
+    <section id="principles">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built for the <span class="accent">JVM</span> from first principles</h2>
+                <p class="section-desc">Local AI, end-to-end on the JVM: no sidecars, no services, no IPC.</p>
+            </div>
+
+            <div class="principles-grid">
+                <div class="principle">
+                    <h3>Just Java</h3>
+                    <p>No Python runtime, no ONNX, no glue code. Every component, from tokenizers to the inference engine, built for the JVM, not bolted onto it.</p>
+                </div>
+
+                <div class="principle">
                     <h3>GraalVM Native Image</h3>
-                    <p>First-class support for Native Image. Small footprint, fast startup.</p>
+                    <p>Ships as a single self-contained binary: millisecond startup, small footprint, no JVM at runtime.</p>
                 </div>
 
-                <div class="feature">
-                    <h3>JVM-Native Architecture</h3>
-                    <p>No Python interop, no ONNX bridges. An AI stack built from first principles for the JVM.</p>
+                <div class="principle">
+                    <h3>Write Once, Accelerate Everywhere</h3>
+                    <p>One Tensor API, seven backends: Java, C, CUDA, HIP, Metal, OpenCL, and Mojo.</p>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <hr class="divider">
-
-    <!-- CTA -->
-    <section id="connect" class="cta-section">
-        <div class="container">
-            <div class="section-label">Connect</div>
-            <h2 class="section-title">Get involved</h2>
-            <p class="section-desc">Quixotic AI is building in the open. Give it a spin, share feedback, contribute.</p>
-
-            <div class="cta-links">
-                <a href="https://github.com/qxoticai" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-                <a href="https://x.com/qxoticai" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    X / Twitter
-                </a>
-                <a href="https://bsky.app/profile/qxotic.ai" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.796 14.127c-.453.165-.93.248-1.41.248-.96 0-1.88-.393-2.386-1.076-.506.683-1.426 1.076-2.386 1.076-.48 0-.957-.083-1.41-.248C7.14 15.715 6.5 14.63 6.5 13.35c0-1.957 1.267-4.35 5.5-7.35 4.233 3 5.5 5.393 5.5 7.35 0 1.28-.64 2.365-1.704 2.777z"/></svg>
-                    Bluesky
-                </a>
             </div>
         </div>
     </section>
@@ -701,9 +952,209 @@
     <!-- Footer -->
     <footer>
         <div class="container">
+            <nav class="footer-links">
+                <a href="https://github.com/qxoticai" target="_blank" rel="noopener noreferrer">
+                    <svg width="16" height="16"><use href="#i-github"/></svg>
+                    GitHub
+                </a>
+                <a href="https://x.com/qxoticai" target="_blank" rel="noopener noreferrer">
+                    <svg width="16" height="16"><use href="#i-x"/></svg>
+                    X / Twitter
+                </a>
+                <a href="https://bsky.app/profile/qxotic.ai" target="_blank" rel="noopener noreferrer">
+                    <svg width="16" height="16"><use href="#i-bsky"/></svg>
+                    Bluesky
+                </a>
+            </nav>
             <p>Accelerating (on) the JVM.</p>
             <p>Built in 🇨🇭 Switzerland &middot; 2026 Quixotic AI</p>
         </div>
     </footer>
+
+    <script>
+      document.querySelectorAll('.code-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          document.querySelector('.code-tab.active').classList.remove('active');
+          document.querySelector('.code-panel.active').classList.remove('active');
+          tab.classList.add('active');
+          document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+        });
+      });
+
+      // Benchmarks: filterable jinfer vs. llama.cpp comparison, driven by benchmarks.csv
+      (function () {
+        var FAM = {
+          'lfm2.5': 'LFM 2.5', 'gemma4': 'Gemma 4', 'qwen3.5': 'Qwen 3.5+',
+          'gpt-oss': 'GPT-OSS', 'granite4.2': 'Granite',
+          'nemotron': 'Nemotron', 'mellum2': 'Mellum', 'minicpm5': 'MiniCPM',
+          'ling3': 'Ling', 'laguna': 'Laguna'
+        };
+        var TIP = {
+          'lfm2.5': 'Liquid AI · Liquid Foundation Models',
+          'gemma4': 'Google DeepMind · open-weight Gemma line',
+          'qwen3.5': 'Alibaba · Qwen 3.5 and 3.6',
+          'gpt-oss': 'OpenAI · open-weight models',
+          'granite4.2': 'IBM · Granite 4.2',
+          'nemotron': 'NVIDIA · Nemotron Cascade',
+          'mellum2': 'JetBrains · Mellum 2',
+          'minicpm5': 'OpenBMB · MiniCPM 5',
+          'ling3': 'inclusionAI (Ant Group) · Ling 3',
+          'laguna': 'Poolside · Laguna XS'
+        };
+        var ALIAS = { 'qwen3.6': 'qwen3.5' };
+        var RAW = {
+          'qwen3.5': 'Qwen 3.5', 'qwen3.6': 'Qwen 3.6', 'granite4.2': 'Granite 4.2',
+          'mellum2': 'Mellum 2', 'minicpm5': 'MiniCPM 5', 'ling3': 'Ling 3'
+        };
+        function famOf(r) { return ALIAS[r.family] || r.family; }
+        var QUANTS = ['Q4_0', 'QAD-Q4_0', 'QAT-Q4_0', 'Q4_K_M', 'UD-Q4_K_M', 'Q5_K_M',
+                      'UD-Q5_K_M', 'Q6_K', 'UD-Q6_K', 'Q8_0', 'MXFP4_MOE', 'BF16', 'F16'];
+
+        var filtersEl = document.getElementById('bench-filters');
+        var tableEl = document.getElementById('bench-table');
+        var noteEl = document.getElementById('bench-note');
+        if (!filtersEl) return;
+
+        fetch('benchmarks.csv').then(function (r) { return r.text(); }).then(start)
+          .catch(function () {
+            noteEl.innerHTML = 'Could not load the data. Raw numbers: <a href="benchmarks.csv">benchmarks.csv</a>';
+          });
+
+        function start(text) {
+          var lines = text.trim().split('\n');
+          var head = lines.shift().split(',');
+          var data = lines.map(function (line) {
+            var cells = line.split(','), row = {};
+            head.forEach(function (h, i) { row[h] = cells[i]; });
+            return row;
+          });
+
+          var families = Object.keys(FAM).filter(function (f) {
+            return data.some(function (r) { return famOf(r) === f; });
+          });
+          data.forEach(function (r) {
+            var f = famOf(r);
+            if (families.indexOf(f) === -1) {
+              if (FAM[f] === undefined) FAM[f] = f;
+              families.push(f);
+            }
+          });
+
+          var m = location.hash.match(/bench=([^:]+):([^&]+)/);
+          var state = {
+            family: m && families.indexOf(m[1]) !== -1 ? m[1] : families[0],
+            quant: m ? m[2] : 'Q8_0'
+          };
+
+          function quantsFor(family) {
+            var qs = {};
+            data.forEach(function (r) { if (famOf(r) === family) qs[r.quant] = 1; });
+            return QUANTS.filter(function (q) { return qs[q]; });
+          }
+
+          function pills(label, options, selected, names, onPick) {
+            var row = document.createElement('div');
+            row.className = 'bench-filter';
+            var lab = document.createElement('span');
+            lab.className = 'bench-filter-label';
+            lab.textContent = label;
+            row.appendChild(lab);
+            options.forEach(function (opt) {
+              var b = document.createElement('button');
+              b.type = 'button';
+              b.className = 'bench-pill' + (opt === selected ? ' active' : '');
+              b.textContent = names ? names[opt] : opt;
+              if (names && TIP[opt]) b.setAttribute('data-tip', TIP[opt]);
+              b.addEventListener('click', function () { onPick(opt); });
+              row.appendChild(b);
+            });
+            return row;
+          }
+
+          function modelSize(m) {
+            var x = m.match(/([\d.]+)\s*B/i);
+            if (x) return parseFloat(x[1]);
+            x = m.match(/([\d.]+)\s*M/i);
+            return x ? parseFloat(x[1]) / 1000 : 0;
+          }
+
+          function fmt(v) {
+            v = parseFloat(v);
+            return v >= 100 ? Math.round(v).toLocaleString('en-US') : v.toFixed(1);
+          }
+
+          function deltaCell(j, l) {
+            if (!j || !l) return '<td class="num">—</td>';
+            var r = parseFloat(j.tps) / parseFloat(l.tps);
+            var cls = r >= 1.05 ? 'up' : (r <= 0.95 ? 'down' : 'flat');
+            return '<td class="num"><span class="delta ' + cls + '">' + r.toFixed(2) + '×</span></td>';
+          }
+
+          function render() {
+            var qs = quantsFor(state.family);
+            if (qs.indexOf(state.quant) === -1) state.quant = qs.indexOf('Q8_0') !== -1 ? 'Q8_0' : qs[0];
+            history.replaceState(null, '', '#bench=' + state.family + ':' + state.quant);
+
+            filtersEl.textContent = '';
+            filtersEl.appendChild(pills('Family', families, state.family, FAM, function (f) { state.family = f; render(); }));
+            filtersEl.appendChild(pills('Quant', qs, state.quant, null, function (q) { state.quant = q; render(); }));
+
+            var rows = data.filter(function (r) { return famOf(r) === state.family && r.quant === state.quant; });
+            var models = [];
+            rows.forEach(function (r) { if (models.indexOf(r.model) === -1) models.push(r.model); });
+            models.sort(function (a, b) { return modelSize(a) - modelSize(b); });
+
+            var html =
+              '<thead><tr><th></th>' +
+              '<th class="grp sep" colspan="3">Prompt processing · pp512</th>' +
+              '<th class="grp sep" colspan="3">Generation · tg128</th></tr>' +
+              '<tr><th class="model-th">Model</th>' +
+              '<th class="sep">jinfer t/s</th><th>llama.cpp t/s</th><th>ratio</th>' +
+              '<th class="sep">jinfer t/s</th><th>llama.cpp t/s</th><th>ratio</th></tr></thead><tbody>';
+
+            models.forEach(function (model) {
+              function pick(engine, test) {
+                return rows.filter(function (r) { return r.model === model && r.engine === engine && r.test === test; })[0];
+              }
+              var jp = pick('jinfer', 'pp512'), lp = pick('llama', 'pp512');
+              var jt = pick('jinfer', 'tg128'), lt = pick('llama', 'tg128');
+              var ref = jp || jt || lp || lt;
+              html += '<tr><td><div class="bm-name">' + (RAW[ref.family] || FAM[state.family]) + ' ' + model + '</div>' +
+                '<div class="bm-ref"><a href="https://huggingface.co/' + ref.repo + '" target="_blank" rel="noopener noreferrer" title="' + ref.type_mix + '">' + ref.file + '</a></div></td>' +
+                '<td class="num j sep">' + (jp ? fmt(jp.tps) : '—') + '</td>' +
+                '<td class="num">' + (lp ? fmt(lp.tps) : '—') + '</td>' + deltaCell(jp, lp) +
+                '<td class="num j sep">' + (jt ? fmt(jt.tps) : '—') + '</td>' +
+                '<td class="num">' + (lt ? fmt(lt.tps) : '—') + '</td>' + deltaCell(jt, lt) +
+                '</tr>';
+            });
+            tableEl.innerHTML = html + '</tbody>';
+
+            var builds = {};
+            rows.forEach(function (r) { builds[r.engine_build] = 1; });
+            var jvm = (rows.filter(function (r) { return r.jvm; })[0] || {}).jvm;
+            noteEl.innerHTML = rows[0].cpu + ', ' + rows[0].threads + ' threads, CPU only · ' +
+              'Linux ' + rows[0].kernel.split('-')[0] +
+              (jvm ? ' · ' + jvm : '') + ' · ' +
+              Object.keys(builds).sort().join(' vs. ') +
+              ' · interleaved runs, median of 5-sample reps';
+          }
+
+          render();
+        }
+      })();
+
+      // Copy the full snippet, including folded lines (minus the fold label)
+      document.querySelectorAll('.code-copy').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var code = btn.closest('.code-window').querySelector('code').cloneNode(true);
+          code.querySelectorAll('summary').forEach(function(s) { s.remove(); });
+          navigator.clipboard.writeText(code.textContent.replace(/^\n+/, '')).then(function() {
+            btn.textContent = 'copied!';
+            setTimeout(function() { btn.textContent = 'copy'; }, 1500);
+          });
+        });
+      });
+
+    </script>
 </body>
 </html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 · Quixotic AI</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg:     light-dark(#f4efe4, #1e1e1c);
+            --text:   light-dark(#2a2420, #ddd0b8);
+            --muted:  light-dark(#6b5f54, #928677);
+            --border: light-dark(#ccc0ae, #443e38);
+            --accent: #f29111;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(60rem 24rem at 50% -6rem, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%);
+            background-repeat: no-repeat;
+            color: var(--muted);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+        h1 {
+            font-size: clamp(4rem, 14vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            color: var(--text);
+        }
+        h1 span { color: var(--accent); }
+        p { font-size: 1.125rem; }
+        a {
+            display: inline-flex;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        a:hover { border-color: var(--accent); color: var(--accent); }
+    </style>
+</head>
+<body>
+    <h1>4<span>0</span>4</h1>
+    <p>No windmills here.</p>
+    <a href="/">&larr; qxotic.ai</a>
+</body>
+</html>
