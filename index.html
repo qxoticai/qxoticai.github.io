@@ -494,7 +494,7 @@
             letter-spacing: 0.12em;
             color: var(--faint);
             text-align: center;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem 0.75rem;
             white-space: nowrap;
         }
 
@@ -502,7 +502,7 @@
         .bench-table th.model-th { text-align: left; }
 
         .bench-table td {
-            padding: 0.7rem 1rem;
+            padding: 0.7rem 0.75rem;
             border-top: 1px solid var(--border);
             vertical-align: middle;
         }
@@ -1032,7 +1032,7 @@
         var TIP = {
           'lfm2.5': 'Liquid AI · Liquid Foundation Models',
           'gemma4': 'Google DeepMind · open-weight Gemma line',
-          'qwen3.5': 'Alibaba · Qwen 3.5 and 3.6',
+          'qwen3.5': 'Alibaba · Qwen 3.5+',
           'gpt-oss': 'OpenAI · open-weight models',
           'granite4.2': 'IBM · Granite 4.2',
           'nemotron': 'NVIDIA · Nemotron Cascade',
@@ -1041,10 +1041,11 @@
           'ling3': 'inclusionAI (Ant Group) · Ling 3',
           'laguna': 'Poolside · Laguna XS'
         };
-        var ALIAS = { 'qwen3.6': 'qwen3.5' };
+        var ALIAS = { 'qwen3.6': 'qwen3.5', 'qwen3.8': 'qwen3.5' };
         var RAW = {
-          'qwen3.5': 'Qwen 3.5', 'qwen3.6': 'Qwen 3.6', 'granite4.2': 'Granite 4.2',
-          'mellum2': 'Mellum 2', 'minicpm5': 'MiniCPM 5', 'ling3': 'Ling 3'
+          'qwen3.5': 'Qwen 3.5', 'qwen3.6': 'Qwen 3.6', 'qwen3.8': 'Qwen 3.8',
+          'granite4.2': 'Granite 4.2', 'mellum2': 'Mellum 2', 'minicpm5': 'MiniCPM 5',
+          'ling3': 'Ling 3'
         };
         function famOf(r) { return ALIAS[r.family] || r.family; }
         var QUANTS = ['Q4_0', 'QAD-Q4_0', 'QAT-Q4_0', 'Q4_K_M', 'UD-Q4_K_M', 'Q5_K_M',
