@@ -757,6 +757,7 @@
                 <div class="code-tabs">
                     <button class="code-tab active" data-tab="chat">Chat.java</button>
                     <button class="code-tab" data-tab="tts">TextToSpeech.java</button>
+                    <button class="code-tab" data-tab="audio">Audio.java</button>
                     <button class="code-tab" data-tab="vision">Vision.java</button>
                     <button class="code-tab" data-tab="embed">Embed.java</button>
                 </div>
@@ -818,6 +819,45 @@
 }</code></pre>
                     </div>
                     <p class="code-run"><span class="prompt">$</span> jbang TextToSpeech.java&nbsp;&nbsp;<span class="out"># kokoro.wav · seven seconds, in a warm voice · Kokoro-82M</span></p>
+                </div>
+
+                <div class="code-panel" id="panel-audio">
+                    <div class="code-window">
+                        <div class="code-titlebar">
+                            <span class="code-filename">Audio.java: transcription with Gemma 4 E2B</span>
+                            <button class="code-copy" type="button">copy</button>
+                        </div>
+<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
+<span class="tk-c">//JAVA 25+</span>
+<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
+<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
+<span class="tk-c">//DEPS org.springframework.ai:spring-ai-client-chat:2.0.1</span>
+<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
+<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
+
+<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.*;
+<span class="tk-k">import</span> org.springframework.ai.chat.client.<span class="tk-t">ChatClient</span>;
+<span class="tk-k">import</span> org.springframework.core.io.<span class="tk-t">UrlResource</span>;
+<span class="tk-k">import</span> org.springframework.util.<span class="tk-t">MimeType</span>;
+</details>
+<span class="tk-k">void</span> <span class="tk-t">main</span>() <span class="tk-k">throws</span> <span class="tk-t">Exception</span> {
+  <span class="tk-k">try</span> (<span class="tk-k">var</span> gemma = <span class="tk-t">JinferChatModel</span>.builder()
+      .model(<span class="tk-s">"unsloth/gemma-4-E2B-it-GGUF:Q4_K_M"</span>)
+      .companion(<span class="tk-s">"media"</span>, <span class="tk-s">"unsloth/gemma-4-E2B-it-GGUF/mmproj-BF16.gguf"</span>)
+      .build()) {
+
+    <span class="tk-c">// jfk.wav: JFK's own voice, inaugural address, January 20, 1961</span>
+    <span class="tk-k">var</span> speech = <span class="tk-k">new</span> <span class="tk-t">UrlResource</span>(<span class="tk-s">"https://qxotic.ai/snippets/jfk.wav"</span>);
+    <span class="tk-k">var</span> transcript = <span class="tk-t">ChatClient</span>.create(gemma).prompt()
+        .user(u -&gt; u.text(<span class="tk-s">"Transcribe this recording."</span>)
+                    .media(<span class="tk-t">MimeType</span>.valueOf(<span class="tk-s">"audio/wav"</span>), speech))
+        .call().content();
+    <span class="tk-t">System</span>.out.println(transcript);
+  }
+}</code></pre>
+                    </div>
+                    <p class="code-run"><span class="prompt">$</span> jbang Audio.java&nbsp;&nbsp;<span class="out"># "ask not what your country can do for you ..." · every word heard</span></p>
                 </div>
 
                 <div class="code-panel" id="panel-vision">
