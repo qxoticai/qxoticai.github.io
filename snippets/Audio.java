@@ -21,6 +21,7 @@ void main() throws Exception {
     // jfk.wav: JFK's own voice, inaugural address, January 20, 1961
     var speech = new UrlResource("https://qxotic.ai/snippets/jfk.wav");
     var transcript = ChatClient.create(gemma).prompt()
+        .options(JinferChatOptions.builder().thinking(false).build())
         .user(u -> u.text("Transcribe this recording.")
                     .media(MimeType.valueOf("audio/wav"), speech))
         .call().content();

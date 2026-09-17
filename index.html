@@ -850,6 +850,7 @@
     <span class="tk-c">// jfk.wav: JFK's own voice, inaugural address, January 20, 1961</span>
     <span class="tk-k">var</span> speech = <span class="tk-k">new</span> <span class="tk-t">UrlResource</span>(<span class="tk-s">"https://qxotic.ai/snippets/jfk.wav"</span>);
     <span class="tk-k">var</span> transcript = <span class="tk-t">ChatClient</span>.create(gemma).prompt()
+        .options(<span class="tk-t">JinferChatOptions</span>.builder().thinking(<span class="tk-k">false</span>).build())
         .user(u -&gt; u.text(<span class="tk-s">"Transcribe this recording."</span>)
                     .media(<span class="tk-t">MimeType</span>.valueOf(<span class="tk-s">"audio/wav"</span>), speech))
         .call().content();
