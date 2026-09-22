@@ -754,6 +754,7 @@
             <div class="section-header">
                 <h2>Examples</h2>
                 <p class="section-desc">Runnable snippets using <a href="https://www.jbang.dev">jbang</a>.</p>
+                <noscript><p class="section-desc">JavaScript renders the examples; the sources live at <a href="https://github.com/qxoticai/qxoticai.github.io/tree/main/snippets">snippets/</a>.</p></noscript>
             </div>
 
             <div>
@@ -766,180 +767,28 @@
                 </div>
 
                 <div class="code-panel active" id="panel-chat">
-                    <div class="code-window">
-                        <div class="code-titlebar">
-                            <span class="code-filename">Chat.java: LLM inference on the JVM</span>
-                            <button class="code-copy" type="button">copy</button>
-                        </div>
-<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
-<span class="tk-c">//JAVA 25+</span>
-<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
-<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
-<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
-
-<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.*;
-</details>
-<span class="tk-k">void</span> <span class="tk-t">main</span>() {
-  <span class="tk-k">try</span> (<span class="tk-k">var</span> model = <span class="tk-t">JinferChatModel</span>.builder()
-      .model(<span class="tk-s">"LiquidAI/LFM2.5-350M-GGUF:Q8_0"</span>)
-      .build()) {
-    <span class="tk-t">System</span>.out.println(model.call(<span class="tk-s">"What is the capital of France?"</span>));
-  }
-}</code></pre>
-                    </div>
-                    <p class="code-run"><span class="prompt">$</span> jbang Chat.java&nbsp;&nbsp;<span class="out"># "The capital of France is Paris."</span></p>
+                    <div class="jbang" data-src="snippets/Chat.java"
+                         data-out="# &quot;The capital of France is Paris.&quot;"></div>
                 </div>
 
                 <div class="code-panel" id="panel-tts">
-                    <div class="code-window">
-                        <div class="code-titlebar">
-                            <span class="code-filename">TextToSpeech.java: Kokoro TTS on the JVM (requires espeak/espeak-ng installed) </span>
-                            <button class="code-copy" type="button">copy</button>
-                        </div>
-<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
-<span class="tk-c">//JAVA 25+</span>
-<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-kokoro</span>
-<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
-<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
-
-<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.<span class="tk-t">JinferSpeechModel</span>;
-<span class="tk-k">import</span> java.nio.file.*;
-</details>
-<span class="tk-k">void</span> <span class="tk-t">main</span>() <span class="tk-k">throws</span> <span class="tk-t">Exception</span> {
-  <span class="tk-k">try</span> (<span class="tk-k">var</span> tts = <span class="tk-t">JinferSpeechModel</span>.builder()
-      .model(<span class="tk-s">"simonfxr/kokoro.cpp-GGUF:Q8_0"</span>)
-      .companion(<span class="tk-s">"voice"</span>, <span class="tk-s">"simonfxr/kokoro.cpp-GGUF/voices/kokoro-voice-af_heart.gguf"</span>)
-      .build()) {
-    <span class="tk-k">var</span> line = <span class="tk-s">"Turns out, matrix multiplications can talk. "</span>
-             + <span class="tk-s">"The JVM just crunched a few billion numbers to say this."</span>;
-    <span class="tk-t">Files</span>.write(<span class="tk-t">Path</span>.of(<span class="tk-s">"kokoro.wav"</span>), tts.call(line));
-  }
-}</code></pre>
-                    </div>
-                    <p class="code-run"><span class="prompt">$</span> jbang TextToSpeech.java&nbsp;&nbsp;<span class="out"># kokoro.wav · seven seconds, in a warm voice · Kokoro-82M</span></p>
+                    <div class="jbang" data-src="snippets/TextToSpeech.java"
+                         data-out="# kokoro.wav · seven seconds, in a warm voice · Kokoro-82M"></div>
                 </div>
 
                 <div class="code-panel" id="panel-audio">
-                    <div class="code-window">
-                        <div class="code-titlebar">
-                            <span class="code-filename">Audio.java: transcription with Gemma 4 E2B</span>
-                            <button class="code-copy" type="button">copy</button>
-                        </div>
-<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
-<span class="tk-c">//JAVA 25+</span>
-<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
-<span class="tk-c">//DEPS org.springframework.ai:spring-ai-client-chat:2.0.1</span>
-<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
-<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
-
-<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.*;
-<span class="tk-k">import</span> org.springframework.ai.chat.client.<span class="tk-t">ChatClient</span>;
-<span class="tk-k">import</span> org.springframework.core.io.<span class="tk-t">UrlResource</span>;
-<span class="tk-k">import</span> org.springframework.util.<span class="tk-t">MimeType</span>;
-</details>
-<span class="tk-k">void</span> <span class="tk-t">main</span>() <span class="tk-k">throws</span> <span class="tk-t">Exception</span> {
-  <span class="tk-k">try</span> (<span class="tk-k">var</span> gemma = <span class="tk-t">JinferChatModel</span>.builder()
-      .model(<span class="tk-s">"unsloth/gemma-4-E2B-it-GGUF:Q4_K_M"</span>)
-      .companion(<span class="tk-s">"media"</span>, <span class="tk-s">"unsloth/gemma-4-E2B-it-GGUF/mmproj-BF16.gguf"</span>)
-      .build()) {
-
-    <span class="tk-c">// jfk.wav: JFK's own voice, inaugural address, January 20, 1961</span>
-    <span class="tk-k">var</span> speech = <span class="tk-k">new</span> <span class="tk-t">UrlResource</span>(<span class="tk-s">"https://qxotic.ai/snippets/jfk.wav"</span>);
-    <span class="tk-k">var</span> transcript = <span class="tk-t">ChatClient</span>.create(gemma).prompt()
-        .options(<span class="tk-t">JinferChatOptions</span>.builder().thinking(<span class="tk-k">false</span>).build())
-        .user(u -&gt; u.text(<span class="tk-s">"Transcribe this recording."</span>)
-                    .media(<span class="tk-t">MimeType</span>.valueOf(<span class="tk-s">"audio/wav"</span>), speech))
-        .call().content();
-    <span class="tk-t">System</span>.out.println(transcript);
-  }
-}</code></pre>
-                    </div>
-                    <p class="code-run"><span class="prompt">$</span> jbang Audio.java&nbsp;&nbsp;<span class="out"># "ask not what your country can do for you ..." · every word heard</span></p>
+                    <div class="jbang" data-src="snippets/Audio.java"
+                         data-out="# &quot;ask not what your country can do for you ...&quot; · every word heard"></div>
                 </div>
 
                 <div class="code-panel" id="panel-vision">
-                    <div class="code-window">
-                        <div class="code-titlebar">
-                            <span class="code-filename">Vision.java: images from a URL</span>
-                            <button class="code-copy" type="button">copy</button>
-                        </div>
-<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
-<span class="tk-c">//JAVA 25+</span>
-<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
-<span class="tk-c">//DEPS org.springframework.ai:spring-ai-client-chat:2.0.1</span>
-<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
-<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
-
-<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.*;
-<span class="tk-k">import</span> org.springframework.ai.chat.client.<span class="tk-t">ChatClient</span>;
-<span class="tk-k">import</span> org.springframework.core.io.<span class="tk-t">UrlResource</span>;
-<span class="tk-k">import</span> org.springframework.util.<span class="tk-t">MimeTypeUtils</span>;
-</details>
-<span class="tk-k">void</span> <span class="tk-t">main</span>() <span class="tk-k">throws</span> <span class="tk-t">Exception</span> {
-  <span class="tk-k">try</span> (<span class="tk-k">var</span> vision = <span class="tk-t">JinferChatModel</span>.builder()
-      .model(<span class="tk-s">"LiquidAI/LFM2.5-VL-3B-GGUF:Q8_0"</span>)
-      .companion(<span class="tk-s">"media"</span>, <span class="tk-s">"LiquidAI/LFM2.5-VL-3B-GGUF/mmproj-LFM2.5-VL-3B-Q8_0.gguf"</span>)
-      .build()) {
-
-    <span class="tk-c">// The windmills of Consuegra, La Mancha: Don Quixote's "giants"</span>
-    <span class="tk-k">var</span> windmills = <span class="tk-k">new</span> <span class="tk-t">UrlResource</span>(<span class="tk-s">"https://qxotic.ai/snippets/consuegra.jpg"</span>);
-    <span class="tk-k">var</span> answer = <span class="tk-t">ChatClient</span>.create(vision).prompt()
-        .user(u -&gt; u.text(<span class="tk-s">"Don Quixote saw giants here. What do you see?"</span>)
-                    .media(<span class="tk-t">MimeTypeUtils</span>.IMAGE_JPEG, windmills))
-        .call().content();
-    <span class="tk-t">System</span>.out.println(answer);
-  }
-}</code></pre>
-                    </div>
-                    <p class="code-run"><span class="prompt">$</span> jbang Vision.java&nbsp;&nbsp;<span class="out"># "several traditional windmills standing on a hill under a clear blue sky"</span></p>
+                    <div class="jbang" data-src="snippets/Vision.java"
+                         data-out="# &quot;several traditional windmills standing on a hill under a clear blue sky&quot;"></div>
                 </div>
 
                 <div class="code-panel" id="panel-embed">
-                    <div class="code-window">
-                        <div class="code-titlebar">
-                            <span class="code-filename">Embed.java: vector embeddings for RAG</span>
-                            <button class="code-copy" type="button">copy</button>
-                        </div>
-<pre><code><details class="code-fold"><summary>jbang header + imports</summary><span class="tk-c">///usr/bin/env jbang "$0" "$@" ; exit $?</span>
-<span class="tk-c">//JAVA 25+</span>
-<span class="tk-c">//RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-bom:0.2.0@pom</span>
-<span class="tk-c">//DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all</span>
-<span class="tk-c">//DEPS com.qxotic:jam-native com.qxotic:jam-vector</span>
-<span class="tk-c">//DEPS org.slf4j:slf4j-nop:2.0.17</span>
-
-<span class="tk-k">import</span> com.qxotic.jinfer.spring.ai.<span class="tk-t">JinferEmbeddingModel</span>;
-</details>
-<span class="tk-k">void</span> <span class="tk-t">main</span>() {
-  <span class="tk-k">try</span> (<span class="tk-k">var</span> emb = <span class="tk-t">JinferEmbeddingModel</span>.builder()
-      .model(<span class="tk-s">"LiquidAI/LFM2.5-Embedding-350M-GGUF:Q8_0"</span>)
-      .build()) {
-    <span class="tk-k">var</span> a = emb.embed(<span class="tk-s">"AI on the JVM"</span>);
-    <span class="tk-k">var</span> b = emb.embed(<span class="tk-s">"the JVM thinks now"</span>);
-    <span class="tk-k">var</span> c = emb.embed(<span class="tk-s">"the python shed its skin"</span>);
-    <span class="tk-t">System</span>.out.printf(<span class="tk-s">"similar   %.3f%n"</span>, cosineSimilarity(a, b));
-    <span class="tk-t">System</span>.out.printf(<span class="tk-s">"unrelated %.3f%n"</span>, cosineSimilarity(a, c));
-  }
-}
-
-<details class="code-fold"><summary>cosineSimilarity helper</summary><span class="tk-k">float</span> <span class="tk-t">cosineSimilarity</span>(<span class="tk-k">float</span>[] a, <span class="tk-k">float</span>[] b) {
-  <span class="tk-k">float</span> dot = <span class="tk-n">0</span>, na = <span class="tk-n">0</span>, nb = <span class="tk-n">0</span>;
-  <span class="tk-k">for</span> (<span class="tk-k">int</span> i = <span class="tk-n">0</span>; i &lt; a.length; i++) {
-    dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i];
-  }
-  <span class="tk-k">return</span> (<span class="tk-k">float</span>) (dot / <span class="tk-t">Math</span>.sqrt(na * nb));
-}</details></code></pre>
-                    </div>
-                    <p class="code-run"><span class="prompt">$</span> jbang Embed.java&nbsp;&nbsp;<span class="out"># similar 0.609 · unrelated 0.081</span></p>
+                    <div class="jbang" data-src="snippets/Embed.java"
+                         data-out="# similar 0.609 · unrelated 0.081"></div>
                 </div>
             </div>
         </div>
@@ -1015,6 +864,7 @@
         </div>
     </footer>
 
+    <script src="jbang.js"></script>
     <script>
       document.querySelectorAll('.code-tab').forEach(function(tab) {
         tab.addEventListener('click', function() {
@@ -1022,6 +872,8 @@
           document.querySelector('.code-panel.active').classList.remove('active');
           tab.classList.add('active');
           document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+          // keep the URL a shareable reference to the open example
+          history.replaceState(null, '', '?demo=' + encodeURIComponent(tab.textContent) + location.hash);
         });
       });
 
@@ -1188,18 +1040,6 @@
           render();
         }
       })();
-
-      // Copy the full snippet, including folded lines (minus the fold label)
-      document.querySelectorAll('.code-copy').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var code = btn.closest('.code-window').querySelector('code').cloneNode(true);
-          code.querySelectorAll('summary').forEach(function(s) { s.remove(); });
-          navigator.clipboard.writeText(code.textContent.replace(/^\n+/, '')).then(function() {
-            btn.textContent = 'copied!';
-            setTimeout(function() { btn.textContent = 'copy'; }, 1500);
-          });
-        });
-      });
 
     </script>
 </body>
