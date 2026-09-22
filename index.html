@@ -1132,14 +1132,15 @@
             return '<td class="num"><span class="delta ' + cls + '">' + r.toFixed(2) + '×</span></td>';
           }
 
-          function render() {
+          function render(syncUrl) {
             var qs = quantsFor(state.family);
             if (qs.indexOf(state.quant) === -1) state.quant = qs.indexOf('Q8_0') !== -1 ? 'Q8_0' : qs[0];
-            history.replaceState(null, '', '#bench=' + state.family + ':' + state.quant);
+            // sync the hash only after the user picks a filter, so plain visits keep a clean URL
+            if (syncUrl) history.replaceState(null, '', '#bench=' + state.family + ':' + state.quant);
 
             filtersEl.textContent = '';
-            filtersEl.appendChild(pills('Family', families, state.family, FAM, function (f) { state.family = f; render(); }));
-            filtersEl.appendChild(pills('Quant', qs, state.quant, null, function (q) { state.quant = q; render(); }));
+            filtersEl.appendChild(pills('Family', families, state.family, FAM, function (f) { state.family = f; render(true); }));
+            filtersEl.appendChild(pills('Quant', qs, state.quant, null, function (q) { state.quant = q; render(true); }));
 
             var rows = data.filter(function (r) { return famOf(r) === state.family && r.quant === state.quant; });
             var models = [];
