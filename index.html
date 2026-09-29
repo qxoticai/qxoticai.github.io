@@ -1040,7 +1040,7 @@
               'Linux ' + rows[0].kernel.split('-')[0] +
               (jvm ? ' · ' + jvm : '') + ' · ' +
               Object.keys(builds).sort().join(' vs. ') +
-              ' · interleaved runs, median of 5-sample reps';
+              ' · interleaved runs, mean over all repetitions';
           }
 
           render();
