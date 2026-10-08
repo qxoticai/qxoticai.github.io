@@ -2,7 +2,7 @@
 //DESCRIPTION Speech recognition with NVIDIA Parakeet
 //JAVA 25+
 //RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED
-//DEPS com.qxotic:jinfer-bom:0.3.0@pom
+//DEPS com.qxotic:jinfer-bom:0.3.1@pom
 //DEPS com.qxotic:jinfer-spring-ai
 //DEPS com.qxotic:jinfer-parakeet
 //DEPS com.qxotic:jam-native com.qxotic:jam-vector
