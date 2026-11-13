@@ -1,0 +1,56 @@
+# Quixotic AI
+
+> Local AI for Java and the JVM. Quixotic AI builds an open-source, end-to-end AI stack in pure Java that runs LLMs, vision, speech and decision models inside a Java application, on your own hardware. Its inference engine, jinfer, is free under Apache 2.0 and published on Maven Central.
+
+Quixotic AI began in 2023 with llama2.java, a language model in a single file of pure Java, written by Alfonso² Peterssen, formerly a senior researcher on the GraalVM team. It is now an umbrella for several open-source projects, each usable on its own. The JVM is its specialty; it also brings local AI to other platforms.
+
+## What jinfer is
+
+- An inference engine that runs as a library, inside the JVM process: no model server, no network calls, no per-token bills. Prompts and data stay in the application.
+- Fast on ordinary CPUs: it processes prompts 1.84x faster than llama.cpp (median across 121 CPU configurations) and generates text at about the same speed. Raw benchmark data is public.
+- Broad model support: more than 19 architectures, including Gemma, Qwen, GPT-OSS, Llama, Ministral, Granite, Nemotron, LFM, Mellum, SmolLM, MiniCPM, Bonsai, Ling and Laguna; Parakeet for speech-to-text; Kokoro and Inflect for text-to-speech; embedding and reranking models. Loads GGUF and Safetensors, from Hugging Face or local storage.
+- Fits existing Java code: a drop-in model provider for Spring AI and LangChain4j, plus a CLI and an OpenAI-compatible server.
+- Compatible with GraalVM Native Image: the application and the engine compile into one native executable; small models can be shipped inside it.
+- Requires Java 25 or newer. GPU and accelerator support is in development through jota, the tensor engine.
+
+## When to use it
+
+- A Java or JVM application needs AI (chat, extraction, classification, search, transcription, speech) without running a second stack or calling a cloud API.
+- Data must not leave the process or the network: regulated industries, on-premises and air-gapped deployments.
+- A small or mid-size model is enough. For the largest models, a dedicated GPU server or a cloud API is the better fit.
+
+## Components
+
+- [jinfer](https://github.com/qxoticai/qxotic/tree/main/jinfer): the inference engine for chat, vision, embeddings, speech-to-text, text-to-speech and decision models.
+- [jota](https://github.com/qxoticai/qxotic/tree/main/jota): one tensor API for every chip, emitting Java, C, CUDA, HIP, Metal, OpenCL and Mojo (in development).
+- [jam](https://github.com/qxoticai/qxotic/tree/main/jam): quantized matrix multiplication with hand-tuned native kernels and a pure-Java fallback on the Vector API.
+- [toknroll](https://github.com/qxoticai/qxotic/tree/main/toknroll): tokenizers that match the Hugging Face and llama.cpp references token for token. Pure Java, zero dependencies.
+- [gguf](https://github.com/qxoticai/qxotic/tree/main/gguf): GGUF reader and writer in pure Java.
+- [safetensors](https://github.com/qxoticai/qxotic/tree/main/safetensors): Safetensors reader and writer in pure Java.
+
+## Get started
+
+- [Website](https://qxotic.ai/): overview, live demos, benchmarks and FAQ.
+- [Source code](https://github.com/qxoticai/qxotic): the full stack on GitHub.
+- [Maven Central](https://central.sonatype.com/namespace/com.qxotic): artifacts under `com.qxotic`; import `com.qxotic:jinfer-bom`, then `jinfer-spring-ai` or `jinfer-langchain4j`, a models artifact (`jinfer-models-all`) and the kernels (`jam-native` or `jam-vector`).
+- Try it from a terminal (needs jbang): `jbang jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0`
+
+## Examples
+
+Single-file Java programs, run with `jbang <file>`:
+
+- [Chat.java](https://qxotic.ai/snippets/Chat.java): chat with an LLM.
+- [Vision.java](https://qxotic.ai/snippets/Vision.java): describe an image.
+- [Parakeet.java](https://qxotic.ai/snippets/Parakeet.java): speech-to-text.
+- [Audio.java](https://qxotic.ai/snippets/Audio.java): transcription with Gemma 4.
+- [TextToSpeech.java](https://qxotic.ai/snippets/TextToSpeech.java): text-to-speech.
+- [Embed.java](https://qxotic.ai/snippets/Embed.java): embeddings and semantic similarity.
+
+## Services
+
+Quixotic AI also works with teams directly: embedding AI into existing systems, performance engineering, private and sovereign AI (including zero-access fine-tuning, where Quixotic AI never sees the data or the resulting weights), and custom models and runtimes. Contact: hello@qxotic.ai
+
+## Optional
+
+- [Benchmark data](https://qxotic.ai/benchmarks.csv): raw jinfer vs. llama.cpp results.
+- [Devoxx Belgium 2026 talk](https://www.youtube.com/watch?v=S7x4DxwRnk4): pure Java inference at native speed.

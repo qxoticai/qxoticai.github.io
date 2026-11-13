@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -78 71.46 78" width="71.46" height="78.0">
+  <title>Quixotic AI: the windmill x</title>
+  <desc>The x of the Quixotic AI wordmark. Sail tips at 77 units, sails 15 units thick (the stem of the i in Funnel Display ExtraBold), baseline at y=0. Set it at 0.78em tall, 0.7146em wide, sitting on the baseline.</desc>
+  <style>
+    svg { color: #2a221c; --logo-c: #a13f2e; --logo-fold: #f4ead8; }
+    @media (prefers-color-scheme: dark) { svg { color: #efe4d2; --logo-c: #e8704f; --logo-fold: #1e1915; } }
+  </style>
+  <path fill="currentColor" d="M22.95 0L28.86 -43.67L42.61 -43.67L48.51 0Z"/><path fill="var(--logo-fold, #f4ead8)" d="M32.66 0V-8.93A3.07 3.07 0 0 1 38.8 -8.93V0Z"/><path d="M13.01 -77L69.06 -20.95L58.45 -10.34L2.4 -66.39ZM2.4 -20.95L58.45 -77L69.06 -66.39L13.01 -10.34Z" fill="var(--logo-c, #a13f2e)" stroke="var(--logo-fold, #f4ead8)" stroke-width="5.2" stroke-linejoin="round" paint-order="stroke"/><circle cx="35.73" cy="-43.67" r="4.4" fill="var(--logo-fold, #f4ead8)"/><circle cx="35.73" cy="-43.67" r="2.2" fill="var(--logo-c, #a13f2e)"/>
+</svg>

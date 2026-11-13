@@ -61,6 +61,18 @@
         && u.pathname.toLowerCase().startsWith('/qxoticai/');
   }
 
+  /* One request per file, shared with the hero demo (window.qxText). */
+  var TEXT = {};
+  function getText(url) {
+    var key = new URL(url, location.href).href;
+    return TEXT[key] || (TEXT[key] = fetch(url).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      if (!allowed(r.url)) throw new Error('redirect left the allowlist'); // post-redirect provenance
+      return r.text();
+    }));
+  }
+  window.qxText = getText;
+
   /* Gist page URLs → raw file URL; everything else fetches as-is. */
   function rawUrl(src) {
     var u = new URL(src, location.origin);
@@ -89,6 +101,9 @@
     return { head: head, main: src.slice(mm.index, i).replace(/\s+$/, ''), tail: src.slice(i).replace(/^\s+|\s+$/g, '') };
   }
 
+  /* shared with the hero console in index.html */
+  window.qxSnippet = { highlight: highlight, split: splitJbang, esc: esc };
+
   function baseName(src) {
     return src.split('/').pop().split(/[?#]/)[0] || src;
   }
@@ -109,11 +124,7 @@
 
     if (!allowed(src)) return fail(el, 'Snippet source not allowed: ' + src);
 
-    fetch(rawUrl(src)).then(function (r) {
-      if (!r.ok) throw new Error(r.status);
-      if (!allowed(r.url)) throw new Error('redirect left the allowlist'); // post-redirect provenance
-      return r.text();
-    }).then(function (text) {
+    getText(rawUrl(src)).then(function (text) {
       var p = splitJbang(text.replace(/\r\n/g, '\n'));
       var headLabel = /^\/\//m.test(p.head) ? 'jbang header + imports' : 'imports';
       var tailName = /^[\w\[\]<>?,\s]*?\b(\w+)\s*\(/.exec(p.tail);
@@ -130,7 +141,7 @@
                + '<button class="code-copy" type="button">copy</button></div>'
                + '<pre><code>' + code + '</code></pre></div>';
       if (run !== 'none') {
-        html += '<p class="code-run"><span class="prompt">$</span> ' + esc(run)
+        html += '<p class="code-run"><span class="prompt">$ </span>' + esc(run)
               + (out ? '&nbsp;&nbsp;<span class="out">' + esc(out) + '</span>' : '') + '</p>';
       }
       el.innerHTML = html;
@@ -139,7 +150,28 @@
     });
   }
 
-  document.querySelectorAll('.jbang').forEach(render);
+  /* Render the examples only when they come near the screen; hidden tab panels
+     can't be observed, so watch their shared container instead. */
+  (function () {
+    var els = [].slice.call(document.querySelectorAll('.jbang'));
+    var groups = new Map();
+    els.forEach(function (e) { var c = e.closest('.code-wrap') || e; if (!groups.has(c)) groups.set(c, []); groups.get(c).push(e); });
+    function once(e) { if (!e.dataset.rendered) { e.dataset.rendered = '1'; render(e); } }
+    window.qxRender = once;   // a tab click renders its example right away if idle time hasn't reached it yet
+    var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 60); };
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (x) {
+        if (!x.isIntersecting) return;
+        io.unobserve(x.target);
+        // the visible example first; the hidden tabs one by one in idle time, so scrolling never stalls
+        var list = groups.get(x.target), shown = list.filter(function (e) { return !e.closest('.code-panel') || e.closest('.code-panel.active'); }),
+            rest = list.filter(function (e) { return shown.indexOf(e) < 0; });
+        shown.forEach(once);
+        (function next() { var e = rest.shift(); if (e) idle(function () { once(e); next(); }, { timeout: 2000 }); })();
+      });
+    }, { rootMargin: '1200px 0px' });
+    groups.forEach(function (_, c) { io.observe(c); });
+  })();
 
   /* ?demo=<url|name>: same-origin → open that built-in tab; otherwise inject
    * as a shared first tab (render() applies the allowlist). */
@@ -150,6 +182,7 @@
     if (!demo || !tabs) return;
 
     var name = baseName(demo);
+    var key = name.toLowerCase().replace(/\.java$/, '');   // ?demo=audio, audio.java and Audio.java all match
     if (!/\.java$/i.test(name)) name = 'Shared.java';
 
     document.querySelectorAll('.code-tab.active, .code-panel.active').forEach(function (e) {
@@ -161,10 +194,16 @@
 
     var tab = null;
     if (sameOrigin) {
-      tabs.querySelectorAll('.code-tab').forEach(function (t) { if (t.textContent === name) tab = t; });
+      tabs.querySelectorAll('.code-tab').forEach(function (t) { if (t.textContent.toLowerCase().replace(/\.java$/, '') === key) tab = t; });
     }
 
     if (tab) {
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+      tabs.scrollLeft = tab.offsetLeft - tabs.offsetLeft - 16;   // keep the chosen tab in view on narrow screens
+    } else if (sameOrigin && name === 'Shared.java') {
+      // an unknown built-in name: keep the default tab rather than show an error
+      tab = tabs.querySelector('.code-tab');
       tab.classList.add('active');
       document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
     } else {
@@ -185,8 +224,12 @@
       render(div);
     }
 
-    var section = document.getElementById('examples');
-    if (section) section.scrollIntoView();
+    // jump to the examples via their anchor, so the page keeps them in place while content above loads
+    var section = document.getElementById('code') || document.getElementById('examples');
+    if (section && !location.hash) history.replaceState(null, '', location.pathname + location.search + '#' + section.id);
+    // the page's anchor handling (index.html) scrolls there and keeps it in place while content loads
+    var wrap = document.getElementById('code');
+    if (wrap) wrap.classList.add('landed');   // a brief ring on the example you came for
   })();
 
   /* Copy the full snippet, including folded lines (minus the fold labels).
