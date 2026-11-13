@@ -61,15 +61,22 @@
         && u.pathname.toLowerCase().startsWith('/qxoticai/');
   }
 
-  /* One request per file, shared with the hero demo (window.qxText). */
+  /* One request per file, shared with the hero demo (window.qxText).
+   * window.qxLoads counts requests in flight: the page's anchor jumps stay aligned until it is 0. */
   var TEXT = {};
+  window.qxLoads = window.qxLoads || 0;
   function getText(url) {
     var key = new URL(url, location.href).href;
-    return TEXT[key] || (TEXT[key] = fetch(url).then(function (r) {
+    if (TEXT[key]) return TEXT[key];
+    window.qxLoads++;
+    TEXT[key] = fetch(url).then(function (r) {
       if (!r.ok) throw new Error(r.status);
       if (!allowed(r.url)) throw new Error('redirect left the allowlist'); // post-redirect provenance
       return r.text();
-    }));
+    });
+    function done() { window.qxLoads--; }
+    TEXT[key].then(done, done);
+    return TEXT[key];
   }
   window.qxText = getText;
 

@@ -324,8 +324,10 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 
   // the data loads when the benchmark section gets close, not with the first screen
   function loadBench() {
+    window.qxLoads++;   // anchor jumps stay aligned until the table is in (see Anchors below)
     fetch('benchmarks.csv').then(function (r) { return r.text(); }).then(start)
-      .catch(function () { noteEl.innerHTML = 'Could not load the data. Raw numbers: <a href="benchmarks.csv">benchmarks.csv</a>'; });
+      .catch(function () { noteEl.innerHTML = 'Could not load the data. Raw numbers: <a href="benchmarks.csv">benchmarks.csv</a>'; })
+      .then(function () { window.qxLoads--; });
   }
   var benchSec = document.getElementById('performance');
   if (benchSec && !/#(performance|benchmarks|explore)/.test(location.hash)) {
@@ -778,12 +780,13 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 })();
 
 /* Anchors: charts, tables and code load lazily while a jump scrolls past them,
- * pushing the target down. Keep the target aligned until the page settles,
- * and let go as soon as the visitor scrolls on their own. */
+ * pushing the target down. Keep the target aligned until the page settles (no layout change
+ * for a moment and no load in flight, window.qxLoads), and let go as soon as the visitor scrolls on their own. */
 (function () {
   var target = null, timer = 0, landing = false;   // landing: arriving from a link, jumps are instant
   function release() { target = null; landing = false; clearTimeout(timer); }
-  function hold(el) { target = el; clearTimeout(timer); timer = setTimeout(release, landing ? 6000 : 2500); }
+  function hold(el) { target = el; clearTimeout(timer); timer = setTimeout(settle, landing ? 6000 : 2500); }
+  function settle() { if (window.qxLoads > 0) timer = setTimeout(settle, 250); else release(); }
   function dest(el) {
     var y = 0, n = el;
     while (n) { y += n.offsetTop; n = n.offsetParent; }   /* layout position, ignores reveal transforms */
