@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 · Quixotic AI</title>
     <meta name="robots" content="noindex">
@@ -19,13 +20,16 @@
             --ink:    light-dark(#2a221c, #efe4d2);
             --muted:  light-dark(#6e6153, #a89a87);
             --line:   light-dark(#d2c2a6, #4a3d33);
-            --accent: light-dark(#a13f2e, #d1563d);
+            --accent: light-dark(#a13f2e, #e06a50);
+            --button: light-dark(#a13f2e, #86362a);   /* the site's --band: white text stays above 4.5:1 */
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Funnel Sans', 'Helvetica Neue', Arial, sans-serif;
             background: var(--paper);
             color: var(--muted);
+        }
+        main {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -45,7 +49,7 @@
         p { font-size: 1.125rem; }
         .home {
             display: inline-flex; align-items: center; height: 44px; margin-top: 1rem; padding: 0 1.25rem;
-            border-radius: 8px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none;
+            border-radius: 8px; background: var(--button); color: #fff; font-weight: 600; text-decoration: none;
             box-shadow: 0 1px 2px rgba(40, 20, 12, .12), 0 6px 14px -8px rgba(40, 20, 12, .32);
             transition: transform .2s, box-shadow .25s;
         }
@@ -57,6 +61,7 @@
     </style>
 </head>
 <body>
+<main>
     <img src="/logo.svg" alt="">
     <h1>4<span>0</span>4</h1>
     <p>No windmills here.</p>
@@ -67,5 +72,6 @@
         <a href="/#code">Examples</a>
         <a href="/#contact">Contact</a>
     </nav>
+</main>
 </body>
 </html>

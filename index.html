@@ -378,6 +378,8 @@
         .vs-h small { font: 500 .75rem var(--mono); color: var(--muted); white-space: nowrap; }
         .vs .new .vs-h small { color: var(--cobalt); }
         .dg { display: block; width: 100%; height: auto; margin-top: 1.75rem; overflow: visible; font-family: var(--sans); }
+        /* stacked on tablets: the 330-wide diagram at the scale of the 480-wide one above it (phones use 330 for both) */
+        @media (min-width: 641px) and (max-width: 1000px) { .vs .new .dg { max-width: 68.75%; margin-inline: auto; } }
         .dg .bnd rect { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 5 5; transition: stroke .2s, filter .4s; }
         .dg .bnd.us rect { stroke: var(--cobalt); stroke-dasharray: none; fill: color-mix(in srgb, var(--ink) 4%, transparent); }
         .dg .bnd rect.breach { stroke: var(--down); filter: drop-shadow(0 0 6px var(--down)); }
@@ -638,7 +640,7 @@
         .lead-links a:hover .arr { transform: translateX(3px); }
         .lead-links a:hover .arr-d { transform: translateY(3px); }
         /* the two links sit centred under the intro, compact, just before the live demo */
-        .hero-links { justify-content: center; gap: .4rem 2.25rem; margin-top: clamp(1.5rem, 3vw, 2rem); }
+        .hero-links { gap: .4rem 2.25rem; margin-top: clamp(1.5rem, 3vw, 2rem); }
         .hero-links + .stage { margin-top: clamp(1.75rem, 3.5vw, 2.4rem); }
         .hero-row .hero-try { margin-top: 0; }
         .hero-row .hero-try { margin-top: 0; }
@@ -717,7 +719,7 @@
         .contact-card .btn-c:hover svg { transform: translateX(3px); }
 
         /* company */
-        .company { background: var(--console); color: #cdbfa9; margin-top: clamp(5rem, 10vw, 8rem); padding-block: clamp(4.5rem, 9vw, 7rem); scroll-margin-top: 64px; }
+        .company { background: var(--console); box-shadow: inset 0 1px var(--co-edge), inset 0 -1px var(--co-edge); --co-edge: light-dark(transparent, var(--line)); color: #cdbfa9; margin-top: clamp(5rem, 10vw, 8rem); padding-block: clamp(4.5rem, 9vw, 7rem); scroll-margin-top: 64px; }
         .company ::selection { background: #d1563d; color: #221b16; }
         .co-k { display: flex; align-items: center; gap: .6rem; font: 600 .75rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #d46049; }
         .co-story > .co-k { font-size: 1.0625rem; letter-spacing: .1em; }   /* the section label, same size as .kick */
@@ -1054,7 +1056,7 @@
             <a class="pill" href="https://www.youtube.com/watch?v=S7x4DxwRnk4" target="_blank" rel="noopener noreferrer"><b>&#9654; Talk</b>Pure Java inference at native speed · Devoxx Belgium 2026 &rarr;</a>
             <h1><span class="w">Local</span> <span class="w">AI.</span> <span class="w c">In</span> <span class="w c">a</span> <span class="w c">jar.</span></h1>
             <div class="hero-row">
-                <p class="lead"><strong>Quixotic AI</strong> is a complete, open stack for local AI on the JVM, from tokenizers and model formats to a multimodal inference engine. <strong>Run AI right beside your business logic</strong>, with no Python, no Docker and no external services. AI is just one Maven dependency away: <strong>AI in a jar.</strong></p>
+                <p class="lead"><strong>Quixotic AI</strong> is a complete, open stack for local AI on the JVM, from tokenizers and model formats to a multimodal inference engine. <strong>Run AI right beside your business logic</strong>, with no Python, no Docker and no external services. AI is just one Maven dependency away.</p>
                 <div>
                     <div class="hero-try"><p class="hero-note">Or try the engine now with <a href="https://www.jbang.dev/" target="_blank" rel="noopener noreferrer">jbang</a>, in one command.</p><div class="os-tabs" role="tablist" aria-label="Operating system"><button type="button" role="tab" aria-selected="true" data-os="unix">macOS / Linux</button><button type="button" role="tab" aria-selected="false" data-os="win">Windows (PowerShell)</button></div></div>
                     <div class="cmd cmd-sm"><code id="hero-cmd" data-text="bash &lt;(curl -Ls https://sh.jbang.dev) jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0"><span class="ln"><b>$ </b>bash &lt;(curl -Ls https://sh.jbang.dev) <i>\</i></span><span class="ln">  jinfer@qxoticai chat <i>\</i></span><span class="ln">  --model LiquidAI/LFM2.5-350M-GGUF:Q8_0</span></code><code id="hero-cmd-win" hidden data-text='iex "&amp; { $(iwr -useb https://ps.jbang.dev) } jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0"'><span class="ln"><b>PS&gt; </b>iex "&amp; { $(iwr -useb https://ps.jbang.dev) }</span><span class="ln">  jinfer@qxoticai chat</span><span class="ln">  --model LiquidAI/LFM2.5-350M-GGUF:Q8_0"</span></code><button class="copy-btn" type="button" data-copy="hero-cmd">Copy</button></div>
@@ -1063,7 +1065,7 @@
             <nav class="lead-links hero-links" aria-label="Next steps"><a href="#contact">Contact us <span class="arr">&rarr;</span></a><a href="#services">What we do <span class="arr arr-d">&darr;</span></a></nav>
 
             <div class="stage">
-                <p class="stage-cap"><span></span>Live: jinfer, our open-source engine, running real models in a plain Java process</p>
+                <p class="stage-cap"><span></span>Demo: jinfer, our open-source engine, running real models in a plain Java process</p>
                 <div class="console" id="console">
                     <div class="cbar">
                         <div class="dots"><i></i><i></i><i></i></div>
@@ -1100,7 +1102,7 @@
                 <div class="rv"><div class="fig"><span data-stat="pp">1.85</span><small>&times;</small></div><p><b>Faster prompts</b>than llama.cpp, median on CPU. <a href="#benchmarks">The data &rarr;</a></p></div>
                 <div class="rv" style="--d:.06s"><div class="fig">19<small>+</small></div><p><b>Model architectures</b>text, vision, audio and speech.<br>Popular open-weight models, out of the box.</p></div>
                 <div class="rv" style="--d:.12s"><div class="fig">0</div><p><b>API keys</b>no accounts, no quotas, no bills.<br>AI as a library.</p></div>
-                <div class="rv" style="--d:.18s"><div class="fig">100<small class="u">%</small></div><p><b>Built for the JVM</b>from first principles, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
+                <div class="rv" style="--d:.18s"><div class="fig">6</div><p><b>Layers, built in-house</b>for the JVM, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
             </div>
             <div class="models rv"><small>Supported model families</small><div class="mq"><div class="mq-t"><span>Gemma<i>Google</i></span><span>Qwen<i>Alibaba</i></span><span>GPT-OSS<i>OpenAI</i></span><span>Llama<i>Meta</i></span><span>Ministral<i>Mistral AI</i></span><span>Granite<i>IBM</i></span><span>Nemotron<i>NVIDIA</i></span><span>LFM<i>Liquid AI</i></span><span>Mellum<i>JetBrains</i></span><span>SmolLM<i>Hugging Face</i></span><span>MiniCPM<i>OpenBMB</i></span><span>Bonsai<i>PrismML</i></span><span>Ling<i>inclusionAI</i></span><span>Laguna<i>Poolside</i></span><span>Parakeet<i>NVIDIA</i></span><span>Kokoro<i>hexgrad</i></span><span>Inflect<i>Owen Song</i></span></div><div class="mq-t" aria-hidden="true"><span>Gemma<i>Google</i></span><span>Qwen<i>Alibaba</i></span><span>GPT-OSS<i>OpenAI</i></span><span>Llama<i>Meta</i></span><span>Ministral<i>Mistral AI</i></span><span>Granite<i>IBM</i></span><span>Nemotron<i>NVIDIA</i></span><span>LFM<i>Liquid AI</i></span><span>Mellum<i>JetBrains</i></span><span>SmolLM<i>Hugging Face</i></span><span>MiniCPM<i>OpenBMB</i></span><span>Bonsai<i>PrismML</i></span><span>Ling<i>inclusionAI</i></span><span>Laguna<i>Poolside</i></span><span>Parakeet<i>NVIDIA</i></span><span>Kokoro<i>hexgrad</i></span><span>Inflect<i>Owen Song</i></span></div></div></div>
         </div>
@@ -1240,8 +1242,8 @@
                 <article class="cell b-chat">
                     <div class="c-head"><h3>Converse</h3><span>LFM2.5 · 350M</span></div>
                     <p class="c-sub">Answer questions, draft, summarize, reason.</p>
-                    <p class="bubble-q">What is the capital of France?</p>
-                    <p class="bubble-a" data-type="The capital of France is Paris.">The capital of France is Paris.</p>
+                    <p class="bubble-q">Explain recursion in one sentence.</p>
+                    <p class="bubble-a" data-type="Recursion is a programming technique where a function calls itself to solve a problem.">Recursion is a programming technique where a function calls itself to solve a problem.</p>
                     <div class="c-foot"><span>Chat.java</span><a href="#code" data-tab-link="chat">View code &rarr;</a></div>
                 </article>
                 <article class="cell b-see">
@@ -1324,13 +1326,13 @@
                 <p class="intro">Most teams wrap someone else's engine. We wrote ours from the file format up, in pure Java, and maintain the largest Vector API codebase in the world, outside the JDK itself. Every component works standalone: use the whole stack, or just the parts you need.</p>
             </div>
             <ol class="layers rv">
-                <li class="layer"><span class="layer-n">01</span><span class="layer-name">your app</span><span class="layer-what"><strong>Plugs into what you already run.</strong></span><span class="layer-tags">Spring AI · LangChain4j · GraalVM</span></li>
-                <li class="layer"><span class="layer-n">02</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jinfer" target="_blank" rel="noopener noreferrer">jinfer</a><span class="layer-what"><strong>The inference engine.</strong> Runs AI models within the JVM, at native speed.</span><span class="layer-tags">chat · vision · embeddings · speech-to-text · text-to-speech · decision models</span></li>
-                <li class="layer"><span class="layer-n">03</span><span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jota" target="_blank" rel="noopener noreferrer">jota</a><span class="soon">soon</span></span><span class="layer-what"><strong>One tensor API, every chip.</strong> Write once, accelerate everywhere.</span><span class="layer-tags">Java · C · CUDA · HIP · Metal · OpenCL · Mojo</span></li>
-                <li class="layer"><span class="layer-n">04</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jam" target="_blank" rel="noopener noreferrer">jam</a><span class="layer-what"><strong>Just a matmul.</strong> State-of-the-art quantized matrix multiplication: hand-tuned kernels for several instruction sets, with a pure-Java fallback on the Vector API.</span><span class="layer-tags">SSE3 · AVX2 · VNNI · DOTPROD · Metal</span></li>
-                <li class="layer"><span class="layer-n">05</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/toknroll" target="_blank" rel="noopener noreferrer">toknroll</a><span class="layer-what"><strong>Fast, token-perfect tokenizers.</strong> Matches the Hugging Face and llama.cpp reference tokenizers token for token, verified by parity tests, while staying competitive with native implementations. Pure Java, zero dependencies.</span><span class="layer-tags">tiktoken · Hugging Face · llama.cpp</span></li>
-                <li class="layer"><span class="layer-n">06</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/gguf" target="_blank" rel="noopener noreferrer">gguf</a><span class="layer-what"><strong>GGUF reader and writer.</strong> llama.cpp's model format, in pure Java, with zero dependencies.</span><span class="layer-tags">GGUF · quantized models</span></li>
-                <li class="layer"><span class="layer-n">07</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/safetensors" target="_blank" rel="noopener noreferrer">safetensors</a><span class="layer-what"><strong>Safetensors reader and writer.</strong> Hugging Face's model format, in pure Java, with zero dependencies.</span><span class="layer-tags">Safetensors · Hugging Face</span></li>
+                <li class="layer"><span class="layer-n">01</span><span class="layer-name">your app</span><span class="layer-what"><strong>Plugs into what you already run.</strong></span><span class="layer-tags">Spring AI&nbsp;· LangChain4j&nbsp;· GraalVM</span></li>
+                <li class="layer"><span class="layer-n">02</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jinfer" target="_blank" rel="noopener noreferrer">jinfer</a><span class="layer-what"><strong>The inference engine.</strong> Runs AI models within the JVM, at native speed.</span><span class="layer-tags">chat&nbsp;· vision&nbsp;· embeddings&nbsp;· speech-to-text&nbsp;· text-to-speech&nbsp;· decision models</span></li>
+                <li class="layer"><span class="layer-n">03</span><span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jota" target="_blank" rel="noopener noreferrer">jota</a><span class="soon">soon</span></span><span class="layer-what"><strong>One tensor API, every chip.</strong> Write once, accelerate everywhere.</span><span class="layer-tags">Java&nbsp;· C&nbsp;· CUDA&nbsp;· HIP&nbsp;· Metal&nbsp;· OpenCL&nbsp;· Mojo</span></li>
+                <li class="layer"><span class="layer-n">04</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jam" target="_blank" rel="noopener noreferrer">jam</a><span class="layer-what"><strong>Just a matmul.</strong> State-of-the-art quantized matrix multiplication: hand-tuned kernels for several instruction sets, with a pure-Java fallback on the Vector API.</span><span class="layer-tags">SSE3&nbsp;· AVX2&nbsp;· AVX-512&nbsp;· VNNI&nbsp;· NEON&nbsp;· DOTPROD&nbsp;· I8MM&nbsp;· Metal</span></li>
+                <li class="layer"><span class="layer-n">05</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/toknroll" target="_blank" rel="noopener noreferrer">toknroll</a><span class="layer-what"><strong>Fast, token-perfect tokenizers.</strong> Matches the Hugging Face and llama.cpp reference tokenizers token for token, verified by parity tests, while staying competitive with native implementations. Pure Java, zero dependencies.</span><span class="layer-tags">tiktoken&nbsp;· Hugging Face&nbsp;· llama.cpp</span></li>
+                <li class="layer"><span class="layer-n">06</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/gguf" target="_blank" rel="noopener noreferrer">gguf</a><span class="layer-what"><strong>GGUF reader and writer.</strong> llama.cpp's model format, in pure Java, with zero dependencies.</span><span class="layer-tags">GGUF&nbsp;· quantized models</span></li>
+                <li class="layer"><span class="layer-n">07</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/safetensors" target="_blank" rel="noopener noreferrer">safetensors</a><span class="layer-what"><strong>Safetensors reader and writer.</strong> Hugging Face's model format, in pure Java, with zero dependencies.</span><span class="layer-tags">Safetensors&nbsp;· Hugging Face</span></li>
             </ol>
             <p class="credit rv">With gratitude to <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener noreferrer">llama.cpp</a>, <a href="https://huggingface.co/" target="_blank" rel="noopener noreferrer">Hugging Face</a> and the entire open-model community. We build on your work.</p>
             <div class="principles rv">
@@ -1514,7 +1516,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
 
     <footer>
         <div class="wrap">
-            <span>&copy; 2026 <strong style="color:var(--ink);font-weight:600">Quixotic AI</strong> · AI in a jar · Built in 🇨🇭 Switzerland</span>
+            <span>&copy;&nbsp;2026 <strong style="color:var(--ink);font-weight:600">Quixotic&nbsp;AI</strong>&nbsp;· AI&nbsp;in&nbsp;a&nbsp;jar&nbsp;· Built&nbsp;in&nbsp;🇨🇭&nbsp;Switzerland</span>
             <nav class="flinks" aria-label="Elsewhere">
                 <a href="mailto:hello@qxotic.ai"><svg width="15" height="15" aria-hidden="true"><use href="#i-mail"/></svg>hello@qxotic.ai</a>
                 <a href="https://central.sonatype.com/namespace/com.qxotic" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" aria-hidden="true"><use href="#i-pkg"/></svg>Maven Central</a>
