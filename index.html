@@ -861,6 +861,10 @@
             .cbar { gap: .6rem; padding-left: .6rem; }
             .step pre { font-size: .6875rem; }
         }
+        /* the hero console's bar keeps its tabs whole: small tablets drop the status,
+           phones the copy button and ".java" (the demo there is to watch, not to copy) */
+        @media (max-width: 719px) { .cbar .status { display: none; } }
+        @media (max-width: 599px) { .cbar-r, .ctab .ext { display: none; } }
         @media (max-width: 359px) {
             header .btn-sm { padding-inline: .7rem; }
             header .theme-toggle { width: 38px; height: 38px; }
@@ -1071,9 +1075,9 @@
                     <div class="cbar">
                         <div class="dots"><i></i><i></i><i></i></div>
                         <div class="ctabs" role="tablist" aria-label="Examples">
-                            <button type="button" role="tab" class="ctab on" aria-selected="true">Chat.java</button>
-                            <button type="button" role="tab" class="ctab" aria-selected="false">Vision.java</button>
-                            <button type="button" role="tab" class="ctab" aria-selected="false">Parakeet.java</button>
+                            <button type="button" role="tab" class="ctab on" aria-selected="true">Chat<span class="ext">.java</span></button>
+                            <button type="button" role="tab" class="ctab" aria-selected="false">Vision<span class="ext">.java</span></button>
+                            <button type="button" role="tab" class="ctab" aria-selected="false">Parakeet<span class="ext">.java</span></button>
                         </div>
                         <div class="cbar-r">
                             <span class="status" id="con-status">in-process</span>
