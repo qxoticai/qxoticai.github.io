@@ -1116,7 +1116,7 @@
                 <div class="co-story rv">
                     <span class="co-k">The company</span>
                     <h2>AI on the JVM? <span>Quixotic.</span></h2>
-                    <p>It started in 2023 with a prototype: <a class="co-link" href="https://github.com/mukel/llama2.java" target="_blank" rel="noopener noreferrer">llama2.java</a>, a language model in a single file of pure Java, written by <a class="co-link" href="https://www.linkedin.com/in/alfonso2peterssen" target="_blank" rel="noopener noreferrer">Alfonso² Peterssen</a>, formerly a senior researcher on the <a class="co-link" href="https://www.graalvm.org/" target="_blank" rel="noopener noreferrer">GraalVM</a> team. The prototype became a hobby, and the hobby became a company. Today Quixotic AI is the umbrella for several open-source projects, each usable on its own, that together form an end-to-end AI stack. The focus on performance is relentless: Quixotic AI now maintains the largest Vector API codebase in the world, second only to the JDK itself.</p>
+                    <p>It started in 2023 with a prototype: <a class="co-link" href="https://github.com/mukel/llama2.java" target="_blank" rel="noopener noreferrer">llama2.java</a>, a language model in a single file of pure Java, written by <a class="co-link" href="https://www.linkedin.com/in/alfonso2peterssen" target="_blank" rel="noopener noreferrer">Alfonso² Peterssen</a>, formerly a senior researcher on the <a class="co-link" href="https://www.graalvm.org/" target="_blank" rel="noopener noreferrer">GraalVM</a> team. The prototype became a hobby, and the hobby became a company. Today Quixotic AI is the umbrella for several open-source projects, each usable on its own, that together form an end-to-end AI stack. The focus on performance is relentless: Quixotic AI now maintains the largest Vector API codebase outside the JDK itself.</p>
                     <p>The goal is simple: AI inside the applications businesses rely on, running on their own hardware. The JVM is our specialty: a superb platform, our deepest expertise, and a place where serious AI barely existed. But local AI goes wherever software runs.</p>
                     <p class="co-founder">Every layer is built in-house, so nothing is out of reach, from the tokenizers and kernels to the engine itself.</p>
                 </div>
@@ -1252,7 +1252,7 @@
                     <p class="c-sub">Understand photos, screenshots and documents.</p>
                     <picture><source srcset="snippets/consuegra.webp" type="image/webp"><img class="see-img" src="snippets/consuegra.jpg" alt="The windmills of Consuegra on a hill in La Mancha, Spain" loading="lazy" decoding="async" width="960" height="720"></picture>
                     <p class="see-q">&ldquo;Don Quixote saw giants here. What do you see?&rdquo;</p>
-                    <p class="see-a" data-type="Several traditional windmills standing on a hill under a clear blue sky.">Several traditional windmills standing on a hill under a clear blue sky.</p>
+                    <p class="see-a" data-type="I see a picturesque scene of several traditional windmills standing tall on a hill under a clear blue sky. …">I see a picturesque scene of several traditional windmills standing tall on a hill under a clear blue sky. …</p>
                     <div class="c-foot"><span>Vision.java</span><a href="#code" data-tab-link="vision">View code &rarr;</a></div>
                 </article>
                 <article class="cell b-hear">
@@ -1266,7 +1266,7 @@
                     <div class="c-head"><h3>Understand</h3><span>LFM2.5-Embedding · 350M</span></div>
                     <div class="sim">
                         <p class="sim-anchor">&ldquo;AI on the JVM&rdquo;</p>
-                        <div class="sim-row"><span>&ldquo;the JVM thinks now&rdquo;</span><b>0.609</b><div class="sim-bar"><i data-w="60.9"></i></div></div>
+                        <div class="sim-row"><span>&ldquo;the JVM thinks now&rdquo;</span><b>0.607</b><div class="sim-bar"><i data-w="60.7"></i></div></div>
                         <div class="sim-row lo"><span>&ldquo;the python shed its skin&rdquo;</span><b>0.081</b><div class="sim-bar"><i data-w="8.1"></i></div></div>
                     </div>
                     <div class="c-foot"><span>Embed.java</span><a href="#code" data-tab-link="embed">View code &rarr;</a></div>
@@ -1324,7 +1324,7 @@
         <div class="wrap">
             <div class="rv"><span class="kick">05 · The stack</span>
                 <h2>Every component, <span class="c">written by us.</span></h2>
-                <p class="intro">Most teams wrap someone else's engine. We wrote ours from the file format up, in pure Java, and maintain the largest Vector API codebase in the world after the JDK itself. Every component works standalone: use the whole stack, or just the parts you need.</p>
+                <p class="intro">Most teams wrap someone else's engine. We wrote ours from the file format up, in pure Java, and maintain the largest Vector API codebase outside the JDK itself. Every component works standalone: use the whole stack, or just the parts you need.</p>
             </div>
             <ol class="layers rv">
                 <li class="layer"><span class="layer-n">01</span><span class="layer-name">your app</span><span class="layer-what"><strong>Plugs into what you already run.</strong></span><span class="layer-tags">Spring AI · LangChain4j · GraalVM</span></li>
@@ -1456,8 +1456,8 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                 <div class="code-panel" id="panel-tts"><div class="jbang" data-src="snippets/TextToSpeech.java" data-out="# kokoro.wav · seven seconds, in a warm voice · Kokoro-82M"></div></div>
                 <div class="code-panel" id="panel-audio"><div class="jbang" data-src="snippets/Audio.java" data-out="# &quot;ask not what your country can do for you ...&quot; · every word heard"></div></div>
                 <div class="code-panel" id="panel-parakeet"><div class="jbang" data-src="snippets/Parakeet.java" data-out="# &quot;And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.&quot;"></div></div>
-                <div class="code-panel" id="panel-vision"><div class="jbang" data-src="snippets/Vision.java" data-out="# &quot;several traditional windmills standing on a hill under a clear blue sky&quot;"></div></div>
-                <div class="code-panel" id="panel-embed"><div class="jbang" data-src="snippets/Embed.java" data-out="# similar 0.609 · unrelated 0.081"></div></div>
+                <div class="code-panel" id="panel-vision"><div class="jbang" data-src="snippets/Vision.java" data-out="# &quot;I see a picturesque scene of several traditional windmills standing tall on a hill under a clear blue sky. …&quot;"></div></div>
+                <div class="code-panel" id="panel-embed"><div class="jbang" data-src="snippets/Embed.java" data-out="# similar 0.607 · unrelated 0.081"></div></div>
             </div>
         </div>
     </section>
@@ -1645,7 +1645,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
         var wave = '<span class="mini-wave" aria-hidden="true">' + [5, 9, 12, 7, 13, 10, 4, 8, 12, 6, 10, 5].map(function (h) { return '<i style="height:' + h + 'px"></i>'; }).join('') + '</span>';
         var demos = [
           { file: 'Chat.java', model: 'LFM2.5-350M · Q8_0', input: '<span class="in">&#8627; prompt</span><q>What is the capital of France?</q>', out: 'The capital of France is Paris.' },
-          { file: 'Vision.java', model: 'LFM2.5-VL-3B · Q8_0', input: '<span class="in">&#8627; image</span><img src="snippets/consuegra.webp" alt="" decoding="async"> consuegra.jpg', out: 'Several traditional windmills standing on a hill under a clear blue sky.' },
+          { file: 'Vision.java', model: 'LFM2.5-VL-3B · Q8_0', input: '<span class="in">&#8627; image</span><img src="snippets/consuegra.webp" alt="" decoding="async"> consuegra.jpg', out: 'I see a picturesque scene of several traditional windmills standing tall on a hill under a clear blue sky. …' },
           { file: 'Parakeet.java', model: 'Parakeet TDT 0.6B · Q8_0', input: '<span class="in">&#8627; audio</span>' + wave + ' jfk.wav · 11 s', out: 'And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.' }
         ];
         demos.forEach(function (d) {
