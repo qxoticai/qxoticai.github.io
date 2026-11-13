@@ -7,7 +7,7 @@ Quixotic AI began in 2023 with llama2.java, a language model in a single file of
 ## What jinfer is
 
 - An inference engine that runs as a library, inside the JVM process: no model server, no network calls, no per-token bills. Prompts and data stay in the application.
-- Fast on ordinary CPUs: it processes prompts 1.84x faster than llama.cpp (median across 121 CPU configurations) and generates text at about the same speed. Raw benchmark data is public.
+- Fast on ordinary CPUs: it processes prompts 1.85x faster than llama.cpp (median across 126 CPU configurations) and generates text at about the same speed. Raw benchmark data is public.
 - Broad model support: more than 19 architectures, including Gemma, Qwen, GPT-OSS, Llama, Ministral, Granite, Nemotron, LFM, Mellum, SmolLM, MiniCPM, Bonsai, Ling and Laguna; Parakeet for speech-to-text; Kokoro and Inflect for text-to-speech; embedding and reranking models. Loads GGUF and Safetensors, from Hugging Face or local storage.
 - Fits existing Java code: a drop-in model provider for Spring AI and LangChain4j, plus a CLI and an OpenAI-compatible server.
 - Compatible with GraalVM Native Image: the application and the engine compile into one native executable; small models can be shipped inside it.

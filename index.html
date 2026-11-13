@@ -1100,7 +1100,7 @@
             </div>
 
             <div class="proof">
-                <div class="rv"><div class="fig"><span data-stat="pp">1.84</span><small>&times;</small></div><p><b>Faster prompts</b>than llama.cpp, median on CPU. <a href="#benchmarks">The data &rarr;</a></p></div>
+                <div class="rv"><div class="fig"><span data-stat="pp">1.85</span><small>&times;</small></div><p><b>Faster prompts</b>than llama.cpp, median on CPU. <a href="#benchmarks">The data &rarr;</a></p></div>
                 <div class="rv" style="--d:.06s"><div class="fig">19<small>+</small></div><p><b>Model architectures</b>text, vision, audio and speech.<br>Popular open-weight models, out of the box.</p></div>
                 <div class="rv" style="--d:.12s"><div class="fig">0</div><p><b>API keys</b>no accounts, no quotas, no bills.<br>AI as a library.</p></div>
                 <div class="rv" style="--d:.18s"><div class="fig">100<small class="u">%</small></div><p><b>Built for the JVM</b>from first principles, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
@@ -1295,8 +1295,8 @@
                 <p class="intro">An engine <strong>reads the prompt</strong>, then <strong>writes the answer</strong> one token (roughly a word-piece) at a time. We measure both against llama.cpp, the de facto standard for local inference. jinfer reads prompts faster and writes at the same speed: the kind of result we bring to client systems.</p>
             </div>
             <div class="big rv">
-                <div class="big-fig"><span data-stat="pp">1.84</span><small>&times;</small></div>
-                <p><strong>faster at reading prompts</strong> than llama.cpp, the hand-tuned C++ engine and the baseline for local inference. Median across <span data-stat="configs">121</span> configurations, <a href="#benchmarks">all listed below</a>.</p>
+                <div class="big-fig"><span data-stat="pp">1.85</span><small>&times;</small></div>
+                <p><strong>faster at reading prompts</strong> than llama.cpp, the hand-tuned C++ engine and the baseline for local inference. Median across <span data-stat="configs">126</span> configurations, <a href="#benchmarks">all listed below</a>.</p>
             </div>
             <div class="bars rv" id="bars">
                 <div><h3>Reading the prompt <span class="tech">· prefill</span></h3><p class="note">Speed on a 512-token prompt, relative to llama.cpp. Median per model family.</p><div class="chart" id="chart-pp"></div></div>
@@ -1951,9 +1951,14 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                 '<td class="num j sep">' + (jt ? fmt(jt.tps) : '—') + '</td><td class="num">' + (lt ? fmt(lt.tps) : '—') + '</td>' + deltaCell(jt, lt) + '</tr>';
             });
             tableEl.innerHTML = html + '</tbody>';
-            var builds = {}; rows.forEach(function (r) { builds[r.engine_build] = 1; });
+            /* group builds per engine: "jinfer a / b vs. llama.cpp c / d" */
+            var builds = {}; rows.forEach(function (r) {
+              var i = r.engine_build.indexOf(' '), e = r.engine_build.slice(0, i), h = r.engine_build.slice(i + 1);
+              (builds[e] = builds[e] || {})[h] = 1;
+            });
             var jvm = (rows.filter(function (r) { return r.jvm; })[0] || {}).jvm;
-            noteEl.innerHTML = '<b>Measured on</b> ' + rows[0].cpu + ', ' + rows[0].threads + ' threads, CPU only · Linux ' + rows[0].kernel.split('-')[0] + (jvm ? ' · ' + jvm : '') + ' · ' + Object.keys(builds).sort().join(' vs. ');
+            noteEl.innerHTML = '<b>Measured on</b> ' + rows[0].cpu + ', ' + rows[0].threads + ' threads, CPU only · Linux ' + rows[0].kernel.split('-')[0] + (jvm ? ' · ' + jvm : '') + ' · ' +
+              Object.keys(builds).sort().map(function (e) { return e + ' ' + Object.keys(builds[e]).sort().join(' / '); }).join(' vs. ');
           }
           pickFamily = function (f) {
             state.family = f; render(true);
