@@ -99,13 +99,14 @@
             --muted:  light-dark(#6e6153, #a89a87);
             --line:   light-dark(#e1d3bb, #3a3028);
             --line-2: light-dark(#d2c2a6, #4a3d33);
-            --cobalt: light-dark(#a13f2e, #e66a3f);     /* as text/marks */
+            --cobalt: light-dark(#a13f2e, #d1563d);     /* marks and large text */
+            --cobalt-ink: light-dark(#a13f2e, #eb6347); /* small text: 4.5:1 on the dark surfaces */
             --cobalt-tint: light-dark(#ebdcc4, #2e251e);
             --card:   light-dark(#ece0cb, #2a231d);       /* highlighted cards: warm cream, not pink */
             --band:   light-dark(#a13f2e, #86362a);     /* the proof band */
             --vs-old: light-dark(#ece0cb, #171310);     /* section 01 comparison cards */
             --vs-new: light-dark(#faf4e9, #2e2620);
-            --logo-c: light-dark(#a13f2e, #e66a3f);       /* logo: windmill sails */
+            --logo-c: light-dark(#a13f2e, #d1563d);       /* logo: windmill sails */
             --logo-fold: var(--paper);
             --logo-bg: var(--paper);
             --band-deep: light-dark(#862f22, #6e2b21);
@@ -118,7 +119,7 @@
             --code-bg:   light-dark(#f9f2e6, #241d18);
             --code-text: light-dark(#3a2f26, #efe4d2);
             --code-muted: light-dark(#74675a, #998b7a);
-            --code-kw:   light-dark(#a13f2e, #e8724a);
+            --code-kw:   light-dark(#a13f2e, #eb6347);
             --code-str:  light-dark(#5f7230, #b4c27a);
             --code-typ:  light-dark(#8a5a1c, #d6a35c);
             --code-line: light-dark(#e1d3bb, #3a3028);
@@ -135,7 +136,7 @@
         body { font: 400 1.0625rem/1.6 var(--sans); background: var(--paper); color: var(--ink-2); overflow-x: hidden; overflow-x: clip; }
         h1, h2, h3 { color: var(--ink); font-family: var(--display); text-wrap: balance; }
         p, li { text-wrap: pretty; }
-        a { color: var(--cobalt); }
+        a { color: var(--cobalt-ink); }
         ::selection { background: var(--band); color: #fff; }
         .band ::selection, .contact-card ::selection, .svc.feat ::selection { background: #fff; color: var(--band); }
         .console ::selection { background: var(--c-accent); color: var(--c-bg); }
@@ -208,7 +209,7 @@
         .menu li { counter-increment: m; border-bottom: 1px solid var(--line); }
         .menu.open li { animation: fadein .45s var(--ease) both; animation-delay: calc(var(--i) * 35ms + 40ms); }
         .menu li a { display: flex; align-items: baseline; gap: .9rem; padding: .8rem 0; font: 700 1.5rem/1.2 var(--display); letter-spacing: -.03em; color: var(--ink); text-decoration: none; transition: color .2s; }
-        .menu li a::before { content: counter(m, decimal-leading-zero); font: 500 .75rem var(--mono); letter-spacing: 0; color: var(--cobalt); }
+        .menu li a::before { content: counter(m, decimal-leading-zero); font: 500 .75rem var(--mono); letter-spacing: 0; color: var(--cobalt-ink); }
         .menu li a:hover, .menu li a.on { color: var(--cobalt); }
         .menu-foot { display: flex; gap: .5rem; margin-top: 1.1rem; }
         .menu-foot .btn { flex: 1; }
@@ -235,14 +236,14 @@
         .hero { padding-top: clamp(2.75rem, 6vw, 4.5rem); }
         .pill { display: inline-flex; align-items: center; gap: .6rem; font: 500 .875rem var(--sans); color: var(--ink-2); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: .3rem .85rem .3rem .35rem; transition: border-color .2s; }
         .pill:hover { border-color: var(--cobalt); }
-        .pill b { white-space: nowrap; font: 600 .75rem var(--mono); color: var(--cobalt); background: var(--cobalt-tint); border-radius: 999px; padding: .15rem .55rem; }
+        .pill b { white-space: nowrap; font: 600 .75rem var(--mono); color: var(--cobalt-ink); background: var(--cobalt-tint); border-radius: 999px; padding: .15rem .55rem; }
         h1 { font-size: clamp(3.4rem, 9vw, 8.2rem); font-weight: 800; line-height: .9; letter-spacing: -.055em; margin-top: 1.4rem; max-width: 13ch; }
         .hero-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 2rem 4rem; align-items: end; margin-top: 1.75rem; }
         .lead { font-size: clamp(1.125rem, 1.6vw, 1.3125rem); line-height: 1.5; max-width: 34rem; }
         .lead strong { color: var(--ink); font-weight: 600; }
         .cmd { display: flex; align-items: center; gap: .75rem; border: 1px solid var(--line); border-radius: 10px; padding: .35rem .35rem .35rem 1rem; background: var(--tint); font: .875rem var(--mono); }
         .cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; scrollbar-width: none; color: var(--ink); }
-        .cmd code b { color: var(--cobalt); font-weight: 500; }
+        .cmd code b { color: var(--cobalt-ink); font-weight: 500; }
         /* light shell highlighting for command lines (script adds these spans) */
         .sh-c { color: var(--code-kw); }
         .sh-s { color: var(--code-str); }
@@ -344,7 +345,7 @@
         .proof p { font-size: .9375rem; color: var(--muted); margin-top: .5rem; max-width: 15rem; }
         .proof p b { display: block; font: 700 1.0625rem/1.3 var(--display); letter-spacing: -.01em; color: var(--ink); margin-bottom: .2rem; }
         .proof a { color: var(--ink); font-weight: 600; text-decoration: none; white-space: nowrap; }
-        .proof a:hover { color: var(--cobalt); }
+        .proof a:hover { color: var(--cobalt-ink); }
         .models { margin-top: 2.5rem; padding-top: 1.4rem; border-top: 1px solid var(--line); display: flex; align-items: center; gap: .6rem 1.5rem; }
         .models small { flex: none; font: 500 .75rem var(--mono); color: var(--muted); }
         .mq { flex: 1; min-width: 0; display: flex; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
@@ -363,7 +364,7 @@
 
         /* ── Sections ── */
         section.s { padding-top: clamp(6rem, 12vw, 9.5rem); scroll-margin-top: 64px; }
-        .kick { display: block; font: 600 1.0625rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--cobalt); margin-bottom: 1.4rem; }
+        .kick { display: block; font: 600 1.0625rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--cobalt-ink); margin-bottom: 1.4rem; }
         h2 { font-size: clamp(2.5rem, 5.6vw, 4.6rem); font-weight: 800; line-height: .98; letter-spacing: -.05em; max-width: 16ch; }
         .intro { font-size: clamp(1.0625rem, 1.5vw, 1.25rem); max-width: 40rem; margin-top: 1.5rem; }
         .intro strong { color: var(--ink); font-weight: 600; }
@@ -376,7 +377,7 @@
         .vs-h { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; font-size: 1.25rem; letter-spacing: -.02em; }
         .vs-h h3 { font-size: inherit; }
         .vs-h small { font: 500 .75rem var(--mono); color: var(--muted); white-space: nowrap; }
-        .vs .new .vs-h small { color: var(--cobalt); }
+        .vs .new .vs-h small { color: var(--cobalt-ink); }
         .dg { display: block; width: 100%; height: auto; margin-top: 1.75rem; overflow: visible; font-family: var(--sans); }
         /* stacked on tablets: the 330-wide diagram at the scale of the 480-wide one above it (phones use 330 for both) */
         @media (min-width: 641px) and (max-width: 1000px) { .vs .new .dg { max-width: 68.75%; margin-inline: auto; } }
@@ -385,7 +386,7 @@
         .dg .bnd rect.breach { stroke: var(--down); filter: drop-shadow(0 0 6px var(--down)); }
         .dg.busy .bnd.us rect { filter: drop-shadow(0 0 8px color-mix(in srgb, var(--cobalt) 45%, transparent)); }
         .dg .bl text { font: 500 12.5px var(--mono); fill: var(--muted); }
-        .dg .bnd.us + .bl text { fill: var(--cobalt); }
+        .dg .bnd.us + .bl text { fill: var(--cobalt-ink); }
         .dg .nd rect { fill: var(--paper); stroke: var(--line); stroke-width: 1.5; transition: stroke .25s; }
         .dg .nd text { font-weight: 600; font-size: 14px; fill: var(--ink); text-anchor: middle; }
         .dg .nd text.sub { font: 400 12px var(--mono); fill: var(--muted); }
@@ -404,7 +405,7 @@
         .dg .wire.us path.live { stroke-width: 2.5; animation: none; }
         @keyframes dg-march { to { stroke-dashoffset: -8; } }
         .dg .wl text { font: 600 12.5px var(--mono); fill: var(--down); text-anchor: middle; }
-        .new .dg .wl text { fill: var(--cobalt); }
+        .new .dg .wl text { fill: var(--cobalt-ink); }
         /* moving marks: request packet (+ trail), streamed tokens, arrival bursts, ripples, billed coins */
         .dg .pk { fill: var(--down); stroke: var(--paper); stroke-width: 2; filter: drop-shadow(0 0 5px var(--down)); }
         .dg .pk.us { fill: var(--cobalt); filter: drop-shadow(0 0 6px var(--cobalt)); }
@@ -421,7 +422,7 @@
         .tl-meter div { display: flex; align-items: baseline; gap: .45rem; padding: .3rem .65rem; border-radius: 999px; background: color-mix(in srgb, var(--ink) 5%, transparent); font: .75rem var(--mono); }
         .tl-meter dt { color: var(--muted); }
         .tl-meter dd { margin: 0; display: inline-block; min-width: 2ch; text-align: right; font-weight: 600; color: var(--down); font-variant-numeric: tabular-nums; }
-        .new .tl-meter dd { color: var(--cobalt); }
+        .new .tl-meter dd { color: var(--cobalt-ink); }
         .vs .tl-cap { margin-top: 1rem; }
         @media (max-width: 640px) { .vs .tl-cap { min-height: 2.9em; align-items: flex-start; } .vs .tl-cap b { text-align: right; } }
         .tl-cap { display: flex; justify-content: space-between; gap: 1rem; margin-top: .55rem; font: .8125rem var(--mono); color: var(--muted); }
@@ -432,7 +433,7 @@
         .vs-facts dt { font-size: .9375rem; color: var(--muted); }
         .vs-facts .tr dt { white-space: nowrap; }
         .vs-facts dd { margin: 0; text-align: right; font: 700 1.125rem var(--display); color: var(--down); }
-        .new .vs-facts dd { color: var(--cobalt); }
+        .new .vs-facts dd { color: var(--cobalt-ink); }
         .vs-facts dd small { display: block; max-width: 30ch; margin: .25rem 0 0 auto; font: 400 .8125rem/1.4 var(--sans); color: var(--muted); }
         .vs-facts .tr dd, .new .vs-facts .tr dd { color: var(--ink); font: 600 .9375rem var(--sans); }
         .vs-def { margin-top: 1.75rem; font-size: 1.0625rem; color: var(--ink-2); }
@@ -453,7 +454,7 @@
         .c-sub { font-size: .9375rem; color: var(--muted); margin-top: -.6rem; }
         .c-foot { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 1rem; font: .75rem var(--mono); color: var(--muted); }
         .c-foot a { color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
-        .c-foot a:hover { color: var(--cobalt); }
+        .c-foot a:hover { color: var(--cobalt-ink); }
         .bubble-q { align-self: flex-end; max-width: 80%; background: var(--ink); color: var(--paper); font-size: .9375rem; padding: .6rem 1rem; border-radius: 14px 14px 3px 14px; }
         .bubble-a { font: 700 clamp(1.5rem, 2.6vw, 2.1rem)/1.15 var(--display); letter-spacing: -.035em; color: var(--ink); min-height: 1.15em; }
         .see-img { width: 100%; flex: 1; min-height: 12rem; object-fit: cover; object-position: 60% 45%; border-radius: 8px; display: block; }
@@ -468,7 +469,7 @@
         .transcript { font: 600 1.0625rem/1.45 var(--display); letter-spacing: -.015em; color: var(--muted); }
         .transcript span { transition: color .25s; }
         .transcript span.lit { color: var(--ink); }
-        .transcript span.now { color: var(--cobalt); }
+        .transcript span.now { color: var(--cobalt-ink); }
         .sim { display: grid; gap: .9rem; }
         .sim-anchor { font: 700 1.375rem var(--display); letter-spacing: -.03em; color: var(--ink); }
         .sim-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .4rem 1rem; font-size: .9375rem; }
@@ -541,7 +542,7 @@
         .bench-table .sep { border-left: 1px solid var(--line); }
         .bm-name { font: 600 .9688rem var(--sans); color: var(--ink); white-space: nowrap; }
         .bm-ref a { font: .6875rem var(--mono); color: var(--muted); text-decoration: none; word-break: break-all; }
-        .bm-ref a:hover { color: var(--cobalt); }
+        .bm-ref a:hover { color: var(--cobalt-ink); }
         .bench-table .num { font: .875rem var(--mono); color: var(--muted); text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
         .bench-table .num.j { color: var(--ink); font-weight: 600; }
         .delta { display: inline-block; font: 600 .8125rem var(--mono); padding: .1rem .5rem; border-radius: 5px; }
@@ -565,13 +566,13 @@
         .layer-n { font: .75rem var(--mono); color: var(--muted); }
         .layer-name { font: 600 1.0625rem var(--mono); color: var(--ink); text-decoration: none; }
         a.layer-name::after { content: ' \2197'; font: 400 .8125rem var(--sans); color: var(--muted); }
-        a.layer-name:hover, a.layer-name:hover::after { color: var(--cobalt); }
-        .soon { font: 500 .6875rem var(--mono); color: var(--cobalt); background: var(--cobalt-tint); border-radius: 4px; padding: .1rem .4rem; margin-left: .5rem; vertical-align: .1em; }
+        a.layer-name:hover, a.layer-name:hover::after { color: var(--cobalt-ink); }
+        .soon { font: 500 .6875rem var(--mono); color: var(--cobalt-ink); background: var(--cobalt-tint); border-radius: 4px; padding: .1rem .4rem; margin-left: .5rem; vertical-align: .1em; }
         .layer-what strong { color: var(--ink); font-weight: 600; }
         .layer-tags { font: .75rem/1.5 var(--mono); color: var(--muted); }
         .credit { margin-top: 1.1rem; max-width: 46rem; font-size: .875rem; color: var(--muted); }
         .credit a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-        .credit a:hover { color: var(--cobalt); text-decoration-color: currentColor; }
+        .credit a:hover { color: var(--cobalt-ink); text-decoration-color: currentColor; }
         .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; margin-top: 3rem; }
         .principles h3 { font-size: 1.1875rem; letter-spacing: -.02em; }
         .principles p { font-size: .9688rem; margin-top: .35rem; }
@@ -587,7 +588,7 @@
         .step, .int { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "n h" "p p" "c c"; column-gap: .7rem; align-content: start; padding: 1.4rem 0 .35rem; min-width: 0; }
         .int { grid-template-areas: "h h" "p p" "c c"; }
         .step { counter-increment: st; }
-        .step::before { content: counter(st, decimal-leading-zero); grid-area: n; font: 500 .8125rem var(--mono); color: var(--cobalt); align-self: baseline; padding-top: .3rem; }
+        .step::before { content: counter(st, decimal-leading-zero); grid-area: n; font: 500 .8125rem var(--mono); color: var(--cobalt-ink); align-self: baseline; padding-top: .3rem; }
         .step h3, .int-h { grid-area: h; }
         .step h3, .int-h h3 { font-size: 1.125rem; letter-spacing: -.02em; }
         .int-h { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; }
@@ -595,8 +596,11 @@
         .step p, .int p { grid-area: p; font-size: .9375rem; color: var(--muted); margin-top: .25rem; }
         .step pre, .int pre { grid-area: c; margin-top: .8rem !important; }
         .step p a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-        .step p a:hover { color: var(--cobalt); text-decoration-color: currentColor; }
-        .step pre, .int pre { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--code-bg); color: var(--code-text); border: 1px solid var(--line); border-radius: 8px; padding: .75rem .9rem; font: .71875rem/1.65 var(--mono); }
+        .step p a:hover { color: var(--cobalt-ink); text-decoration-color: currentColor; }
+        /* code lines wrap between tokens, never inside one: a flag or a model name split at its hyphen reads wrong */
+        :is(.step pre, .int pre) :is([class^="sh-"], .tk-s, i) { white-space: nowrap; }
+        :not(pre) > code, .nw { white-space: nowrap; }
+        .step pre, .int pre { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; background: var(--code-bg); color: var(--code-text); border: 1px solid var(--line); border-radius: 8px; padding: .75rem .9rem; font: .71875rem/1.65 var(--mono); }
         .int pre { padding-block: .8rem; font: .6875rem/1.7 var(--mono); }
         :is(.step, .int) pre b { color: var(--code-muted); font-weight: 400; }
         .int code { font: .875em var(--mono); color: var(--ink-2); }
@@ -618,7 +622,7 @@
         .code-window code { font: 500 .9063rem/1.75 var(--mono); color: var(--code-text); white-space: pre; }
         .code-fold summary { display: inline-flex; align-items: center; gap: .5rem; font: 500 .75rem var(--mono); color: var(--code-muted); border: 1px dashed var(--line-2); border-radius: 6px; padding: .1rem .6rem; cursor: pointer; user-select: none; list-style: none; transition: color .2s, border-color .2s; }
         .code-fold summary::-webkit-details-marker { display: none; }
-        .code-fold summary::before { content: '+'; color: var(--cobalt); }
+        .code-fold summary::before { content: '+'; color: var(--cobalt-ink); }
         .code-fold[open] summary::before { content: '\2212'; }
         .code-fold summary:hover { color: var(--ink); border-color: var(--cobalt); }
         .tk-c { color: var(--code-muted); font-style: italic; }
@@ -626,7 +630,7 @@
         .tk-k { color: var(--code-kw); }
         .tk-t { color: var(--code-typ); }
         .code-run { margin-top: 1rem; font: .875rem var(--mono); color: var(--ink-2); }
-        .code-run .prompt { color: var(--cobalt); }
+        .code-run .prompt { color: var(--cobalt-ink); }
         .code-run .out { color: var(--muted); }
 
         /* hero additions */
@@ -634,8 +638,8 @@
         /* the paragraph ends with two quiet links; "Contact us" is also always in the header */
         .lead-links { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; }
         .lead-links a { display: inline-flex; align-items: center; gap: .4rem; font: 600 1rem var(--sans); color: var(--ink); text-decoration: none; padding-bottom: .15rem; border-bottom: 1.5px solid var(--line-2); transition: color .2s, border-color .2s; }
-        .lead-links a:first-child { color: var(--cobalt); border-color: currentColor; }
-        .lead-links a:hover { color: var(--cobalt); border-color: currentColor; }
+        .lead-links a:first-child { color: var(--cobalt-ink); border-color: currentColor; }
+        .lead-links a:hover { color: var(--cobalt-ink); border-color: currentColor; }
         .lead-links .arr { transition: transform .3s var(--ease); }
         .lead-links a:hover .arr { transform: translateX(3px); }
         .lead-links a:hover .arr-d { transform: translateY(3px); }
@@ -647,7 +651,7 @@
         .hero-try { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; margin-top: 1rem; }
         .hero-try .hero-note { margin-top: 0; }
         .hero-note a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-        .hero-note a:hover { color: var(--cobalt); text-decoration-color: currentColor; }
+        .hero-note a:hover { color: var(--cobalt-ink); text-decoration-color: currentColor; }
         .os-tabs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 8px; }
         .os-tabs button { white-space: nowrap; font: 500 .6875rem var(--mono); color: var(--muted); background: none; border: 0; border-radius: 6px; padding: .2rem .5rem; cursor: pointer; transition: color .2s, background .2s; }
         .os-tabs button:hover { color: var(--ink); }
@@ -655,20 +659,20 @@
         .cmd-sm code[hidden] { display: none; }
         .step .os-pre { grid-area: c; margin-top: .8rem; }
         .step .os-pre pre { margin-top: .55rem !important; }
-        .stage-cap { display: flex; align-items: center; gap: .6rem; font: 500 .8125rem var(--mono); color: var(--muted); margin-bottom: .9rem; }
-        .stage-cap span { width: 8px; height: 8px; border-radius: 50%; background: #a8c1a0; box-shadow: 0 0 0 4px color-mix(in srgb, #a8c1a0 22%, transparent); animation: live 2s ease-in-out infinite; }
+        .stage-cap { display: flex; align-items: flex-start; gap: .6rem; font: 500 .8125rem var(--mono); color: var(--muted); margin-bottom: .9rem; }
+        .stage-cap span { flex: none; margin-top: calc(.5lh - 4px); width: 8px; height: 8px; border-radius: 50%; background: #a8c1a0; box-shadow: 0 0 0 4px color-mix(in srgb, #a8c1a0 22%, transparent); animation: live 2s ease-in-out infinite; }
         @keyframes live { 50% { box-shadow: 0 0 0 7px transparent; } }
 
         /* services */
         .svcs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 3.5rem; }
         .svc { position: relative; border: 1px solid var(--line); border-radius: 18px; padding: 2rem 2rem 1.75rem; min-width: 0; transition: border-color .3s, transform .4s var(--ease); }
         .svc:hover { border-color: var(--cobalt); transform: translateY(-3px); }
-        .svc-n { font: 500 .8125rem var(--mono); color: var(--cobalt); }
+        .svc-n { font: 500 .8125rem var(--mono); color: var(--cobalt-ink); }
         .svc h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.05; margin-top: 1.4rem; }
         .svc p { margin-top: .8rem; font-size: 1rem; }
         .svc ul { list-style: none; margin-top: 1.4rem; padding-top: 1.1rem; border-top: 1px solid var(--line); display: grid; gap: .45rem; }
         .svc li { font: .875rem var(--mono); color: var(--muted); padding-left: 1.4rem; position: relative; }
-        .svc li::before { content: '\2192'; position: absolute; left: 0; color: var(--cobalt); }
+        .svc li::before { content: '\2192'; position: absolute; left: 0; color: var(--cobalt-ink); }
         .svc.feat { background: light-dark(var(--console), #2a231d); border-color: light-dark(var(--console), #3d3129); color: #cdbfa9; }
         .svc.feat h3 { color: #fff; }
         .svc.feat .svc-n, .svc.feat li::before { color: #d46049; }
@@ -680,7 +684,7 @@
         .process li { counter-increment: pr; padding: .25rem 1.5rem .25rem 0; display: grid; gap: .35rem; align-content: start; }
         .process li + li { padding-left: 1.5rem; border-left: 1px solid var(--line); }
         .process b { font: 700 1.25rem var(--display); color: var(--ink); letter-spacing: -.02em; }
-        .process b::before { content: counter(pr, decimal-leading-zero) '  '; font: 500 .8125rem var(--mono); color: var(--cobalt); vertical-align: .15em; }
+        .process b::before { content: counter(pr, decimal-leading-zero) '  '; font: 500 .8125rem var(--mono); color: var(--cobalt-ink); vertical-align: .15em; }
         .process span { font-size: .9688rem; color: var(--muted); }
 
         /* contact */
@@ -727,7 +731,8 @@
         .co-story { display: grid; grid-template-columns: minmax(0, 1fr); }
         .co-story h2 span { color: #d46049; }
         .co-story p { margin-top: 1.4rem; font-size: 1.1875rem; max-width: 44rem; }
-        .co-story p + p { margin-top: .9rem; color: #f1e6d3; }
+        .co-story p + p { margin-top: .9rem; }
+        .co-story .co-goal { color: #f1e6d3; }
         .co-story .co-founder { margin-top: 1.6rem; padding-left: 1rem; border-left: 2px solid #d46049; font-size: 1.0625rem; color: #f3e7d3; }
         .co-link { color: inherit; text-decoration: underline; text-decoration-color: rgba(255,255,255,.25); text-underline-offset: 3px; }
         .co-link:hover { color: #fff; text-decoration-color: currentColor; }
@@ -779,7 +784,7 @@
 
         /* python vs java */
         .vsp-head { margin-top: 3.5rem; text-align: center; }
-        .vsp-k { font: 500 .8125rem var(--mono); color: var(--cobalt); }
+        .vsp-k { font: 500 .8125rem var(--mono); color: var(--cobalt-ink); }
         .vsp-head h3 { margin-top: .5rem; font: 800 clamp(2rem, 4.5vw, 3.25rem)/1 var(--display); letter-spacing: -.045em; }
         .vsp-x { color: var(--muted); font-weight: 600; font-size: .6em; vertical-align: .25em; margin-inline: .15em; }
         .vsp-head p { margin: .9rem auto 0; max-width: 46ch; color: var(--muted); }
@@ -788,9 +793,9 @@
         .vsp-cmp { margin: 0; border-top: 1px solid var(--line); }
         .vsp-cmp div { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem 0; border-bottom: 1px dashed var(--line); font-size: .9375rem; }
         .vsp-cmp div:last-child { border-bottom: 0; padding-bottom: 0; }
-        .vsp-cmp dt { color: var(--muted); }
+        .vsp-cmp dt { color: var(--muted); white-space: nowrap; }
         .vsp-cmp dd { margin: 0; text-align: right; font-weight: 600; color: var(--ink-2); }
-        .vsp-col.us .vsp-cmp dd { color: var(--cobalt); }
+        .vsp-col.us .vsp-cmp dd { color: var(--cobalt-ink); }
         .vsp-col { border: 1px solid var(--line); border-radius: 16px; padding: 1.4rem; display: flex; flex-direction: column; gap: .9rem; min-width: 0; background: var(--code-bg); }
         .vsp-col.us { border-color: var(--cobalt); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink) 7%, transparent); }
         .vsp-h { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .6rem 1rem; }
@@ -799,7 +804,7 @@
         .vsp-h span:last-child { font: .75rem var(--mono); color: var(--muted); }
         .vsp-code { margin: 0; font: .74rem/1.75 var(--mono); color: var(--code-text); white-space: pre; overflow-x: auto; flex: 1; }
         .vsp-run { font: .8125rem var(--mono); color: var(--ink-2); padding-top: .8rem; border-top: 1px solid var(--line); overflow-x: auto; white-space: nowrap; }
-        .vsp-run b { color: var(--cobalt); font-weight: 500; }
+        .vsp-run b { color: var(--cobalt-ink); font-weight: 500; }
         .vsp-pane { display: flex; flex-direction: column; gap: .9rem; flex: 1; min-width: 0; }
         .vsp-pane[hidden] { display: none; }
         .vsp-tabs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 8px; }
@@ -886,7 +891,7 @@
         .faq { border-top: 1px solid var(--ink); }
         .faq details { border-bottom: 1px solid var(--line); }
         .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.35rem 0; font: 600 clamp(1.125rem, 1.6vw, 1.3125rem)/1.3 var(--display); color: var(--ink); letter-spacing: -.015em; transition: color .2s; }
-        .faq summary:hover { color: var(--cobalt); }
+        .faq summary:hover { color: var(--cobalt-ink); }
         .faq summary::-webkit-details-marker { display: none; }
         .faq summary::after { content: ''; flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line-2); background: linear-gradient(var(--cobalt), var(--cobalt)) center / 10px 1.5px no-repeat, linear-gradient(var(--cobalt), var(--cobalt)) center / 1.5px 10px no-repeat; transition: transform .35s var(--ease), background-color .25s, border-color .25s; }
         .faq details[open] summary::after { transform: rotate(45deg); border-color: var(--cobalt); }
@@ -895,9 +900,9 @@
         .faq .ans-t ul li::marker { color: var(--cobalt); }
         .faq .ans-t p + p, .faq .ans-t ul + p { margin-top: .7rem; }
         .principles p a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-        .principles p a:hover { color: var(--cobalt); text-decoration-color: currentColor; }
+        .principles p a:hover { color: var(--cobalt-ink); text-decoration-color: currentColor; }
         .faq .ans-t a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-        .faq .ans-t a:hover { color: var(--cobalt); text-decoration-color: currentColor; }
+        .faq .ans-t a:hover { color: var(--cobalt-ink); text-decoration-color: currentColor; }
         @supports (interpolate-size: allow-keywords) {
             .faq { interpolate-size: allow-keywords; }
             .faq details::details-content { height: 0; overflow: hidden; opacity: 0; transition: height .4s var(--ease), opacity .3s, content-visibility .4s allow-discrete; }
@@ -915,9 +920,9 @@
         footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: .875rem; color: var(--muted); }
         .flinks { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1.4rem; }
         footer a { display: inline-flex; align-items: center; gap: .4rem; color: var(--ink-2); text-decoration: none; transition: color .2s; }
-        footer a:hover { color: var(--cobalt); }
+        footer a:hover { color: var(--cobalt-ink); }
         footer a svg { color: var(--muted); transition: color .2s; }
-        footer a:hover svg { color: var(--cobalt); }
+        footer a:hover svg { color: var(--cobalt-ink); }
         .fsoc { display: inline-flex; gap: .3rem; }
         .fsoc a { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; }
         .fsoc a svg { color: var(--ink-2); }
@@ -969,17 +974,17 @@
 
         /* Fallback for browsers without light-dark() (iOS Safari < 17.5, older Android WebViews). */
         @supports not (color: light-dark(#fff, #000)) {
-            :root { --vs-old: #ece0cb; --vs-new: #faf4e9; --paper: #f4ead8; --tint: #faf4e9; --hover: #ece0cc; --ink: #2a221c; --ink-2: #463a30; --muted: #6e6153; --line: #e1d3bb; --line-2: #d2c2a6; --cobalt: #a13f2e; --cobalt-tint: #ebdcc4; --card: #ece0cb; --band: #a13f2e; --logo-c: #a13f2e; --band-deep: #862f22; --up: #5c7a52; --down: #a8741a; --code-bg: #f9f2e6; --code-text: #3a2f26; --code-muted: #8a7c6c; --code-kw: #a13f2e; --code-str: #5f7230; --code-typ: #8a5a1c; --code-line: #e1d3bb; }
+            :root { --vs-old: #ece0cb; --vs-new: #faf4e9; --paper: #f4ead8; --tint: #faf4e9; --hover: #ece0cc; --ink: #2a221c; --ink-2: #463a30; --muted: #6e6153; --line: #e1d3bb; --line-2: #d2c2a6; --cobalt: #a13f2e; --cobalt-ink: #a13f2e; --cobalt-tint: #ebdcc4; --card: #ece0cb; --band: #a13f2e; --logo-c: #a13f2e; --band-deep: #862f22; --up: #5c7a52; --down: #a8741a; --code-bg: #f9f2e6; --code-text: #3a2f26; --code-muted: #8a7c6c; --code-kw: #a13f2e; --code-str: #5f7230; --code-typ: #8a5a1c; --code-line: #e1d3bb; }
             .console { --c-bg: #f9f2e6; --c-line: #e1d3bb; --c-text: #3a2f26; --c-strong: #2a221c; --c-muted: #6e6153; --c-faint: #a8988a; --c-chip: rgba(42, 34, 28, .06); --c-dot: rgba(42, 34, 28, .14); --c-accent: #a13f2e; --c-tok: #c4553e; --c-ok: #5c7a52; --c-k: #a13f2e; --c-s: #5f7230; --c-t: #8a5a1c; --c-c: #8a7c6c; }
             .console { box-shadow: 0 40px 80px -40px rgba(42, 34, 28, .22); }
             .svc.feat { background: var(--console); border-color: var(--console); }
             @media (prefers-color-scheme: dark) {
-                :root:not([data-theme="light"]) { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #e66a3f; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #e66a3f; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #8a7c6c; --code-kw: #e8724a; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
+                :root:not([data-theme="light"]) { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #d1563d; --cobalt-ink: #eb6347; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #d1563d; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #8a7c6c; --code-kw: #eb6347; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
                 :root:not([data-theme="light"]) .console { --c-bg: #221b16; --c-line: rgba(241, 230, 211, .08); --c-text: #efe4d2; --c-strong: #f4ead8; --c-muted: #a89a87; --c-faint: #6e6052; --c-chip: rgba(241, 230, 211, .08); --c-dot: rgba(241, 230, 211, .14); --c-accent: #d1563d; --c-tok: #dc6c52; --c-ok: #a8c1a0; --c-k: #d46049; --c-s: #b4c27a; --c-t: #d6a35c; --c-c: #8a7c6c; }
                 :root:not([data-theme="light"]) .console { box-shadow: 0 40px 80px -40px rgba(30, 14, 10, .55); }
                 :root:not([data-theme="light"]) .svc.feat { background: #2a231d; border-color: #3d3129; }
             }
-            :root[data-theme="dark"] { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #e66a3f; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #e66a3f; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #8a7c6c; --code-kw: #e8724a; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
+            :root[data-theme="dark"] { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #d1563d; --cobalt-ink: #eb6347; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #d1563d; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #8a7c6c; --code-kw: #eb6347; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
             :root[data-theme="dark"] .console { --c-bg: #221b16; --c-line: rgba(241, 230, 211, .08); --c-text: #efe4d2; --c-strong: #f4ead8; --c-muted: #a89a87; --c-faint: #6e6052; --c-chip: rgba(241, 230, 211, .08); --c-dot: rgba(241, 230, 211, .14); --c-accent: #d1563d; --c-tok: #dc6c52; --c-ok: #a8c1a0; --c-k: #d46049; --c-s: #b4c27a; --c-t: #d6a35c; --c-c: #8a7c6c; }
             :root[data-theme="dark"] .console { box-shadow: 0 40px 80px -40px rgba(30, 14, 10, .55); }
             :root[data-theme="dark"] .svc.feat { background: #2a231d; border-color: #3d3129; }
@@ -1090,7 +1095,7 @@
 }</span></pre></div>
                         <div class="con-out">
                             <div class="cmdl" id="con-cmd"><b>$ </b>jbang Chat.java</div>
-                            <div class="log" id="con-log"><div><span class="ok">&check;</span> LFM2.5-350M · Q8_0 loaded, in-process</div></div>
+                            <div class="log" id="con-log"><div><span class="ok">&check;</span> LFM2.5-350M · Q8_0 loaded, <span class="nw">in-process</span></div></div>
                             <div class="ans caret" id="con-ans" aria-live="polite">The capital of France is Paris.</div>
                             <div class="tags"><span>pure Java</span><span>0 network calls</span><span id="con-model">CPU</span></div>
                         </div>
@@ -1102,7 +1107,7 @@
                 <div class="rv"><div class="fig"><span data-stat="pp">1.85</span><small>&times;</small></div><p><b>Faster prompts</b>than llama.cpp, median on CPU. <a href="#benchmarks">The data &rarr;</a></p></div>
                 <div class="rv" style="--d:.06s"><div class="fig">19<small>+</small></div><p><b>Model architectures</b>text, vision, audio and speech.<br>Popular open-weight models, out of the box.</p></div>
                 <div class="rv" style="--d:.12s"><div class="fig">0</div><p><b>API keys</b>no accounts, no quotas, no bills.<br>AI as a library.</p></div>
-                <div class="rv" style="--d:.18s"><div class="fig">6</div><p><b>Layers, built in-house</b>for the JVM, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
+                <div class="rv" style="--d:.18s"><div class="fig">100<small class="u">%</small></div><p><b>Built from first principles</b>for the JVM, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
             </div>
             <div class="models rv"><small>Supported model families</small><div class="mq"><div class="mq-t"><span>Gemma<i>Google</i></span><span>Qwen<i>Alibaba</i></span><span>GPT-OSS<i>OpenAI</i></span><span>Llama<i>Meta</i></span><span>Ministral<i>Mistral AI</i></span><span>Granite<i>IBM</i></span><span>Nemotron<i>NVIDIA</i></span><span>LFM<i>Liquid AI</i></span><span>Mellum<i>JetBrains</i></span><span>SmolLM<i>Hugging Face</i></span><span>MiniCPM<i>OpenBMB</i></span><span>Bonsai<i>PrismML</i></span><span>Ling<i>inclusionAI</i></span><span>Laguna<i>Poolside</i></span><span>Parakeet<i>NVIDIA</i></span><span>Kokoro<i>hexgrad</i></span><span>Inflect<i>Owen Song</i></span></div><div class="mq-t" aria-hidden="true"><span>Gemma<i>Google</i></span><span>Qwen<i>Alibaba</i></span><span>GPT-OSS<i>OpenAI</i></span><span>Llama<i>Meta</i></span><span>Ministral<i>Mistral AI</i></span><span>Granite<i>IBM</i></span><span>Nemotron<i>NVIDIA</i></span><span>LFM<i>Liquid AI</i></span><span>Mellum<i>JetBrains</i></span><span>SmolLM<i>Hugging Face</i></span><span>MiniCPM<i>OpenBMB</i></span><span>Bonsai<i>PrismML</i></span><span>Ling<i>inclusionAI</i></span><span>Laguna<i>Poolside</i></span><span>Parakeet<i>NVIDIA</i></span><span>Kokoro<i>hexgrad</i></span><span>Inflect<i>Owen Song</i></span></div></div></div>
         </div>
@@ -1115,8 +1120,9 @@
                 <div class="co-story rv">
                     <span class="co-k">The company</span>
                     <h2>AI on the JVM? <span>Quixotic.</span></h2>
-                    <p>It started in 2023 with a prototype: <a class="co-link" href="https://github.com/mukel/llama2.java" target="_blank" rel="noopener noreferrer">llama2.java</a>, a language model in a single file of pure Java, written by <a class="co-link" href="https://www.linkedin.com/in/alfonso2peterssen" target="_blank" rel="noopener noreferrer">Alfonso² Peterssen</a>, formerly a senior researcher on the <a class="co-link" href="https://www.graalvm.org/" target="_blank" rel="noopener noreferrer">GraalVM</a> team. The prototype became a hobby, and the hobby became a company. Today Quixotic AI is the umbrella for several open-source projects, each usable on its own, that together form an end-to-end AI stack. The focus on performance is relentless: Quixotic AI now maintains the largest Vector API codebase in the world, outside the JDK itself.</p>
-                    <p>The goal is simple: AI inside the applications businesses rely on, running on their own hardware. The JVM is our specialty: a superb platform, our deepest expertise, and a place where serious AI barely existed. But local AI goes wherever software runs.</p>
+                    <p>It started in 2023 with a prototype: <a class="co-link" href="https://github.com/mukel/llama2.java" target="_blank" rel="noopener noreferrer">llama2.java</a>, a language model in a single file of pure Java, written by <a class="co-link" href="https://www.linkedin.com/in/alfonso2peterssen" target="_blank" rel="noopener noreferrer">Alfonso² Peterssen</a>, formerly a senior researcher on the <a class="co-link" href="https://www.graalvm.org/" target="_blank" rel="noopener noreferrer">GraalVM</a> team. The prototype became a hobby, and the hobby became a company.</p>
+                    <p>Today, Quixotic AI is the umbrella for several open-source components that together form an end-to-end AI stack for the JVM. The focus on performance is relentless: Quixotic AI now maintains the largest Vector API codebase in the world, outside the JDK itself.</p>
+                    <p class="co-goal">The goal is simple: AI inside the software that businesses already run, on the same hardware. The JVM is our specialty: a sublime platform, our deepest expertise, and a place where serious AI barely existed. But local AI goes wherever software runs.</p>
                     <p class="co-founder">Every layer is built in-house, so nothing is out of reach, from the tokenizers and kernels to the engine itself.</p>
                 </div>
             </div>
@@ -1201,7 +1207,7 @@
                     <span class="svc-n">01</span>
                     <h3>AI inside your application</h3>
                     <p>Chat, document understanding, transcription and semantic search, built into your existing Java services with Spring AI or LangChain4j. No model server to run.</p>
-                    <ul><li>Architecture and model selection</li><li>Integration in your codebase</li><li>On-premises or air-gapped deployment</li></ul>
+                    <ul><li>Architecture and model selection</li><li>Integration in your codebase</li><li><span class="nw">On-premises</span> or <span class="nw">air-gapped</span> deployment</li></ul>
                 </article>
                 <article class="svc">
                     <span class="svc-n">02</span>
@@ -1213,13 +1219,13 @@
                     <span class="svc-n">03</span>
                     <h3>Private and sovereign AI</h3>
                     <p>For regulated data that must not leave the building: models that run entirely inside your process and your network, with nothing sent to third parties. Customization and fine-tuning too: we provide the engine and validate the pipeline, you run it in-house. We never see your data or the resulting weights.</p>
-                    <ul><li>Models you control</li><li>No external API calls</li><li>Zero-access fine-tuning</li><li>Auditable, in-house stack</li></ul>
+                    <ul><li>Models you control</li><li>No external API calls</li><li><span class="nw">Zero-access</span> <span class="nw">fine-tuning</span></li><li>Auditable, <span class="nw">in-house</span> stack</li></ul>
                 </article>
                 <article class="svc">
                     <span class="svc-n">04</span>
                     <h3>Custom models and runtimes</h3>
                     <p>Your use case, your model. We run your fine-tuned models, add support for new architectures, and ship them as GraalVM native binaries, or onto edge devices and unusual hardware. If it needs to run on the JVM, we can build it.</p>
-                    <ul><li>Fine-tuning</li><li>New model architectures</li><li>Single-binary native builds</li><li>Edge and embedded targets</li></ul>
+                    <ul><li>Fine-tuning</li><li>New model architectures</li><li><span class="nw">Single-binary</span> native builds</li><li>Edge and embedded targets</li></ul>
                 </article>
             </div>
             <h3 class="process-h rv">How we work</h3>
@@ -1280,7 +1286,7 @@
                     <div class="c-head"><h3>Fits your stack</h3><span>GGUF</span></div>
                     <p class="c-sub" style="margin-top:0">Drop-in support for both Spring AI and LangChain4j, the APIs Java teams already use.</p>
                     <div class="plugs"><span>Spring AI</span><span>LangChain4j</span><span>jinfer CLI</span><span>OpenAI-compatible server</span><span>GraalVM Native Image</span><span>Maven Central</span></div>
-                    <div class="c-foot"><span>jinfer-spring-ai · jinfer-langchain4j</span><a href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer">Docs on GitHub &rarr;</a></div>
+                    <div class="c-foot"><span><span class="nw">jinfer-spring-ai</span>&nbsp;· <span class="nw">jinfer-langchain4j</span></span><a href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer">Docs on GitHub &rarr;</a></div>
                 </article>
             </div>
         </div>
@@ -1290,7 +1296,7 @@
     <section class="band" id="performance">
         <div class="wrap">
             <div class="rv"><span class="kick">04 · Performance</span>
-                <h2>Faster than native <span class="nw">inference engines.</span> <span class="soft">In Java.</span></h2>
+                <h2>Faster than native inference engines. <span class="soft">In Java.</span></h2>
                 <p class="intro">An engine <strong>reads the prompt</strong>, then <strong>writes the answer</strong> one token (roughly a word-piece) at a time. We measure both against llama.cpp, the de facto standard for local inference. jinfer reads prompts faster and writes at the same speed: the kind of result we bring to client systems.</p>
             </div>
             <div class="big rv">
@@ -1322,12 +1328,12 @@
     <section class="s" id="stack">
         <div class="wrap">
             <div class="rv"><span class="kick">05 · The stack</span>
-                <h2>Every component, <span class="c">written by us.</span></h2>
-                <p class="intro">Most teams wrap someone else's engine. We wrote ours from the file format up, in pure Java, and maintain the largest Vector API codebase in the world, outside the JDK itself. Every component works standalone: use the whole stack, or just the parts you need.</p>
+                <h2>Every component, <span class="c">developed in-house.</span></h2>
+                <p class="intro">Designed for the JVM from the ground up, from the model formats and tokenizers to the hand-tuned kernels. Along the way, the stack became the largest Vector API codebase in the world, outside the JDK itself. Each component also works on its own: use the whole stack, or just the parts you need.</p>
             </div>
             <ol class="layers rv">
                 <li class="layer"><span class="layer-n">01</span><span class="layer-name">your app</span><span class="layer-what"><strong>Plugs into what you already run.</strong></span><span class="layer-tags">Spring AI&nbsp;· LangChain4j&nbsp;· GraalVM</span></li>
-                <li class="layer"><span class="layer-n">02</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jinfer" target="_blank" rel="noopener noreferrer">jinfer</a><span class="layer-what"><strong>The inference engine.</strong> Runs AI models within the JVM, at native speed.</span><span class="layer-tags">chat&nbsp;· vision&nbsp;· embeddings&nbsp;· speech-to-text&nbsp;· text-to-speech&nbsp;· decision models</span></li>
+                <li class="layer"><span class="layer-n">02</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jinfer" target="_blank" rel="noopener noreferrer">jinfer</a><span class="layer-what"><strong>The inference engine.</strong> Runs AI models within the JVM, at native speed.</span><span class="layer-tags">chat&nbsp;· vision&nbsp;· embeddings&nbsp;· <span class="nw">speech-to-text</span>&nbsp;· <span class="nw">text-to-speech</span>&nbsp;· decision models</span></li>
                 <li class="layer"><span class="layer-n">03</span><span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jota" target="_blank" rel="noopener noreferrer">jota</a><span class="soon">soon</span></span><span class="layer-what"><strong>One tensor API, every chip.</strong> Write once, accelerate everywhere.</span><span class="layer-tags">Java&nbsp;· C&nbsp;· CUDA&nbsp;· HIP&nbsp;· Metal&nbsp;· OpenCL&nbsp;· Mojo</span></li>
                 <li class="layer"><span class="layer-n">04</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/jam" target="_blank" rel="noopener noreferrer">jam</a><span class="layer-what"><strong>Just a matmul.</strong> State-of-the-art quantized matrix multiplication: hand-tuned kernels for several instruction sets, with a pure-Java fallback on the Vector API.</span><span class="layer-tags">SSE3&nbsp;· AVX2&nbsp;· AVX-512&nbsp;· VNNI&nbsp;· NEON&nbsp;· DOTPROD&nbsp;· I8MM&nbsp;· Metal</span></li>
                 <li class="layer"><span class="layer-n">05</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/toknroll" target="_blank" rel="noopener noreferrer">toknroll</a><span class="layer-what"><strong>Fast, token-perfect tokenizers.</strong> Matches the Hugging Face and llama.cpp reference tokenizers token for token, verified by parity tests, while staying competitive with native implementations. Pure Java, zero dependencies.</span><span class="layer-tags">tiktoken&nbsp;· Hugging Face&nbsp;· llama.cpp</span></li>

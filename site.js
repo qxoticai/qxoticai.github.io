@@ -13,6 +13,8 @@ function toggleTheme(btn) {
 }
 document.querySelectorAll('.theme-toggle, .theme-toggle-m').forEach(function (b) { b.addEventListener('click', function () { toggleTheme(b); }); });
 
+/* Reduced motion stops movement: sliding reveals, smooth scrolling, flying packets, spinning icons.
+   Text that types in place still plays: it moves nothing, and it is the demo itself. */
 var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (location.hash === '#explore') history.replaceState(null, '', '#benchmarks');   // old links keep working
 
@@ -89,7 +91,6 @@ var runs = new WeakMap();
 function claim(el) { var id = (runs.get(el) || 0) + 1; runs.set(el, id); return id; }
 function stream(el, text, done) {
   var id = claim(el);
-  if (calm) { el.textContent = text; if (done) done(); return; }
   el.textContent = '';
   var toks = text.match(/\s*[^\s]{1,5}/g) || [], i = 0;
   (function step() {
@@ -102,7 +103,6 @@ function stream(el, text, done) {
 function typeIn(el, html, done) {
   var id = claim(el);
   el.innerHTML = html;
-  if (calm) { if (done) done(); return; }
   var walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nodes = [], n;
   while ((n = walk.nextNode())) { nodes.push([n, n.textContent]); n.textContent = ''; }
   var k = 0, pos = 0;
@@ -134,7 +134,7 @@ function typeIn(el, html, done) {
   var con = document.getElementById('console'), code = document.getElementById('con-code'), cmd = document.getElementById('con-cmd'),
       log = document.getElementById('con-log'), ans = document.getElementById('con-ans'), status = document.getElementById('con-status'),
       prog = document.getElementById('con-prog'), copyBtn = document.getElementById('con-copy'), tabs = document.querySelectorAll('.ctab'),
-      k = 0, seq = 0, timer = 0, spin = 0, visible = true, hover = false, HOLD = 5200;
+      k = 0, seq = 0, timer = 0, spin = 0, visible = true, hover = false, started = false, HOLD = 5200;
   var FR = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏';
 
   function fold(label, body) {
@@ -149,7 +149,7 @@ function typeIn(el, html, done) {
       tail: p.tail ? '\n\n' + fold('helper code', p.tail) : ''
     };
   }
-  function loaded(d) { return '<div><span class="ok">&check;</span> ' + d.model + ' loaded, in-process</div><div>' + d.input + '</div>'; }
+  function loaded(d) { return '<div><span class="ok">&check;</span> ' + d.model + ' loaded, <span class="nw">in-process</span></div><div>' + d.input + '</div>'; }
   function select(n) { tabs.forEach(function (t, i) { t.classList.toggle('on', i === n); t.setAttribute('aria-selected', i === n ? 'true' : 'false'); }); }
   function gen(on) { status.classList.toggle('gen', on); status.textContent = on ? 'generating' : 'in-process'; ans.classList.toggle('live', on); }
 
@@ -158,6 +158,7 @@ function typeIn(el, html, done) {
 
   function show(n) {
     var my = ++seq, d = demos[n];
+    started = true;
     k = n; select(n);
     clearTimeout(timer); clearInterval(spin);
     prog.classList.remove('run');
@@ -167,11 +168,6 @@ function typeIn(el, html, done) {
     d.ready.then(function () {
       if (my !== seq) return;
       var p = parts(d);
-      if (calm) {
-        code.innerHTML = p.head + '<span class="cmain">' + p.main + '</span>' + p.tail;
-        cmd.innerHTML = '<b>$ </b>jbang ' + d.file; log.innerHTML = loaded(d); ans.textContent = d.out;
-        return;
-      }
       code.classList.add('swap');
       timer = setTimeout(function () {
         if (my !== seq) return;
@@ -209,12 +205,17 @@ function typeIn(el, html, done) {
     if (!visible || hover || document.hidden || con.querySelector('details[open]')) { timer = setTimeout(next, 500); return; }
     show((k + 1) % demos.length);
   }
-  if (!calm) {
-    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(con);
-    con.addEventListener('mouseenter', function () { hover = true; });
-    con.addEventListener('mouseleave', function () { hover = false; });
-  }
-  timer = setTimeout(function () { show(0); }, calm ? 0 : 1100);   // a tab click before this cancels it
+  new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(con);
+  // the first demo plays where it can be seen: on load on desktop, on scrolling to it on phones,
+  // and never sooner than 1.1 s after load (a tab click before then starts it instead)
+  new IntersectionObserver(function (es, io) {
+    if (!es[0].isIntersecting) return;
+    io.disconnect();
+    if (!started) timer = setTimeout(function () { show(0); }, Math.max(0, 1100 - performance.now()));
+  }, { threshold: .35 }).observe(con);
+  // only a mouse pauses the demos: a tap reports pointerenter without a pointerleave
+  con.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') hover = true; });
+  con.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') hover = false; });
 })();
 
 /* ── Reveal on scroll + active section in nav ── */
@@ -259,15 +260,14 @@ document.querySelectorAll('nav.links a').forEach(function (a) { var s = document
     var chat = grid.querySelector('.bubble-a'), see = grid.querySelector('.see-a');
     // hold the final height while the answers type in, so nothing below jumps
     [chat, see].forEach(function (el) { el.style.minHeight = el.offsetHeight + 'px'; setTimeout(function () { el.style.minHeight = ''; }, 9000); });
-    if (!calm) { chat.textContent = ''; see.textContent = ''; }
+    chat.textContent = ''; see.textContent = '';
     setTimeout(function () { stream(chat, chat.dataset.type); }, 700);
     setTimeout(function () { stream(see, see.dataset.type); }, 1200);
     grid.querySelectorAll('.sim-row').forEach(function (row) {
       var bar = row.querySelector('.sim-bar i'), num = row.querySelector('b'), target = parseFloat(bar.dataset.w) / 100;
-      if (!calm) num.textContent = '0.000';
+      num.textContent = '0.000';
       setTimeout(function () {
         bar.style.width = bar.dataset.w + '%';
-        if (calm) return;
         var t0 = performance.now();
         (function tick(now) {
           var p = Math.min(1, (now - t0) / 1400), e = 1 - Math.pow(1 - p, 4);
@@ -667,7 +667,6 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
 
 /* Headline figures count up once, when they come into view. */
 (function () {
-  if (calm) return;
   var figs = [];
   document.querySelectorAll('.proof .fig, .big-fig').forEach(function (fig) {
     var n = fig.querySelector('[data-stat]');
