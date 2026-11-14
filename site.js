@@ -126,7 +126,8 @@ function typeIn(el, html, done) {
   var demos = [
     { file: 'Chat.java', model: 'LFM2.5-350M · Q8_0', input: '<span class="in">&#8627; prompt</span><q>What is the capital of France?</q>', out: 'The capital of France is Paris.' },
     { file: 'Vision.java', model: 'LFM2.5-VL-3B · Q8_0', input: '<span class="in">&#8627; image</span><img src="snippets/consuegra.webp" alt="" decoding="async"> consuegra.jpg', out: 'I see a picturesque scene of several traditional windmills standing tall on a hill under a clear blue sky. …' },
-    { file: 'Parakeet.java', model: 'Parakeet TDT 0.6B · Q8_0', input: '<span class="in">&#8627; audio</span>' + wave + ' jfk.wav · 11 s', out: 'And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.' }
+    { file: 'Parakeet.java', model: 'Parakeet TDT 0.6B · Q8_0', input: '<span class="in">&#8627; audio</span>' + wave + ' jfk.wav · 11 s', out: 'And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.' },
+    { file: 'Decision.java', model: 'd1-2B · Q8_0', input: '<span class="in">&#8627; 3 comments</span> on Star Wars', out: '0.02  The asteroid field chase is the best scene.\n0.75  [SPOILER]\n0.10  Han Solo is the coolest character.', mono: true }
   ];
   demos.forEach(function (d) {
     d.ready = window.qxText('snippets/' + d.file).then(function (t) { d.text = t.replace(/\r\n/g, '\n'); return d; });
@@ -172,6 +173,7 @@ function typeIn(el, html, done) {
       timer = setTimeout(function () {
         if (my !== seq) return;
         cmd.innerHTML = ''; log.innerHTML = ''; ans.innerHTML = '';
+        ans.classList.toggle('mono', !!d.mono);   // printed output, kept exactly as the program prints it
         code.innerHTML = p.head + '<span class="cmain"></span>' + p.tail;
         code.classList.remove('swap');
         typeIn(code.querySelector('.cmain'), p.main, function () {

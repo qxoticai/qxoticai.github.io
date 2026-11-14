@@ -45,6 +45,7 @@ Single-file Java programs, run with `jbang <file>`:
 - [Audio.java](https://qxotic.ai/snippets/Audio.java): transcription with Gemma 4.
 - [TextToSpeech.java](https://qxotic.ai/snippets/TextToSpeech.java): text-to-speech.
 - [Embed.java](https://qxotic.ai/snippets/Embed.java): embeddings and semantic similarity.
+- [Decision.java](https://qxotic.ai/snippets/Decision.java): a spoiler shield on a decision model, answering with probabilities instead of generated text.
 
 ## Services
 

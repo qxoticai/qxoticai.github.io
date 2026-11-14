@@ -328,6 +328,7 @@
         .mini-wave { display: inline-flex; gap: 2px; align-items: center; height: 14px; flex: none; }
         .mini-wave i { width: 2px; border-radius: 1px; background: var(--c-accent); }
         .ans { font: 500 1.0625rem/1.55 var(--sans); color: var(--c-strong); min-height: 5em; }
+        .ans.mono { font: 500 .8125rem/1.75 var(--mono); white-space: pre-wrap; }
         .ans.caret::after { content: ''; display: inline-block; width: .5em; height: 1.05em; margin-left: 2px; vertical-align: -.15em; background: var(--c-accent); animation: blink 1s steps(2) infinite; }
         .ans.live::after { animation: none; }
         @keyframes blink { 50% { opacity: 0; } }
@@ -874,7 +875,10 @@
         /* the hero console's bar keeps its tabs whole: small tablets drop the status,
            phones the copy button and ".java" (the demo there is to watch, not to copy) */
         @media (max-width: 719px) { .cbar .status { display: none; } }
-        @media (max-width: 599px) { .cbar-r, .ctab .ext { display: none; } }
+        @media (max-width: 599px) { .cbar-r { display: none; } }
+        @media (max-width: 899px) { .ctab .ext { display: none; } }
+        @media (max-width: 389px) { .ctab { padding-inline: .5rem; } }
+        @media (max-width: 359px) { .ctab { padding-inline: .4rem; font-size: .75rem; } }
         @media (max-width: 359px) {
             header .btn-sm { padding-inline: .7rem; }
             header .theme-toggle { width: 38px; height: 38px; }
@@ -1078,6 +1082,7 @@
                             <button type="button" role="tab" class="ctab on" aria-selected="true">Chat<span class="ext">.java</span></button>
                             <button type="button" role="tab" class="ctab" aria-selected="false">Vision<span class="ext">.java</span></button>
                             <button type="button" role="tab" class="ctab" aria-selected="false">Parakeet<span class="ext">.java</span></button>
+                            <button type="button" role="tab" class="ctab" aria-selected="false">Decision<span class="ext">.java</span></button>
                         </div>
                         <div class="cbar-r">
                             <span class="status" id="con-status">in-process</span>
@@ -1456,6 +1461,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                     <button class="code-tab" data-tab="parakeet">Parakeet.java</button>
                     <button class="code-tab" data-tab="vision">Vision.java</button>
                     <button class="code-tab" data-tab="embed">Embed.java</button>
+                    <button class="code-tab" data-tab="decision">Decision.java</button>
                 </div>
                 <div class="code-panel active" id="panel-chat"><div class="jbang" data-src="snippets/Chat.java" data-out="# &quot;The capital of France is Paris.&quot;"><p class="code-run"><a href="snippets/Chat.java">Chat.java</a></p></div></div>
                 <div class="code-panel" id="panel-tts"><div class="jbang" data-src="snippets/TextToSpeech.java" data-out="# kokoro.wav · seven seconds, in a warm voice · Kokoro-82M"><p class="code-run"><a href="snippets/TextToSpeech.java">TextToSpeech.java</a></p></div></div>
@@ -1463,6 +1469,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                 <div class="code-panel" id="panel-parakeet"><div class="jbang" data-src="snippets/Parakeet.java" data-out="# &quot;And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.&quot;"><p class="code-run"><a href="snippets/Parakeet.java">Parakeet.java</a></p></div></div>
                 <div class="code-panel" id="panel-vision"><div class="jbang" data-src="snippets/Vision.java" data-out="# &quot;I see a picturesque scene of several traditional windmills standing tall on a hill under a clear blue sky. …&quot;"><p class="code-run"><a href="snippets/Vision.java">Vision.java</a></p></div></div>
                 <div class="code-panel" id="panel-embed"><div class="jbang" data-src="snippets/Embed.java" data-out="# similar 0.607 · unrelated 0.081"><p class="code-run"><a href="snippets/Embed.java">Embed.java</a></p></div></div>
+                <div class="code-panel" id="panel-decision"><div class="jbang" data-src="snippets/Decision.java" data-out="# 0.02 · 0.75 [SPOILER] · 0.10"><p class="code-run"><a href="snippets/Decision.java">Decision.java</a></p></div></div>
             </div>
         </div>
     </section>
