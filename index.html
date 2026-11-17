@@ -172,7 +172,8 @@
 
         /* ── Nav ── */
         header.top { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--paper) 86%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid transparent; transition: border-color .3s; }
-        @media (hover: none) { header.top { -webkit-backdrop-filter: none; backdrop-filter: none; background: color-mix(in srgb, var(--paper) 96%, transparent); } }
+        /* touch screens skip the blur (scroll cost), so the bar must be opaque or text shows through it */
+        @media (hover: none) { header.top { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--paper); } }
         header.top.stuck { border-bottom-color: var(--line); }
         header.top > .wrap { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
         .logo { display: inline-flex; align-items: center; gap: .45rem; font: 800 1.5rem var(--display); letter-spacing: -.035em; color: var(--ink); text-decoration: none; white-space: nowrap; }
@@ -1288,7 +1289,7 @@
                     <div class="c-foot"><span>TextToSpeech.java</span><a href="#code" data-tab-link="tts">View code &rarr;</a></div>
                 </article>
                 <article class="cell b-plug">
-                    <div class="c-head"><h3>Fits your stack</h3><span>GGUF</span></div>
+                    <div class="c-head"><h3>Fits your stack</h3><span>Spring AI · LangChain4j · GraalVM</span></div>
                     <p class="c-sub" style="margin-top:0">Drop-in support for both Spring AI and LangChain4j, the APIs Java teams already use.</p>
                     <div class="plugs"><span>Spring AI</span><span>LangChain4j</span><span>jinfer CLI</span><span>OpenAI-compatible server</span><span>GraalVM Native Image</span><span>Maven Central</span></div>
                     <div class="c-foot"><span><span class="nw">jinfer-spring-ai</span>&nbsp;· <span class="nw">jinfer-langchain4j</span></span><a href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer">Docs on GitHub &rarr;</a></div>
