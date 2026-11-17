@@ -532,7 +532,7 @@
         .bench-pill:hover { border-color: var(--ink); color: var(--ink); }
         .bench-pill.active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
         .bench-pill[data-tip]:hover::after, .bench-pill[data-tip]:focus-visible::after { content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + .5rem); transform: translateX(-50%); background: var(--ink); color: var(--paper); font: .75rem var(--sans); padding: .35rem .7rem; border-radius: 6px; white-space: nowrap; pointer-events: none; z-index: 10; }
-        .bench-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+        .bench-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--code-bg); }   /* a data panel, like the code windows */
         .bench-wrap.flash { animation: flash 1.2s var(--ease); }
         @keyframes flash { from { box-shadow: 0 0 0 3px var(--cobalt); } to { box-shadow: 0 0 0 3px transparent; } }
         .bench-table { width: 100%; min-width: 700px; border-collapse: collapse; }
@@ -1346,7 +1346,7 @@
                 <li class="layer"><span class="layer-n">06</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/gguf" target="_blank" rel="noopener noreferrer">gguf</a><span class="layer-what"><strong>GGUF reader and writer.</strong> llama.cpp's model format, in pure Java, with zero dependencies.</span><span class="layer-tags">GGUF&nbsp;· quantized models</span></li>
                 <li class="layer"><span class="layer-n">07</span><a class="layer-name" href="https://github.com/qxoticai/qxotic/tree/main/safetensors" target="_blank" rel="noopener noreferrer">safetensors</a><span class="layer-what"><strong>Safetensors reader and writer.</strong> Hugging Face's model format, in pure Java, with zero dependencies.</span><span class="layer-tags">Safetensors&nbsp;· Hugging Face</span></li>
             </ol>
-            <p class="credit rv">With gratitude to <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener noreferrer">llama.cpp</a>, <a href="https://huggingface.co/" target="_blank" rel="noopener noreferrer">Hugging Face</a> and the entire open-model community. We build on your work.</p>
+            <p class="credit rv">None of this would exist without <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener noreferrer">llama.cpp</a>, <a href="https://huggingface.co/" target="_blank" rel="noopener noreferrer">Hugging&nbsp;Face</a> and every lab or person who releases open&nbsp;weights. <span class="nw">Thank you for building in the open.</span></p>
             <div class="principles rv">
                 <div><h3>No second runtime</h3><p>No Python, no ONNX, no glue code. Models run where your Java code runs.</p></div>
                 <div><h3>One binary</h3><p>100% GraalVM Native Image compatible, out of the box. Your application and the engine compile into one self-contained executable, no JVM required. Small models can be shipped inside the executable.</p></div>

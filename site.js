@@ -16,7 +16,21 @@ document.querySelectorAll('.theme-toggle, .theme-toggle-m').forEach(function (b)
 /* Reduced motion stops movement: sliding reveals, smooth scrolling, flying packets, spinning icons.
    Text that types in place still plays: it moves nothing, and it is the demo itself. */
 var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (location.hash === '#explore') history.replaceState(null, '', '#benchmarks');   // old links keep working
+
+/* Addresses: state lives in the query (?demo=Embed.java, ?bench=gemma4:Q4_0) and the hash is always a real
+   #section, so the browser itself lands on it however you arrive: a link, a reload, the same address again. */
+function pageUrl(set, hash) {   // the current query with `set` applied (null deletes), plus a #section
+  var q = new URLSearchParams(location.search);
+  Object.keys(set).forEach(function (k) { if (set[k] == null) q.delete(k); else q.set(k, set[k]); });
+  var s = q.toString().replace(/%3A/gi, ':');   // ?bench=gemma4:Q4_0 reads better than gemma4%3AQ4_0
+  return location.pathname + (s ? '?' + s : '') + hash;
+}
+(function () {   // old links keep working: #explore, and #bench=family:quant from before the query
+  var old = /^#bench=(.+)$/.exec(location.hash);
+  if (old) history.replaceState(null, '', pageUrl({ bench: decodeURIComponent(old[1]) }, '#benchmarks'));
+  else if (location.hash === '#explore' || (!location.hash && new URLSearchParams(location.search).has('bench')))
+    history.replaceState(null, '', pageUrl({}, '#benchmarks'));
+})();
 
 /* ── Nav hairline once scrolled: a sentinel at the top of the page, no scroll listener ── */
 (function () {
@@ -53,7 +67,7 @@ function openTab(name, push) {
   var panel = document.getElementById('panel-' + name); panel.classList.add('active');
   var snip = panel.querySelector('.jbang'); if (snip && window.qxRender) window.qxRender(snip);
   var bar = tab.parentNode; bar.scrollLeft = tab.offsetLeft - bar.offsetLeft - 16;
-  if (push) history.replaceState(null, '', '?demo=' + encodeURIComponent(tab.textContent) + location.hash);
+  if (push) history.replaceState(null, '', pageUrl({ demo: tab.textContent, bench: null }, '#code'));
   syncTabs();
 }
 /* Accessible tabs: roles and states for screen readers, roving focus for the keyboard. */
@@ -332,7 +346,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
       .then(function () { window.qxLoads--; });
   }
   var benchSec = document.getElementById('performance');
-  if (benchSec && !/#(performance|benchmarks|explore)/.test(location.hash)) {
+  if (benchSec && !/^#(performance|benchmarks)$/.test(location.hash)) {
     var bio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { bio.disconnect(); loadBench(); } }, { rootMargin: '1500px 0px' });
     bio.observe(benchSec);
   } else loadBench();
@@ -390,7 +404,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     chart('chart-tg', 'tg128');
 
     /* explorer */
-    var m = location.hash.match(/bench=([^:]+):([^&]+)/);
+    var m = /^([^:]+):(.+)$/.exec(new URLSearchParams(location.search).get('bench') || '');
     var state = { family: m && families.indexOf(m[1]) !== -1 ? m[1] : families[0], quant: m ? m[2] : 'Q8_0' };
     function quantsFor(family) { var qs = {}; data.forEach(function (r) { if (famOf(r) === family) qs[r.quant] = 1; }); return QUANTS.filter(function (q) { return qs[q]; }); }
     function pills(label, options, selected, names, onPick) {
@@ -417,7 +431,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     function render(syncUrl) {
       var qs = quantsFor(state.family);
       if (qs.indexOf(state.quant) === -1) state.quant = qs.indexOf('Q8_0') !== -1 ? 'Q8_0' : qs[0];
-      if (syncUrl) history.replaceState(null, '', '#bench=' + state.family + ':' + state.quant);
+      if (syncUrl) history.replaceState(null, '', pageUrl({ bench: state.family + ':' + state.quant }, '#benchmarks'));
       filtersEl.textContent = '';
       filtersEl.appendChild(pills('Model family', families, state.family, FAM, function (f) { state.family = f; render(true); }));
       filtersEl.appendChild(pills('Quantization', qs, state.quant, null, function (q) { state.quant = q; render(true); }));
@@ -450,8 +464,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
       explore.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
       var wrap = tableEl.parentNode; wrap.classList.remove('flash'); void wrap.offsetWidth; wrap.classList.add('flash');
     };
-    render();
-    if (m) explore.scrollIntoView();
+    render();   // a ?bench= link carries #benchmarks, so it lands on the table through Anchors below
   }
 })();
 
@@ -806,9 +819,12 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     var el = id && document.getElementById(id);
     if (!el) return;
     e.preventDefault();
-    // leaving the examples drops ?demo=…, so the address reads qxotic.ai/#services, not ?demo=Embed.java#services
-    var keepDemo = el.closest('#examples');
-    var url = (keepDemo ? location.pathname + location.search : location.pathname) + '#' + id;
+    // each section keeps only its own state: leaving the examples drops ?demo=…, leaving the table drops ?bench=…,
+    // so the address reads qxotic.ai/#services, not ?demo=Embed.java#services
+    var drop = {};
+    if (!el.closest('#examples')) drop.demo = null;
+    if (!el.closest('#benchmarks')) drop.bench = null;
+    var url = pageUrl(drop, '#' + id);
     if (location.pathname + location.search + location.hash !== url) history.pushState(null, '', url);
     hold(el); go(el);
     // keyboard users (Enter on a link): move focus too, so the next Tab continues from the section
