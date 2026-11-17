@@ -231,10 +231,7 @@
       render(div);
     }
 
-    // jump to the examples via their anchor, so the page keeps them in place while content above loads
-    var section = document.getElementById('code') || document.getElementById('examples');
-    if (section && !location.hash) history.replaceState(null, '', location.pathname + location.search + '#' + section.id);
-    // the page's anchor handling (index.html) scrolls there and keeps it in place while content loads
+    // the page's anchor handling (site.js) lands on the examples for a ?demo= link and keeps them in place
     var wrap = document.getElementById('code');
     if (wrap) wrap.classList.add('landed');   // a brief ring on the example you came for
   })();

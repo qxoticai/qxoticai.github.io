@@ -17,9 +17,10 @@ document.querySelectorAll('.theme-toggle, .theme-toggle-m').forEach(function (b)
    Text that types in place still plays: it moves nothing, and it is the demo itself. */
 var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* Addresses: state lives in the query (?demo=Embed.java, ?bench=gemma4:Q4_0) and the hash is always a real
-   #section, so the browser itself lands on it however you arrive: a link, a reload, the same address again. */
-function pageUrl(set, hash) {   // the current query with `set` applied (null deletes), plus a #section
+/* Addresses: state lives in the query (?demo=Embed.java, ?bench=gemma4:Q4_0), never in the hash. Any change to
+   the query is a page load, so a link, a reload or the same address again all land on the right section
+   (Anchors below), and the links stay short: no #section needed. */
+function pageUrl(set, hash) {   // the current query with `set` applied (null deletes), plus a #section or ''
   var q = new URLSearchParams(location.search);
   Object.keys(set).forEach(function (k) { if (set[k] == null) q.delete(k); else q.set(k, set[k]); });
   var s = q.toString().replace(/%3A/gi, ':');   // ?bench=gemma4:Q4_0 reads better than gemma4%3AQ4_0
@@ -27,9 +28,8 @@ function pageUrl(set, hash) {   // the current query with `set` applied (null de
 }
 (function () {   // old links keep working: #explore, and #bench=family:quant from before the query
   var old = /^#bench=(.+)$/.exec(location.hash);
-  if (old) history.replaceState(null, '', pageUrl({ bench: decodeURIComponent(old[1]) }, '#benchmarks'));
-  else if (location.hash === '#explore' || (!location.hash && new URLSearchParams(location.search).has('bench')))
-    history.replaceState(null, '', pageUrl({}, '#benchmarks'));
+  if (old) history.replaceState(null, '', pageUrl({ bench: decodeURIComponent(old[1]), demo: null }, ''));
+  else if (location.hash === '#explore') history.replaceState(null, '', pageUrl({}, '#benchmarks'));
 })();
 
 /* ── Nav hairline once scrolled: a sentinel at the top of the page, no scroll listener ── */
@@ -67,7 +67,7 @@ function openTab(name, push) {
   var panel = document.getElementById('panel-' + name); panel.classList.add('active');
   var snip = panel.querySelector('.jbang'); if (snip && window.qxRender) window.qxRender(snip);
   var bar = tab.parentNode; bar.scrollLeft = tab.offsetLeft - bar.offsetLeft - 16;
-  if (push) history.replaceState(null, '', pageUrl({ demo: tab.textContent, bench: null }, '#code'));
+  if (push) history.replaceState(null, '', pageUrl({ demo: tab.textContent, bench: null }, ''));
   syncTabs();
 }
 /* Accessible tabs: roles and states for screen readers, roving focus for the keyboard. */
@@ -95,7 +95,7 @@ function syncTabs() {
   syncTabs();
 })();
 document.querySelectorAll('.code-tab').forEach(function (tab) { tab.addEventListener('click', function () { openTab(tab.dataset.tab, true); }); });
-document.querySelectorAll('[data-tab-link]').forEach(function (a) { a.addEventListener('click', function () { openTab(a.dataset.tabLink, false); }); });
+document.querySelectorAll('[data-tab-link]').forEach(function (a) { a.addEventListener('click', function () { openTab(a.dataset.tabLink, true); }); });   // the address names the tab it opened
 
 /* ── Headline words rise ── */
 document.querySelectorAll('h1 .w').forEach(function (w, i) { w.style.animationDelay = (.08 + i * .07) + 's'; });
@@ -346,7 +346,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
       .then(function () { window.qxLoads--; });
   }
   var benchSec = document.getElementById('performance');
-  if (benchSec && !/^#(performance|benchmarks)$/.test(location.hash)) {
+  if (benchSec && !/^#(performance|benchmarks)$/.test(location.hash) && !new URLSearchParams(location.search).has('bench')) {
     var bio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { bio.disconnect(); loadBench(); } }, { rootMargin: '1500px 0px' });
     bio.observe(benchSec);
   } else loadBench();
@@ -431,7 +431,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     function render(syncUrl) {
       var qs = quantsFor(state.family);
       if (qs.indexOf(state.quant) === -1) state.quant = qs.indexOf('Q8_0') !== -1 ? 'Q8_0' : qs[0];
-      if (syncUrl) history.replaceState(null, '', pageUrl({ bench: state.family + ':' + state.quant }, '#benchmarks'));
+      if (syncUrl) history.replaceState(null, '', pageUrl({ bench: state.family + ':' + state.quant, demo: null }, ''));
       filtersEl.textContent = '';
       filtersEl.appendChild(pills('Model family', families, state.family, FAM, function (f) { state.family = f; render(true); }));
       filtersEl.appendChild(pills('Quantization', qs, state.quant, null, function (q) { state.quant = q; render(true); }));
@@ -464,7 +464,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
       explore.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
       var wrap = tableEl.parentNode; wrap.classList.remove('flash'); void wrap.offsetWidth; wrap.classList.add('flash');
     };
-    render();   // a ?bench= link carries #benchmarks, so it lands on the table through Anchors below
+    render();   // a ?bench= link lands on the table through Anchors below
   }
 })();
 
@@ -831,8 +831,10 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     if (e.detail === 0) { if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true }); }
   });
   ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) { addEventListener(t, function (e) { if (t !== 'mousedown' || !(e.target.closest && e.target.closest('a[href^="#"]'))) release(); }, { passive: true }); });
-  // arriving with a #section (or ?demo=): own the scroll, so a reload doesn't restore the old position over it
-  var first = location.hash && document.getElementById(location.hash.slice(1));
+  // arriving with a #section, ?bench= (the table) or ?demo= (the examples): own the scroll,
+  // so a reload doesn't restore the old position over it
+  var q = new URLSearchParams(location.search);
+  var first = document.getElementById(location.hash ? location.hash.slice(1) : q.has('bench') ? 'benchmarks' : q.has('demo') ? 'code' : '');
   if (first) {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     landing = true; hold(first); go(first);
