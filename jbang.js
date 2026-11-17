@@ -50,13 +50,12 @@
   }
 
   /* Provenance via the browser's own URL parser — no regexes to outsmart.
-   * Allowed: this origin, https://*.qxotic.ai, qxoticai's gists. */
+   * Allowed: this origin and qxoticai's gists, the same two the page's CSP lets it fetch. */
   function allowed(src) {
     var u;
     try { u = new URL(src, location.origin); } catch (e) { return false; }
     if (u.origin === location.origin) return true;
     if (u.protocol !== 'https:') return false;
-    if (/(^|\.)qxotic\.ai$/.test(u.hostname)) return true;
     return (u.hostname === 'gist.github.com' || u.hostname === 'gist.githubusercontent.com')
         && u.pathname.toLowerCase().startsWith('/qxoticai/');
   }
@@ -108,7 +107,7 @@
     return { head: head, main: src.slice(mm.index, i).replace(/\s+$/, ''), tail: src.slice(i).replace(/^\s+|\s+$/g, '') };
   }
 
-  /* shared with the hero console in index.html */
+  /* shared with the hero console in site.js */
   window.qxSnippet = { highlight: highlight, split: splitJbang, esc: esc };
 
   function baseName(src) {
@@ -145,7 +144,7 @@
 
       var html = '<div class="code-window">'
                + '<div class="code-titlebar"><span class="code-filename">' + esc(caption) + '</span>'
-               + '<button class="code-copy" type="button">copy</button></div>'
+               + '<button class="code-copy" type="button">Copy</button></div>'
                + '<pre><code>' + code + '</code></pre></div>';
       if (run !== 'none') {
         html += '<p class="code-run"><span class="prompt">$ </span>' + esc(run)
@@ -226,6 +225,7 @@
 
       tab = el('button', 'code-tab active', name);
       tab.dataset.tab = 'shared';
+      tab.dataset.demo = demo;   // the address keeps the full source, so a reload or share still shows it
       tabs.insertBefore(tab, tabs.firstChild);
       tabs.parentNode.insertBefore(panel, tabs.nextSibling);
       render(div);
@@ -243,9 +243,7 @@
     if (!btn) return;
     var code = btn.closest('.code-window').querySelector('code').cloneNode(true);
     code.querySelectorAll('summary').forEach(function (s) { s.remove(); });
-    navigator.clipboard.writeText(code.textContent.replace(/^\n+/, '')).then(function () {
-      btn.textContent = 'copied!';
-      setTimeout(function () { btn.textContent = 'copy'; }, 1500);
-    });
+    function label(t) { btn.textContent = t; clearTimeout(btn._t); btn._t = setTimeout(function () { btn.textContent = 'Copy'; }, 1400); }
+    navigator.clipboard.writeText(code.textContent.replace(/^\n+/, '')).then(function () { label('Copied'); }, function () { label('Copy failed'); });
   });
 })();

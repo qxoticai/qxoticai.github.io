@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- CSP: snippets and every other fetch may only hit this origin and
-         qxoticai's gists; fonts keep their known hosts. No third-party scripts. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-QF88fHEGanCHuA2ShMqFcY52NCzE4If+lLsQ8xLoKr0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://gist.githubusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+    <!-- CSP: everything comes from this origin (fonts are self-hosted), except snippets from qxoticai's gists.
+         No third-party scripts, styles or fonts. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-QF88fHEGanCHuA2ShMqFcY52NCzE4If+lLsQ8xLoKr0='; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self' https://gist.githubusercontent.com; object-src 'none'; base-uri 'self'; form-action 'none'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI sovereignty for the JVM: local LLMs in Java | Quixotic AI</title>
 
@@ -25,9 +25,10 @@
     <meta name="twitter:image:alt" content="Quixotic AI wordmark above a glass jar holding a bonsai whose crown is a brain made of circuit traces, with the line: Local AI. In a jar. qxotic.ai">
     <meta name="theme-color" content="#f4ead8" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1e1915" media="(prefers-color-scheme: dark)">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@500..800&family=Funnel+Sans:ital,wght@0,400..600;1,400&family=Geist+Mono:wght@400..700&display=swap" rel="stylesheet">
+    <!-- the three faces the first screen uses: fetched with the page, so they arrive before it paints -->
+    <link rel="preload" href="fonts/funnel-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/funnel-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="canonical" href="https://qxotic.ai/">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -81,6 +82,20 @@
     </script>
     <style>
         /* Editorial: big type, the live product as the only imagery; the warm qxotic palette. */
+        /* Self-hosted web fonts (SIL Open Font License, see fonts/OFL-*.txt), mirrored from Google Fonts with the same
+           subsets and unicode ranges, so a browser downloads only the subsets a page uses. */
+        @font-face { font-family: 'Funnel Display'; font-style: normal; font-weight: 500 800; font-display: swap; src: url('fonts/funnel-display-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+        @font-face { font-family: 'Funnel Display'; font-style: normal; font-weight: 500 800; font-display: swap; src: url('fonts/funnel-display-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+        @font-face { font-family: 'Funnel Sans'; font-style: italic; font-weight: 400; font-display: swap; src: url('fonts/funnel-sans-italic-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+        @font-face { font-family: 'Funnel Sans'; font-style: italic; font-weight: 400; font-display: swap; src: url('fonts/funnel-sans-italic-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+        @font-face { font-family: 'Funnel Sans'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('fonts/funnel-sans-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+        @font-face { font-family: 'Funnel Sans'; font-style: normal; font-weight: 400 600; font-display: swap; src: url('fonts/funnel-sans-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+        @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('fonts/geist-mono-cyrillic-ext.woff2') format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+        @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('fonts/geist-mono-cyrillic.woff2') format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+        @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('fonts/geist-mono-symbols2.woff2') format('woff2'); unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F; }
+        @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('fonts/geist-mono-vietnamese.woff2') format('woff2'); unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+        @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('fonts/geist-mono-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+        @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400 700; font-display: swap; src: url('fonts/geist-mono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
         /* Fallback faces sized to match Funnel, so the swap to the web font doesn't move text. */
         @font-face { font-family: 'Funnel Display Fallback'; font-weight: 500 800; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'); size-adjust: 100.2%; ascent-override: 99.8%; descent-override: 25%; line-gap-override: 0%; }
         @font-face { font-family: 'Funnel Sans Fallback'; font-weight: 400 500; src: local('Arial'), local('ArialMT'), local('Liberation Sans'); size-adjust: 98.7%; ascent-override: 101.3%; descent-override: 25.3%; line-gap-override: 0%; }
@@ -108,13 +123,11 @@
             --vs-new: light-dark(#faf4e9, #2e2620);
             --logo-c: light-dark(#a13f2e, #d1563d);       /* logo: windmill sails */
             --logo-fold: var(--paper);
-            --logo-bg: var(--paper);
             --band-deep: light-dark(#862f22, #6e2b21);
             --up:     light-dark(#5c7a52, #a8c1a0);
             --down:   light-dark(#a8741a, #d9a55a);
 
             --console: #221b16;
-            --console-text: #f1e6d3;
 
             --code-bg:   light-dark(#f9f2e6, #241d18);
             --code-text: light-dark(#3a2f26, #efe4d2);
@@ -133,8 +146,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
-        body { font: 400 1.0625rem/1.6 var(--sans); background: var(--paper); color: var(--ink-2); overflow-x: hidden; overflow-x: clip; }
-        h1, h2, h3 { color: var(--ink); font-family: var(--display); text-wrap: balance; }
+        body { font: 400 1.0625rem/1.6 var(--sans); background: var(--paper); color: var(--ink-2); overflow-x: clip; }
+        h1, h2, h3, h4 { color: var(--ink); font-family: var(--display); text-wrap: balance; }
         p, li { text-wrap: pretty; }
         a { color: var(--cobalt-ink); }
         ::selection { background: var(--band); color: #fff; }
@@ -154,11 +167,9 @@
         .btn:hover { border-color: var(--ink); }
         .btn:active { transform: scale(.98); }
         /* filled buttons: flat faces, one soft neutral shadow, and a small lift on hover */
-        .btn-c { box-shadow: 0 1px 2px rgba(40, 20, 12, .12), 0 6px 14px -8px rgba(40, 20, 12, .32); }
-        .btn-c:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(40, 20, 12, .12), 0 12px 22px -12px rgba(40, 20, 12, .4); }
+        .btn-c { background: var(--band); border-color: var(--band); color: #fff; box-shadow: 0 1px 2px rgba(40, 20, 12, .12), 0 6px 14px -8px rgba(40, 20, 12, .32); }
+        .btn-c:hover { background: var(--band-deep); border-color: var(--band-deep); transform: translateY(-1px); box-shadow: 0 2px 4px rgba(40, 20, 12, .12), 0 12px 22px -12px rgba(40, 20, 12, .4); }
         .btn-c:active { transform: translateY(0) scale(.98); }
-        .btn-c { background: var(--band); border-color: var(--band); color: #fff; }
-        .btn-c:hover { background: var(--band-deep); border-color: var(--band-deep); }
         .btn-sm { height: 36px; padding: 0 .9rem; font-size: .875rem; }
         .btn .arr { transition: transform .3s var(--ease); }
         .btn:hover .arr { transform: translateX(3px); }
@@ -275,7 +286,7 @@
             --c-k:      light-dark(#a13f2e, #d46049);
             --c-s:      light-dark(#5f7230, #b4c27a);
             --c-t:      light-dark(#8a5a1c, #d6a35c);
-            --c-c:      light-dark(#8a7c6c, #8a7c6c);
+            --c-c:      #8a7c6c;
         }
         .stage { position: relative; margin-top: clamp(2.5rem, 5vw, 3.5rem); }
         .stage::before { content: ''; position: absolute; inset: 8% 2% -12%; z-index: -1; background: radial-gradient(55% 55% at 50% 42%, color-mix(in srgb, var(--ink) 8%, transparent), transparent); pointer-events: none; }
@@ -334,9 +345,9 @@
         .ans.live::after { animation: none; }
         @keyframes blink { 50% { opacity: 0; } }
         @keyframes fadein { from { opacity: 0; transform: translateY(4px); } }
-        .tok { animation: tok .6s var(--ease) both; }
+        span.tok { animation: tok .6s var(--ease) both; }   /* streamed text; the diagram's svg .tok circles are separate */
         @keyframes tok { from { opacity: 0; color: var(--c-tok); } 40% { opacity: 1; color: var(--c-tok); } }
-        .tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: .4rem; }
+        .tags { margin-top: auto; display: flex; flex-wrap: wrap; align-content: flex-start; gap: .4rem; }   /* the height is reserved for two rows on phones */
         .tags span { font: .6875rem var(--mono); color: var(--c-muted); border: 1px solid var(--c-line); border-radius: 5px; padding: .15rem .5rem; }
 
         /* ── Proof ── */
@@ -406,6 +417,7 @@
         .dg .wire path.live { stroke-width: 2; animation: dg-march .45s linear infinite; }
         .dg .wire.us path.live { stroke-width: 2.5; animation: none; }
         @keyframes dg-march { to { stroke-dashoffset: -8; } }
+        .off .dg .wire path.live { animation-play-state: paused; }   /* off screen (JS toggles .off on #vs); outranks the shorthand above */
         .dg .wl text { font: 600 12.5px var(--mono); fill: var(--down); text-anchor: middle; }
         .new .dg .wl text { fill: var(--cobalt-ink); }
         /* moving marks: request packet (+ trail), streamed tokens, arrival bursts, ripples, billed coins */
@@ -444,7 +456,7 @@
 
         .bars h3 .tech { font: 500 .75rem var(--mono); letter-spacing: 0; opacity: .6; margin-left: .2rem; white-space: nowrap; }
 
-        /* 02 capabilities */
+        /* 03 capabilities */
         .bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1.25rem; margin-top: 3.5rem; }
         .cell { border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem; display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; transition: border-color .3s; }
         .cell:hover { border-color: color-mix(in srgb, var(--cobalt) 40%, var(--line)); }
@@ -486,7 +498,7 @@
         .plugs { display: flex; flex-wrap: wrap; gap: .5rem; }
         .plugs span { font-size: .875rem; color: var(--ink-2); padding: .3rem .65rem; border: 1px solid var(--line); border-radius: 6px; }
 
-        /* 03 performance band */
+        /* 04 performance band */
         .band { background: var(--band); color: #ffffff; margin-top: clamp(6rem, 12vw, 9.5rem); padding-block: clamp(4.5rem, 9vw, 7rem); scroll-margin-top: 64px; }
         .band .kick { color: #f3e7d3; }
         .band h2 { color: #fff; }
@@ -561,7 +573,7 @@
         .bench-table thead tr:first-child th.sep { background: none; }
         .bench-note a { color: inherit; }
 
-        /* 04 stack */
+        /* 05 stack */
         .layers { list-style: none; margin-top: 3.5rem; border-top: 1px solid var(--ink); }
         .layer { display: grid; grid-template-columns: 3rem 10rem minmax(0, 1fr) minmax(0, 16rem); gap: 1.5rem; align-items: baseline; padding: 1.3rem .5rem; border-bottom: 1px solid var(--line); transition: background .25s; }
         .layer:hover { background: var(--tint); }
@@ -591,8 +603,8 @@
         .int { grid-template-areas: "h h" "p p" "c c"; }
         .step { counter-increment: st; }
         .step::before { content: counter(st, decimal-leading-zero); grid-area: n; font: 500 .8125rem var(--mono); color: var(--cobalt-ink); align-self: baseline; padding-top: .3rem; }
-        .step h3, .int-h { grid-area: h; }
-        .step h3, .int-h h3 { font-size: 1.125rem; letter-spacing: -.02em; }
+        .step h4, .int-h { grid-area: h; }
+        .step h4, .int-h h4 { font-size: 1.125rem; letter-spacing: -.02em; }
         .int-h { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; }
         .int-h span { font: .75rem var(--mono); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
         .step p, .int p { grid-area: p; font-size: .9375rem; color: var(--muted); margin-top: .25rem; }
@@ -649,7 +661,6 @@
         .hero-links { gap: .4rem 2.25rem; margin-top: clamp(1.5rem, 3vw, 2rem); }
         .hero-links + .stage { margin-top: clamp(1.75rem, 3.5vw, 2.4rem); }
         .hero-row .hero-try { margin-top: 0; }
-        .hero-row .hero-try { margin-top: 0; }
         .hero-try { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 1rem; margin-top: 1rem; }
         .hero-try .hero-note { margin-top: 0; }
         .hero-note a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
@@ -657,7 +668,7 @@
         .os-tabs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 8px; }
         .os-tabs button { white-space: nowrap; font: 500 .6875rem var(--mono); color: var(--muted); background: none; border: 0; border-radius: 6px; padding: .2rem .5rem; cursor: pointer; transition: color .2s, background .2s; }
         .os-tabs button:hover { color: var(--ink); }
-        .os-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+        .os-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
         .cmd-sm code[hidden] { display: none; }
         .step .os-pre { grid-area: c; margin-top: .8rem; }
         .step .os-pre pre { margin-top: .55rem !important; }
@@ -811,7 +822,7 @@
         .vsp-pane[hidden] { display: none; }
         .vsp-tabs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 8px; }
         .vsp-tabs button { white-space: nowrap; font: 500 .75rem var(--mono); color: var(--muted); background: none; border: 0; border-radius: 6px; padding: .25rem .55rem; cursor: pointer; }
-        .vsp-tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+        .vsp-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 
         /* pledge */
         .pledge { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 3rem; }
@@ -888,7 +899,7 @@
             .cmd-sm #hero-cmd-win { font-size: .53rem; }
         }
 
-        /* 06 faq */
+        /* 07 faq */
         .faq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: 2.5rem 5rem; align-items: start; }
         .faq-side { position: sticky; top: 100px; }
         .faq-side p { margin-top: 1.5rem; color: var(--muted); max-width: 22rem; }
@@ -919,7 +930,7 @@
         .closing h2 { font-size: clamp(2.6rem, 5.4vw, 4.6rem); max-width: 13ch; }
         .closing .kick { margin-bottom: 1rem; }
         .closing p { margin-top: 1.25rem; max-width: 32rem; font-size: 1.125rem; }
-        .closing .closing-sub { margin-top: 1.75rem; font-size: clamp(1.25rem, 1.8vw, 1.5rem); line-height: 1.25; letter-spacing: -.025em; }
+        .closing .closing-sub { color: var(--ink); font-family: var(--display); font-weight: 700; text-wrap: balance; margin-top: 1.75rem; font-size: clamp(1.25rem, 1.8vw, 1.5rem); line-height: 1.25; letter-spacing: -.025em; }
         .closing .closing-sub + p { margin-top: .6rem; }
         footer { margin-top: clamp(4rem, 8vw, 6rem); padding-block: 2rem 2.5rem; border-top: 1px solid var(--line); }
         footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: .875rem; color: var(--muted); }
@@ -954,7 +965,7 @@
             nav.links { display: none; }
             .hero-row, .vs, .big, .bars, .explore-head, .closing { grid-template-columns: minmax(0, 1fr); }
             .cbody { grid-template-columns: minmax(0, 1fr); }
-            .code-pane { min-height: 0; border-right: 0; border-bottom: 1px solid rgba(241, 230, 211, .08); }
+            .code-pane { min-height: 0; border-right: 0; border-bottom: 1px solid var(--c-line); }
             .proof { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .b-chat, .b-see { grid-column: span 6; grid-row: auto; }
             .b-hear, .b-embed, .b-speak, .b-plug { grid-column: span 3; }
@@ -979,20 +990,23 @@
 
         /* Fallback for browsers without light-dark() (iOS Safari < 17.5, older Android WebViews). */
         @supports not (color: light-dark(#fff, #000)) {
-            :root { --vs-old: #ece0cb; --vs-new: #faf4e9; --paper: #f4ead8; --tint: #faf4e9; --hover: #ece0cc; --ink: #2a221c; --ink-2: #463a30; --muted: #6e6153; --line: #e1d3bb; --line-2: #d2c2a6; --cobalt: #a13f2e; --cobalt-ink: #a13f2e; --cobalt-tint: #ebdcc4; --card: #ece0cb; --band: #a13f2e; --logo-c: #a13f2e; --band-deep: #862f22; --up: #5c7a52; --down: #a8741a; --code-bg: #f9f2e6; --code-text: #3a2f26; --code-muted: #8a7c6c; --code-kw: #a13f2e; --code-str: #5f7230; --code-typ: #8a5a1c; --code-line: #e1d3bb; }
+            :root { --vs-old: #ece0cb; --vs-new: #faf4e9; --paper: #f4ead8; --tint: #faf4e9; --hover: #ece0cc; --ink: #2a221c; --ink-2: #463a30; --muted: #6e6153; --line: #e1d3bb; --line-2: #d2c2a6; --cobalt: #a13f2e; --cobalt-ink: #a13f2e; --cobalt-tint: #ebdcc4; --card: #ece0cb; --band: #a13f2e; --logo-c: #a13f2e; --band-deep: #862f22; --up: #5c7a52; --down: #a8741a; --code-bg: #f9f2e6; --code-text: #3a2f26; --code-muted: #74675a; --code-kw: #a13f2e; --code-str: #5f7230; --code-typ: #8a5a1c; --code-line: #e1d3bb; }
             .console { --c-bg: #f9f2e6; --c-line: #e1d3bb; --c-text: #3a2f26; --c-strong: #2a221c; --c-muted: #6e6153; --c-faint: #a8988a; --c-chip: rgba(42, 34, 28, .06); --c-dot: rgba(42, 34, 28, .14); --c-accent: #a13f2e; --c-tok: #c4553e; --c-ok: #5c7a52; --c-k: #a13f2e; --c-s: #5f7230; --c-t: #8a5a1c; --c-c: #8a7c6c; }
             .console { box-shadow: 0 40px 80px -40px rgba(42, 34, 28, .22); }
             .svc.feat { background: var(--console); border-color: var(--console); }
+            .company { --co-edge: transparent; }
             @media (prefers-color-scheme: dark) {
-                :root:not([data-theme="light"]) { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #d1563d; --cobalt-ink: #eb6347; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #d1563d; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #8a7c6c; --code-kw: #eb6347; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
+                :root:not([data-theme="light"]) { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #d1563d; --cobalt-ink: #eb6347; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #d1563d; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #998b7a; --code-kw: #eb6347; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
                 :root:not([data-theme="light"]) .console { --c-bg: #221b16; --c-line: rgba(241, 230, 211, .08); --c-text: #efe4d2; --c-strong: #f4ead8; --c-muted: #a89a87; --c-faint: #6e6052; --c-chip: rgba(241, 230, 211, .08); --c-dot: rgba(241, 230, 211, .14); --c-accent: #d1563d; --c-tok: #dc6c52; --c-ok: #a8c1a0; --c-k: #d46049; --c-s: #b4c27a; --c-t: #d6a35c; --c-c: #8a7c6c; }
                 :root:not([data-theme="light"]) .console { box-shadow: 0 40px 80px -40px rgba(30, 14, 10, .55); }
                 :root:not([data-theme="light"]) .svc.feat { background: #2a231d; border-color: #3d3129; }
+                :root:not([data-theme="light"]) .company { --co-edge: var(--line); }
             }
-            :root[data-theme="dark"] { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #d1563d; --cobalt-ink: #eb6347; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #d1563d; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #8a7c6c; --code-kw: #eb6347; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
+            :root[data-theme="dark"] { --vs-old: #171310; --vs-new: #2e2620; --paper: #1e1915; --tint: #28211b; --hover: #2e261f; --ink: #efe4d2; --ink-2: #cdbfa9; --muted: #a89a87; --line: #3a3028; --line-2: #4a3d33; --cobalt: #d1563d; --cobalt-ink: #eb6347; --cobalt-tint: #2e251e; --card: #2a231d; --band: #86362a; --logo-c: #d1563d; --band-deep: #6e2b21; --up: #a8c1a0; --down: #d9a55a; --code-bg: #241d18; --code-text: #efe4d2; --code-muted: #998b7a; --code-kw: #eb6347; --code-str: #b4c27a; --code-typ: #d6a35c; --code-line: #3a3028; }
             :root[data-theme="dark"] .console { --c-bg: #221b16; --c-line: rgba(241, 230, 211, .08); --c-text: #efe4d2; --c-strong: #f4ead8; --c-muted: #a89a87; --c-faint: #6e6052; --c-chip: rgba(241, 230, 211, .08); --c-dot: rgba(241, 230, 211, .14); --c-accent: #d1563d; --c-tok: #dc6c52; --c-ok: #a8c1a0; --c-k: #d46049; --c-s: #b4c27a; --c-t: #d6a35c; --c-c: #8a7c6c; }
             :root[data-theme="dark"] .console { box-shadow: 0 40px 80px -40px rgba(30, 14, 10, .55); }
             :root[data-theme="dark"] .svc.feat { background: #2a231d; border-color: #3d3129; }
+            :root[data-theme="dark"] .company { --co-edge: var(--line); }
         }
     </style>
     <!-- the CSP above allows this script by its sha256: recompute the hash whenever it changes -->
@@ -1040,10 +1054,10 @@
             </nav>
             <div class="top-r">
                 <button class="icon-btn theme-toggle" type="button" aria-label="Toggle theme">
-                    <svg class="sun-i" width="15" height="15"><use href="#i-sun"/></svg>
-                    <svg class="moon-i" width="15" height="15"><use href="#i-moon"/></svg>
+                    <svg aria-hidden="true" class="sun-i" width="15" height="15"><use href="#i-sun"/></svg>
+                    <svg aria-hidden="true" class="moon-i" width="15" height="15"><use href="#i-moon"/></svg>
                 </button>
-                <a class="btn btn-sm gh" href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer"><svg width="15" height="15"><use href="#i-github"/></svg>GitHub</a>
+                <a class="btn btn-sm gh" href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" width="15" height="15"><use href="#i-github"/></svg>GitHub</a>
                 <a class="btn btn-sm btn-c" href="#contact">Contact us</a>
                 <button class="icon-btn menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
             </div>
@@ -1052,8 +1066,8 @@
             <div class="wrap">
                 <ol></ol>
                 <div class="menu-foot">
-                    <a class="btn" href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer"><svg width="15" height="15"><use href="#i-github"/></svg>GitHub</a>
-                    <button class="btn theme-toggle-m" type="button"><svg class="sun-i" width="15" height="15"><use href="#i-sun"/></svg><svg class="moon-i" width="15" height="15"><use href="#i-moon"/></svg>Theme</button>
+                    <a class="btn" href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" width="15" height="15"><use href="#i-github"/></svg>GitHub</a>
+                    <button class="btn theme-toggle-m" type="button"><svg aria-hidden="true" class="sun-i" width="15" height="15"><use href="#i-sun"/></svg><svg aria-hidden="true" class="moon-i" width="15" height="15"><use href="#i-moon"/></svg>Theme</button>
                 </div>
             </div>
         </nav>
@@ -1068,7 +1082,7 @@
             <div class="hero-row">
                 <p class="lead"><strong>Quixotic AI</strong> is a complete, open stack for local AI on the JVM, from tokenizers and model formats to a multimodal inference engine. <strong>Run AI right beside your business logic</strong>, with no Python, no Docker and no external services. AI is just one Maven dependency away.</p>
                 <div>
-                    <div class="hero-try"><p class="hero-note">Or try the engine now with <a href="https://www.jbang.dev/" target="_blank" rel="noopener noreferrer">jbang</a>, in one command.</p><div class="os-tabs" role="tablist" aria-label="Operating system"><button type="button" role="tab" aria-selected="true" data-os="unix">macOS / Linux</button><button type="button" role="tab" aria-selected="false" data-os="win">Windows (PowerShell)</button></div></div>
+                    <div class="hero-try"><p class="hero-note">Or try the engine now with <a href="https://www.jbang.dev/" target="_blank" rel="noopener noreferrer">jbang</a>, in one command.</p><div class="os-tabs" role="group" aria-label="Operating system"><button type="button" aria-pressed="true" data-os="unix">macOS / Linux</button><button type="button" aria-pressed="false" data-os="win">Windows (PowerShell)</button></div></div>
                     <div class="cmd cmd-sm"><code id="hero-cmd" data-text="bash &lt;(curl -Ls https://sh.jbang.dev) jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0"><span class="ln"><b>$ </b>bash &lt;(curl -Ls https://sh.jbang.dev) <i>\</i></span><span class="ln">  jinfer@qxoticai chat <i>\</i></span><span class="ln">  --model LiquidAI/LFM2.5-350M-GGUF:Q8_0</span></code><code id="hero-cmd-win" hidden data-text='iex "&amp; { $(iwr -useb https://ps.jbang.dev) } jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0"'><span class="ln"><b>PS&gt; </b>iex "&amp; { $(iwr -useb https://ps.jbang.dev) }</span><span class="ln">  jinfer@qxoticai chat</span><span class="ln">  --model LiquidAI/LFM2.5-350M-GGUF:Q8_0"</span></code><button class="copy-btn" type="button" data-copy="hero-cmd">Copy</button></div>
                 </div>
             </div>
@@ -1079,11 +1093,11 @@
                 <div class="console" id="console">
                     <div class="cbar">
                         <div class="dots"><i></i><i></i><i></i></div>
-                        <div class="ctabs" role="tablist" aria-label="Examples">
-                            <button type="button" role="tab" class="ctab on" aria-selected="true">Chat<span class="ext">.java</span></button>
-                            <button type="button" role="tab" class="ctab" aria-selected="false">Vision<span class="ext">.java</span></button>
-                            <button type="button" role="tab" class="ctab" aria-selected="false">Parakeet<span class="ext">.java</span></button>
-                            <button type="button" role="tab" class="ctab" aria-selected="false">Decision<span class="ext">.java</span></button>
+                        <div class="ctabs" role="group" aria-label="Examples">
+                            <button type="button" class="ctab on" aria-pressed="true">Chat<span class="ext">.java</span></button>
+                            <button type="button" class="ctab" aria-pressed="false">Vision<span class="ext">.java</span></button>
+                            <button type="button" class="ctab" aria-pressed="false">Parakeet<span class="ext">.java</span></button>
+                            <button type="button" class="ctab" aria-pressed="false">Decision<span class="ext">.java</span></button>
                         </div>
                         <div class="cbar-r">
                             <span class="status" id="con-status">in-process</span>
@@ -1102,7 +1116,7 @@
                         <div class="con-out">
                             <div class="cmdl" id="con-cmd"><b>$ </b>jbang Chat.java</div>
                             <div class="log" id="con-log"><div><span class="ok">&check;</span> LFM2.5-350M · Q8_0 loaded, <span class="nw">in-process</span></div></div>
-                            <div class="ans caret" id="con-ans" aria-live="polite">The capital of France is Paris.</div>
+                            <div class="ans caret" id="con-ans">The capital of France is Paris.</div>
                             <div class="tags"><span>pure Java</span><span>0 network calls</span><span id="con-model">CPU</span></div>
                         </div>
                     </div>
@@ -1110,10 +1124,10 @@
             </div>
 
             <div class="proof">
-                <div class="rv"><div class="fig"><span data-stat="pp">1.85</span><small>&times;</small></div><p><b>Faster prompts</b>than llama.cpp, median on CPU. <a href="#benchmarks">The data &rarr;</a></p></div>
-                <div class="rv" style="--d:.06s"><div class="fig">19<small>+</small></div><p><b>Model architectures</b>text, vision, audio and speech.<br>Popular open-weight models, out of the box.</p></div>
-                <div class="rv" style="--d:.12s"><div class="fig">0</div><p><b>API keys</b>no accounts, no quotas, no bills.<br>AI as a library.</p></div>
-                <div class="rv" style="--d:.18s"><div class="fig">100<small class="u">%</small></div><p><b>Built from first principles</b>for the JVM, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
+                <div class="rv"><div class="fig"><span data-stat="pp">1.85</span><small>&times;</small></div><p><b>Faster prompts</b> than llama.cpp, median on CPU. <a href="#benchmarks">The data &rarr;</a></p></div>
+                <div class="rv" style="--d:.06s"><div class="fig">19<small>+</small></div><p><b>Model architectures</b> text, vision, audio and speech.<br>Popular open-weight models, out of the box.</p></div>
+                <div class="rv" style="--d:.12s"><div class="fig">0</div><p><b>API keys</b> no accounts, no quotas, no bills.<br>AI as a library.</p></div>
+                <div class="rv" style="--d:.18s"><div class="fig">100<small class="u">%</small></div><p><b>Built from first principles</b> for the JVM, from tokenizers to kernels. <a href="#stack">The stack &rarr;</a></p></div>
             </div>
             <div class="models rv"><small>Supported model families</small><div class="mq"><div class="mq-t"><span>Gemma<i>Google</i></span><span>Qwen<i>Alibaba</i></span><span>GPT-OSS<i>OpenAI</i></span><span>Llama<i>Meta</i></span><span>Ministral<i>Mistral AI</i></span><span>Granite<i>IBM</i></span><span>Nemotron<i>NVIDIA</i></span><span>LFM<i>Liquid AI</i></span><span>Mellum<i>JetBrains</i></span><span>SmolLM<i>Hugging Face</i></span><span>MiniCPM<i>OpenBMB</i></span><span>Bonsai<i>PrismML</i></span><span>Ling<i>inclusionAI</i></span><span>Laguna<i>Poolside</i></span><span>Parakeet<i>NVIDIA</i></span><span>Kokoro<i>hexgrad</i></span><span>Inflect<i>Owen Song</i></span></div><div class="mq-t" aria-hidden="true"><span>Gemma<i>Google</i></span><span>Qwen<i>Alibaba</i></span><span>GPT-OSS<i>OpenAI</i></span><span>Llama<i>Meta</i></span><span>Ministral<i>Mistral AI</i></span><span>Granite<i>IBM</i></span><span>Nemotron<i>NVIDIA</i></span><span>LFM<i>Liquid AI</i></span><span>Mellum<i>JetBrains</i></span><span>SmolLM<i>Hugging Face</i></span><span>MiniCPM<i>OpenBMB</i></span><span>Bonsai<i>PrismML</i></span><span>Ling<i>inclusionAI</i></span><span>Laguna<i>Poolside</i></span><span>Parakeet<i>NVIDIA</i></span><span>Kokoro<i>hexgrad</i></span><span>Inflect<i>Owen Song</i></span></div></div></div>
         </div>
@@ -1243,7 +1257,7 @@
         </div>
     </section>
 
-    <!-- 02 Capabilities -->
+    <!-- 03 Capabilities -->
     <section class="s" id="capabilities">
         <div class="wrap">
             <div class="rv"><span class="kick">03 · Capabilities</span>
@@ -1268,7 +1282,7 @@
                 </article>
                 <article class="cell b-hear">
                     <div class="c-head"><h3>Hear</h3><span>Parakeet · 0.6B</span></div>
-                    <button class="play" type="button" id="hear-play" aria-pressed="false"><span class="ring"><svg width="16" height="16"><use href="#i-play"/></svg></span><span><span class="vh">Play </span>JFK, 1961 <small>· 11 s</small></span></button>
+                    <button class="play" type="button" id="hear-play" aria-pressed="false"><span class="ring"><svg aria-hidden="true" width="16" height="16"><use href="#i-play"/></svg></span><span><span class="vh">Play </span>JFK, 1961 <small>· 11 s</small></span></button>
                     <audio id="hear-audio" src="snippets/jfk.wav" preload="none"></audio>
                     <p class="transcript" id="hear-text">And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.</p>
                     <div class="c-foot"><span>Parakeet.java</span><a href="#code" data-tab-link="parakeet">View code &rarr;</a></div>
@@ -1298,7 +1312,7 @@
         </div>
     </section>
 
-    <!-- 03 Performance -->
+    <!-- 04 Performance -->
     <section class="band" id="performance">
         <div class="wrap">
             <div class="rv"><span class="kick">04 · Performance</span>
@@ -1330,7 +1344,7 @@
         </div>
     </div>
 
-    <!-- 04 Stack -->
+    <!-- 05 Stack -->
     <section class="s" id="stack">
         <div class="wrap">
             <div class="rv"><span class="kick">05 · The stack</span>
@@ -1355,7 +1369,7 @@
         </div>
     </section>
 
-    <!-- 05 Developers -->
+    <!-- 06 Open source -->
     <section class="s" id="examples">
         <div class="wrap">
             <div class="rv"><span class="kick">06 · Open source</span>
@@ -1371,7 +1385,7 @@
             <div class="vsp rv">
                 <div class="vsp-col" id="vsp-py">
                     <div class="vsp-h"><span class="vsp-lang">Python</span>
-                        <span class="vsp-tabs" role="tablist" aria-label="Python library"><button type="button" role="tab" aria-selected="true" data-py="0">transformers</button><button type="button" role="tab" aria-selected="false" data-py="1">llama-cpp-python</button></span></div>
+                        <span class="vsp-tabs" role="group" aria-label="Python library"><button type="button" aria-pressed="true" data-py="0">transformers</button><button type="button" aria-pressed="false" data-py="1">llama-cpp-python</button></span></div>
                     <div class="vsp-pane">
 <pre class="vsp-code"><span class="tk-k">from</span> transformers <span class="tk-k">import</span> pipeline
 
@@ -1416,11 +1430,11 @@ out = llm.create_chat_completion(messages=[
             </div>
             <div class="qs rv">
               <div class="qs-col">
-            <div class="qs-h">Get started</div>
+            <h3 class="qs-h">Get started</h3>
             <div class="steps">
-                <div class="step"><h3>Install jbang</h3><p>The one-file Java launcher. For SDKMAN!, Homebrew and more, see the <a href="https://www.jbang.dev/download/" target="_blank" rel="noopener noreferrer">jbang install guide</a>.</p><div class="os-pre"><div class="os-tabs" role="tablist" aria-label="Operating system"><button type="button" role="tab" aria-selected="true" data-os="unix">macOS / Linux</button><button type="button" role="tab" aria-selected="false" data-os="win">Windows (PowerShell)</button></div><pre data-os-pane="unix"><b>$ </b>curl -Ls https://sh.jbang.dev | bash -s - app setup</pre><pre data-os-pane="win" hidden><b>PS&gt; </b>iex "&amp; { $(iwr -useb https://ps.jbang.dev) } app setup"</pre></div></div>
-                <div class="step"><h3>Use the jinfer CLI</h3><p>Chat, prompt, speak, transcribe or serve a model, straight from your terminal.</p><pre><b>$ </b>jbang jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0</pre></div>
-                <div class="step"><h3>Add it to your app</h3><p>Import the BOM, then your API binding, the models and the native kernels.</p><pre>com.qxotic:jinfer-bom:<span data-jinfer-version>0.4.0-rc1</span>
+                <div class="step"><h4>Install jbang</h4><p>The one-file Java launcher. For SDKMAN!, Homebrew and more, see the <a href="https://www.jbang.dev/download/" target="_blank" rel="noopener noreferrer">jbang install guide</a>.</p><div class="os-pre"><div class="os-tabs" role="group" aria-label="Operating system"><button type="button" aria-pressed="true" data-os="unix">macOS / Linux</button><button type="button" aria-pressed="false" data-os="win">Windows (PowerShell)</button></div><pre data-os-pane="unix"><b>$ </b>curl -Ls https://sh.jbang.dev | bash -s - app setup</pre><pre data-os-pane="win" hidden><b>PS&gt; </b>iex "&amp; { $(iwr -useb https://ps.jbang.dev) } app setup"</pre></div></div>
+                <div class="step"><h4>Use the jinfer CLI</h4><p>Chat, prompt, speak, transcribe or serve a model, straight from your terminal.</p><pre><b>$ </b>jbang jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0</pre></div>
+                <div class="step"><h4>Add it to your app</h4><p>Import the BOM, then your API binding, the models and the native kernels.</p><pre>com.qxotic:jinfer-bom:<span data-jinfer-version>0.4.0-rc1</span>
 com.qxotic:jinfer-spring-ai
 com.qxotic:jinfer-langchain4j
 com.qxotic:jinfer-models-all <i>// or jinfer-gemma4, ...</i>
@@ -1428,24 +1442,24 @@ com.qxotic:jam-native <i>// or jam-vector</i></pre></div>
             </div>
               </div>
               <div class="qs-col">
-            <div class="qs-h">Plug into your stack</div>
+            <h3 class="qs-h">Plug into your stack</h3>
             <div class="integr">
                 <div class="int">
-                    <div class="int-h"><h3>Spring AI</h3><span>jinfer-spring-ai-spring-boot-starter</span></div>
+                    <div class="int-h"><h4>Spring AI</h4><span>jinfer-spring-ai-spring-boot-starter</span></div>
                     <p>One property away. Inject <code>ChatClient</code> as usual.</p>
 <pre><span class="tk-c"># application.properties</span>
 spring.ai.model.chat=<span class="tk-s">jinfer</span>
 spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</span></pre>
                 </div>
                 <div class="int">
-                    <div class="int-h"><h3>LangChain4j</h3><span>jinfer-langchain4j</span></div>
+                    <div class="int-h"><h4>LangChain4j</h4><span>jinfer-langchain4j</span></div>
                     <p>Your app, unchanged: swap the model, drop the API key. Passes LangChain4j's test kits.</p>
 <pre><span class="tk-k">var</span> model = <span class="tk-t">JinferChatModel</span>.builder()
   .model(<span class="tk-s">"LiquidAI/LFM2.5-350M-GGUF:Q8_0"</span>)
   .build();  <span class="tk-c">// no API key, no network</span></pre>
                 </div>
                 <div class="int">
-                    <div class="int-h"><h3>OpenAI-compatible</h3><span>jinfer server</span></div>
+                    <div class="int-h"><h4>OpenAI-compatible</h4><span>jinfer server</span></div>
                     <p>Any OpenAI client works against a local endpoint.</p>
 <pre><b>$ </b>jbang jinfer@qxoticai server --context-capacity 16384 --model openbmb/MiniCPM5-2B-GGUF:Q4_K_M
 <span class="tk-c"># http://localhost:54154/v1</span></pre>
@@ -1453,7 +1467,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
             </div>
               </div>
             </div>
-            <div class="qs-h rv">Runnable examples</div>
+            <h3 class="qs-h rv">Runnable examples</h3>
             <div class="rv code-wrap" id="code">
                 <div class="code-tabs">
                     <button class="code-tab active" data-tab="chat">Chat.java</button>
@@ -1475,7 +1489,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
         </div>
     </section>
 
-    <!-- 06 FAQ -->
+    <!-- 07 FAQ -->
     <section class="s" id="faq">
         <div class="wrap faq-grid">
             <div class="faq-side rv">
@@ -1486,7 +1500,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
             <div class="faq rv">
                 <details open><summary>Is jinfer free?</summary><div class="ans-t"><p>Yes. The inference engine is free and open source under Apache 2.0, and always will be. It is published on Maven Central, and the source code is available on <a href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer">GitHub</a>.</p></div></details>
                 <details open><summary>So what do you sell?</summary><div class="ans-t"><p>Expertise. We embed AI into your systems, on the JVM and beyond, and fit it to your task: the smallest model that solves it, fine-tuned and evaluated, fast on your hardware, and shipped however you need, down to a single native binary. The open-source stack is our toolbox; what you get is built around your problem.</p></div></details>
-                <details><summary>Which models does it run?</summary><div class="ans-t"><p>More than 19 architectures, including Gemma, Qwen, GPT-OSS, Llama, Ministral, Granite, Nemotron, LFM, Mellum, SmolLM, MiniCPM, Bonsai, Ling and Laguna, plus Parakeet for speech recognition, Kokoro and Inflect for text-to-speech, and embedding and reranking models. Open-weight, private and fine-tuned models all work as GGUF files, straight from Hugging Face or from your own storage.</p></div></details>
+                <details><summary>Which models does it run?</summary><div class="ans-t"><p>More than 19 architectures, including Gemma, Qwen, GPT-OSS, Llama, Ministral, Granite, Nemotron, LFM, Mellum, SmolLM, MiniCPM, Bonsai, Ling and Laguna, plus Parakeet for speech recognition, Kokoro and Inflect for text-to-speech, and embedding and reranking models. Open-weight, private and fine-tuned models are all consumed as GGUF files, straight from Hugging Face or from your own storage.</p></div></details>
                 <details><summary>Who do you work with?</summary><div class="ans-t"><p>Companies of every size, from startups to enterprises, whose software runs on the JVM in Java, Kotlin, Scala or Clojure, and who want AI without a second stack or sending data out. Many work in finance, insurance, the public sector, industry or software.</p></div></details>
                 <details><summary>Does it need a GPU?</summary><div class="ans-t"><p>No. jinfer runs well on ordinary CPUs, and every benchmark on this page is CPU-only. Support for GPUs and other accelerators is growing through <a href="https://github.com/qxoticai/qxotic/tree/main/jota" target="_blank" rel="noopener noreferrer">jota</a>, the tensor engine.</p></div></details>
                 <details><summary>How is this different from a cloud AI API?</summary><div class="ans-t"><p>This is embedded AI: it runs as a library inside your application. There is no per-token bill and no extra service to run, and prompts and documents never leave your process. The trade-off is model size: cloud APIs run the largest models on dedicated GPUs, while embedded AI runs smaller models on the hardware you already have. For many tasks, such as classification, extraction, search and transcription, that is enough.</p></div></details>
@@ -1501,7 +1515,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
             <div>
                 <span class="kick">Contact</span>
                 <h2>Building, deciding or investing? <span class="c">Let’s talk.</span></h2>
-                <h3 class="closing-sub">Local AI, in the software you already run.</h3>
+                <p class="closing-sub">Local AI, in the software you already run.</p>
                 <p>The right model for your task, tuned for your hardware and built into your code. No rewrite, no new infrastructure, no data leaving the building.</p>
             </div>
             <div class="contact-card">
@@ -1509,7 +1523,7 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                 <span class="cc-label"><svg width="15" height="15" aria-hidden="true"><use href="#i-mail"/></svg>Get in touch</span>
                 <div class="cc-mail"><a class="big-mail" href="mailto:hello@qxotic.ai" id="mail">hello@qxotic.ai</a><button class="cc-copy" type="button" data-copy="mail" aria-label="Copy address" title="Copy address"><svg class="i1" width="18" height="18" aria-hidden="true"><use href="#i-copy"/></svg><svg class="i2" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg></button></div>
                 <p class="cc-hint">The JVM is our specialty, but we embed AI wherever your software runs.</p>
-                <div class="topics" aria-label="Start an email about">
+                <div class="topics" role="group" aria-label="Start an email about">
                     <a href="mailto:hello@qxotic.ai?subject=Local%20AI%20in%20our%20application&amp;body=Hi%20Quixotic%20AI%2C">Local AI<svg width="12" height="12" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                     <a href="mailto:hello@qxotic.ai?subject=Performance%20engineering&amp;body=Hi%20Quixotic%20AI%2C">Performance<svg width="12" height="12" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                     <a href="mailto:hello@qxotic.ai?subject=Private%20AI%20and%20fine-tuning&amp;body=Hi%20Quixotic%20AI%2C">Private AI<svg width="12" height="12" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -1518,10 +1532,10 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                 </div>
                 <div class="ctas"><a class="btn btn-c" href="mailto:hello@qxotic.ai?subject=Hello&amp;body=Hi%20Quixotic%20AI%2C">Say hello<svg width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a><a class="btn" href="https://github.com/qxoticai/qxotic" target="_blank" rel="noopener noreferrer"><svg width="16" height="16" aria-hidden="true"><use href="#i-github"/></svg>Project on GitHub</a></div>
                 <div class="socials"><span>Follow along</span>
-                    <a href="https://github.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg width="18" height="18"><use href="#i-github"/></svg></a>
-                    <a href="https://x.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg width="16" height="16"><use href="#i-x"/></svg></a>
-                    <a href="https://bsky.app/profile/qxotic.ai" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky"><svg width="18" height="18"><use href="#i-bsky"/></svg></a>
-                    <a href="https://www.youtube.com/watch?v=S7x4DxwRnk4" target="_blank" rel="noopener noreferrer" aria-label="Devoxx talk on YouTube" title="Devoxx talk on YouTube"><svg width="20" height="20"><use href="#i-yt"/></svg></a>
+                    <a href="https://github.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg aria-hidden="true" width="18" height="18"><use href="#i-github"/></svg></a>
+                    <a href="https://x.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg aria-hidden="true" width="16" height="16"><use href="#i-x"/></svg></a>
+                    <a href="https://bsky.app/profile/qxotic.ai" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky"><svg aria-hidden="true" width="18" height="18"><use href="#i-bsky"/></svg></a>
+                    <a href="https://www.youtube.com/watch?v=S7x4DxwRnk4" target="_blank" rel="noopener noreferrer" aria-label="Devoxx talk on YouTube" title="Devoxx talk on YouTube"><svg aria-hidden="true" width="20" height="20"><use href="#i-yt"/></svg></a>
                 </div>
             </div>
         </div>
@@ -1535,10 +1549,10 @@ spring.ai.jinfer.chat.model=<span class="tk-s">LiquidAI/LFM2.5-350M-GGUF:Q8_0</s
                 <a href="mailto:hello@qxotic.ai"><svg width="15" height="15" aria-hidden="true"><use href="#i-mail"/></svg>hello@qxotic.ai</a>
                 <a href="https://central.sonatype.com/namespace/com.qxotic" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" aria-hidden="true"><use href="#i-pkg"/></svg>Maven Central</a>
                 <span class="fsoc">
-                    <a href="https://github.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg width="17" height="17"><use href="#i-github"/></svg></a>
-                    <a href="https://x.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg width="15" height="15"><use href="#i-x"/></svg></a>
-                    <a href="https://bsky.app/profile/qxotic.ai" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky"><svg width="17" height="17"><use href="#i-bsky"/></svg></a>
-                    <a href="https://www.youtube.com/watch?v=S7x4DxwRnk4" target="_blank" rel="noopener noreferrer" aria-label="Devoxx talk on YouTube" title="Devoxx talk on YouTube"><svg width="19" height="19"><use href="#i-yt"/></svg></a>
+                    <a href="https://github.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg aria-hidden="true" width="17" height="17"><use href="#i-github"/></svg></a>
+                    <a href="https://x.com/qxoticai" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg aria-hidden="true" width="15" height="15"><use href="#i-x"/></svg></a>
+                    <a href="https://bsky.app/profile/qxotic.ai" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky"><svg aria-hidden="true" width="17" height="17"><use href="#i-bsky"/></svg></a>
+                    <a href="https://www.youtube.com/watch?v=S7x4DxwRnk4" target="_blank" rel="noopener noreferrer" aria-label="Devoxx talk on YouTube" title="Devoxx talk on YouTube"><svg aria-hidden="true" width="19" height="19"><use href="#i-yt"/></svg></a>
                 </span>
             </nav>
         </div>

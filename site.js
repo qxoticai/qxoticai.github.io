@@ -1,3 +1,5 @@
+/* Page behaviour. One scope: nothing here leaks onto window (the shared state is window.qx*, set by jbang.js). */
+(function () {
 function toggleTheme(btn) {
   var root = document.documentElement;
   var dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
@@ -44,7 +46,8 @@ function pageUrl(set, hash) {   // the current query with `set` applied (null de
 function copyText(text, btn, el) {
   function done() {
     if (btn.classList.contains('cc-copy')) { btn.classList.add('ok'); btn.setAttribute('aria-label', 'Copied'); setTimeout(function () { btn.classList.remove('ok'); btn.setAttribute('aria-label', 'Copy address'); }, 1400); return; }
-    var t = btn.innerHTML; btn.textContent = 'Copied'; setTimeout(function () { btn.innerHTML = t; }, 1400);
+    if (btn.dataset.label == null) btn.dataset.label = btn.innerHTML;   // the original, kept across quick repeat clicks
+    clearTimeout(btn._t); btn.textContent = 'Copied'; btn._t = setTimeout(function () { btn.innerHTML = btn.dataset.label; }, 1400);
   }
   function select() { if (!el) return; var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
   try { navigator.clipboard.writeText(text).then(done, select); } catch (e) { select(); }
@@ -67,7 +70,7 @@ function openTab(name, push) {
   var panel = document.getElementById('panel-' + name); panel.classList.add('active');
   var snip = panel.querySelector('.jbang'); if (snip && window.qxRender) window.qxRender(snip);
   var bar = tab.parentNode; bar.scrollLeft = tab.offsetLeft - bar.offsetLeft - 16;
-  if (push) history.replaceState(null, '', pageUrl({ demo: tab.textContent, bench: null }, ''));
+  if (push) history.replaceState(null, '', pageUrl({ demo: tab.dataset.demo || tab.textContent, bench: null }, ''));
   syncTabs();
 }
 /* Accessible tabs: roles and states for screen readers, roving focus for the keyboard. */
@@ -165,8 +168,39 @@ function typeIn(el, html, done) {
     };
   }
   function loaded(d) { return '<div><span class="ok">&check;</span> ' + d.model + ' loaded, <span class="nw">in-process</span></div><div>' + d.input + '</div>'; }
-  function select(n) { tabs.forEach(function (t, i) { t.classList.toggle('on', i === n); t.setAttribute('aria-selected', i === n ? 'true' : 'false'); }); }
+  function select(n) { tabs.forEach(function (t, i) { t.classList.toggle('on', i === n); t.setAttribute('aria-pressed', i === n); }); }
   function gen(on) { status.classList.toggle('gen', on); status.textContent = on ? 'generating' : 'in-process'; ans.classList.toggle('live', on); }
+
+  /* The console never resizes: it reserves the finished height of its tallest demo, so typing and switching
+     demos don't push the page below around. Measured on a hidden copy (the live demo is never touched), again
+     whenever the width changes or the web fonts arrive, since line wraps depend on both. */
+  var body = code.closest('.cbody'), codePane = code.parentNode, outPane = ans.parentNode, tags = document.getElementById('con-model').parentNode, reserved = 0;
+  function reserve() {
+    if (!demos.every(function (d) { return d.text; })) return;
+    var probe = body.cloneNode(true);
+    probe.querySelectorAll('[id]').forEach(function (e) { e.removeAttribute('id'); });
+    probe.style.cssText = 'position:absolute;top:0;left:0;width:' + body.offsetWidth + 'px;visibility:hidden;align-items:start;pointer-events:none';
+    var pc = probe.querySelector('.code-pane'), po = probe.querySelector('.con-out'), pre = pc.querySelector('pre'),
+        pcmd = po.querySelector('.cmdl'), plog = po.querySelector('.log'), pans = po.querySelector('.ans'), pmodel = po.querySelector('.tags span:last-child'), ptags = pmodel.parentNode;
+    [pc, po, plog, ptags].forEach(function (e) { e.style.minHeight = ''; });
+    con.appendChild(probe);
+    function fill(d) {
+      var p = parts(d);
+      pre.innerHTML = p.head + '<span class="cmain">' + p.main + '</span>' + p.tail;
+      pcmd.innerHTML = '<b>$ </b>jbang ' + d.file; plog.innerHTML = loaded(d);
+      pans.textContent = d.out; pans.classList.toggle('mono', !!d.mono); pmodel.textContent = d.model.split(' · ')[0];
+    }
+    // first the parts that wrap on phones (the log and the tags), then the panes with those parts reserved
+    var hc = 0, ho = 0, hl = 0, ht = 0;
+    demos.forEach(function (d) { fill(d); hl = Math.max(hl, plog.offsetHeight); ht = Math.max(ht, ptags.offsetHeight); });
+    plog.style.minHeight = hl + 'px'; ptags.style.minHeight = ht + 'px';
+    demos.forEach(function (d) { fill(d); hc = Math.max(hc, pc.offsetHeight); ho = Math.max(ho, po.offsetHeight); });
+    con.removeChild(probe);
+    codePane.style.minHeight = hc + 'px'; outPane.style.minHeight = ho + 'px'; log.style.minHeight = hl + 'px'; tags.style.minHeight = ht + 'px';
+    reserved = body.offsetWidth;
+  }
+  Promise.all(demos.map(function (d) { return d.ready; })).then(function () { return document.fonts.ready; }).then(reserve, function () {});
+  new ResizeObserver(function () { if (body.offsetWidth !== reserved) requestAnimationFrame(reserve); }).observe(body);
 
   copyBtn.addEventListener('click', function () { var d = demos[k]; if (d.text) copyText(d.text, copyBtn, code); });
   tabs.forEach(function (t, i) { t.addEventListener('click', function () { show(i); }); });
@@ -215,7 +249,7 @@ function typeIn(el, html, done) {
           });
         });
       }, 260);
-    }).catch(function () {});   // static first example stays if the snippet can't load
+    }).catch(function (e) { console.warn('hero demo:', e); });   // the static first example stays
   }
   function next() {
     if (!visible || hover || document.hidden || con.querySelector('details[open]')) { timer = setTimeout(next, 500); return; }
@@ -341,7 +375,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   // the data loads when the benchmark section gets close, not with the first screen
   function loadBench() {
     window.qxLoads++;   // anchor jumps stay aligned until the table is in (see Anchors below)
-    fetch('benchmarks.csv').then(function (r) { return r.text(); }).then(start)
+    fetch('benchmarks.csv').then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(start)
       .catch(function () { noteEl.innerHTML = 'Could not load the data. Raw numbers: <a href="benchmarks.csv">benchmarks.csv</a>'; })
       .then(function () { window.qxLoads--; });
   }
@@ -378,8 +412,6 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     }
     setStat('pp', median(all.pp512).toFixed(2));
     setStat('configs', all.pp512.length);
-    setStat('models', Object.keys(models).length);
-    setStat('fams', families.length);
 
     var pickFamily = function () {};
 
@@ -622,7 +654,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) { e.target.classList.toggle('off', !e.isIntersecting); });
   });
-  document.querySelectorAll('.mq, .contact-card, .wave, .stage').forEach(function (el) { io.observe(el); });
+  document.querySelectorAll('.mq, .contact-card, .wave, .stage, #vs').forEach(function (el) { io.observe(el); });
 })();
 
 /* Company cards: hover (or, on touch screens, being on screen) sets .is-playing. CSS marks stop at the end of
@@ -762,7 +794,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   window.qxText('snippets/Chat.java').then(function (t) {
     var m = /jinfer-bom:([\w.-]+)@pom/.exec(t);
     if (m) spans.forEach(function (s) { s.textContent = m[1]; });
-  }).catch(function () {});
+  }).catch(function (e) { console.warn('BOM version:', e); });   // the version in the HTML stays
 })();
 
 /* Commands for macOS / Linux or Windows (PowerShell): every switch on the page stays in sync,
@@ -771,7 +803,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   var tabs = document.querySelectorAll('.os-tabs button'), unix = document.getElementById('hero-cmd'), win = document.getElementById('hero-cmd-win'),
       copy = document.querySelector('[data-copy="hero-cmd"], [data-copy="hero-cmd-win"]');
   function pick(os) {
-    tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.os === os); });
+    tabs.forEach(function (t) { t.setAttribute('aria-pressed', t.dataset.os === os); });
     if (unix && win) { unix.hidden = os === 'win'; win.hidden = os !== 'win'; }
     if (copy) copy.dataset.copy = os === 'win' ? 'hero-cmd-win' : 'hero-cmd';
     document.querySelectorAll('[data-os-pane]').forEach(function (p) { p.hidden = p.dataset.osPane !== os; });
@@ -787,7 +819,7 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
   var tabs = col.querySelectorAll('[data-py]'), panes = col.querySelectorAll('.vsp-pane');
   tabs.forEach(function (b) {
     b.addEventListener('click', function () {
-      tabs.forEach(function (t) { t.setAttribute('aria-selected', t === b); });
+      tabs.forEach(function (t) { t.setAttribute('aria-pressed', t === b); });
       panes.forEach(function (p, k) { p.hidden = String(k) !== b.dataset.py; });
     });
   });
@@ -841,4 +873,5 @@ document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
     // after load, and once more after the browser's own jump to the fragment (which measures mid-animation)
     addEventListener('load', function () { [0, 120, 500].forEach(function (ms) { setTimeout(function () { if (target) { go(target); hold(target); } }, ms); }); });
   }
+})();
 })();
