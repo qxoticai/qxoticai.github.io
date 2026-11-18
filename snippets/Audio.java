@@ -2,7 +2,7 @@
 //DESCRIPTION Transcription with Gemma 4 E2B
 //JAVA 25+
 //RUNTIME_OPTIONS --add-modules jdk.incubator.vector --enable-native-access=ALL-UNNAMED
-//DEPS com.qxotic:jinfer-bom:0.4.0-rc1@pom
+//DEPS com.qxotic:jinfer-bom:0.4.0@pom
 //DEPS com.qxotic:jinfer-spring-ai com.qxotic:jinfer-models-all
 //DEPS org.springframework.ai:spring-ai-client-chat:2.1.0-RC2
 //DEPS com.qxotic:jam-native com.qxotic:jam-vector

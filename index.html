@@ -1434,7 +1434,7 @@ out = llm.create_chat_completion(messages=[
             <div class="steps">
                 <div class="step"><h4>Install jbang</h4><p>The one-file Java launcher. For SDKMAN!, Homebrew and more, see the <a href="https://www.jbang.dev/download/" target="_blank" rel="noopener noreferrer">jbang install guide</a>.</p><div class="os-pre"><div class="os-tabs" role="group" aria-label="Operating system"><button type="button" aria-pressed="true" data-os="unix">macOS / Linux</button><button type="button" aria-pressed="false" data-os="win">Windows (PowerShell)</button></div><pre data-os-pane="unix"><b>$ </b>curl -Ls https://sh.jbang.dev | bash -s - app setup</pre><pre data-os-pane="win" hidden><b>PS&gt; </b>iex "&amp; { $(iwr -useb https://ps.jbang.dev) } app setup"</pre></div></div>
                 <div class="step"><h4>Use the jinfer CLI</h4><p>Chat, prompt, speak, transcribe or serve a model, straight from your terminal.</p><pre><b>$ </b>jbang jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0</pre></div>
-                <div class="step"><h4>Add it to your app</h4><p>Import the BOM, then your API binding, the models and the native kernels.</p><pre>com.qxotic:jinfer-bom:<span data-jinfer-version>0.4.0-rc1</span>
+                <div class="step"><h4>Add it to your app</h4><p>Import the BOM, then your API binding, the models and the native kernels.</p><pre>com.qxotic:jinfer-bom:<span data-jinfer-version>0.4.0</span>
 com.qxotic:jinfer-spring-ai
 com.qxotic:jinfer-langchain4j
 com.qxotic:jinfer-models-all <i>// or jinfer-gemma4, ...</i>
