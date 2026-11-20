@@ -9,7 +9,7 @@ Quixotic AI began in 2023 with llama2.java, a language model in a single file of
 - An inference engine that runs as a library, inside the JVM process: no model server, no network calls, no per-token bills. Prompts and data stay in the application.
 - Fast on ordinary CPUs: it processes prompts 1.85x faster than llama.cpp (median across 126 CPU configurations) and generates text at about the same speed. Raw benchmark data is public.
 - Broad model support: more than 19 architectures, including Gemma, Qwen, GPT-OSS, Llama, Ministral, Granite, Nemotron, LFM, Mellum, SmolLM, MiniCPM, Bonsai, Ling and Laguna; Parakeet for speech-to-text; Kokoro and Inflect for text-to-speech; embedding and reranking models. Loads GGUF models, from Hugging Face or local storage.
-- Fits existing Java code: a drop-in model provider for Spring AI and LangChain4j, plus a CLI and an OpenAI-compatible server.
+- Fits existing Java code: a drop-in model provider for Spring AI 2.1 (on Spring Boot 4.2) and LangChain4j 1.24, plus a CLI and an OpenAI-compatible server.
 - Compatible with GraalVM Native Image: the application and the engine compile into one native executable; small models can be shipped inside it.
 - Requires Java 25 or newer. GPU and accelerator support is in development through jota, the tensor engine.
 
@@ -33,6 +33,7 @@ Quixotic AI began in 2023 with llama2.java, a language model in a single file of
 - [Website](https://qxotic.ai/): overview, live demos, benchmarks and FAQ.
 - [Source code](https://github.com/qxoticai/qxotic): the full stack on GitHub.
 - [Maven Central](https://central.sonatype.com/namespace/com.qxotic): artifacts under `com.qxotic`; import `com.qxotic:jinfer-bom`, then `jinfer-spring-ai` or `jinfer-langchain4j`, a models artifact (`jinfer-models-all`) and the kernels (`jam-native` or `jam-vector`).
+- [PyPI](https://pypi.org/project/jinfer/): `pip install jinfer` for Python 3.10 or newer, the same engine as a native library built with GraalVM; [toknroll](https://pypi.org/project/toknroll/) has its tokenizers alone.
 - Try it from a terminal (needs jbang): `jbang jinfer@qxoticai chat --model LiquidAI/LFM2.5-350M-GGUF:Q8_0`
 
 ## Examples
